@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repo_summer_09/!svn/ver/576/MouseTrap/src/camshift_demo/demo/ocvfw/haars
+END
+frontalEyes35x16.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repo_summer_09/!svn/ver/576/MouseTrap/src/camshift_demo/demo/ocvfw/haars/frontalEyes35x16.xml
+END
+haarcascade_frontalface_alt_tree.xml
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repo_summer_09/!svn/ver/576/MouseTrap/src/camshift_demo/demo/ocvfw/haars/haarcascade_frontalface_alt_tree.xml
+END
+Makefile.in
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repo_summer_09/!svn/ver/576/MouseTrap/src/camshift_demo/demo/ocvfw/haars/Makefile.in
+END
+haarcascade_frontalface_alt.xml
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repo_summer_09/!svn/ver/576/MouseTrap/src/camshift_demo/demo/ocvfw/haars/haarcascade_frontalface_alt.xml
+END
+haarcascade_eye_tree_eyeglasses.xml
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repo_summer_09/!svn/ver/576/MouseTrap/src/camshift_demo/demo/ocvfw/haars/haarcascade_eye_tree_eyeglasses.xml
+END
+haarcascade_frontalface_alt2.xml
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repo_summer_09/!svn/ver/576/MouseTrap/src/camshift_demo/demo/ocvfw/haars/haarcascade_frontalface_alt2.xml
+END
+haarcascade_frontalface_default.xml
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repo_summer_09/!svn/ver/576/MouseTrap/src/camshift_demo/demo/ocvfw/haars/haarcascade_frontalface_default.xml
+END
+Makefile.am
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repo_summer_09/!svn/ver/576/MouseTrap/src/camshift_demo/demo/ocvfw/haars/Makefile.am
+END
+Mouth.xml
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repo_summer_09/!svn/ver/576/MouseTrap/src/camshift_demo/demo/ocvfw/haars/Mouth.xml
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repo_summer_09/!svn/ver/576/MouseTrap/src/camshift_demo/demo/ocvfw/haars/Makefile
+END

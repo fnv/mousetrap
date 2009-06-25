@@ -1,0 +1,46 @@
+========================================================
+ctypes-opencv - A Python wrapper for OpenCV using ctypes
+========================================================
+
+The ctypes-opencv package has been developed and programmed by Minh-Tri
+Pham, School of Computer Engineering, Nanyang Technological University,
+Singapore. It was based from the CVtypes package of Gary Bishop released 
+in 2007.
+
+E-mail:         <mtpham@ieee.org>, <pmtri80@gmail.com>
+
+Paper mail:     Center for Multimedia and Network Technology
+                Nanyang Technological University
+                Block N4, #b2c-06, Nanyang Avenue
+                Singapore 639398
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: GnuPG v1.4.9 (MingW32)
+
+mQGiBEkm2M4RBACJNTzSvH17vfjPjjWBN+88aS4WsNP51p1BEMHnpHPhjkz7UW3b
+G+31J6zayxypAqEM4zlXC4skc6Rl4x6rfR/+Red+LqSCbsa++gRGgbJ1r14CDyKu
+qkZf+I/U6oCuc0PlZtC+m67vhIF1eRs7oMiladJXU+k3ci+FmQopfYvirwCgmyQ1
+vNcQ+lWQMVaylLaMXgchjfkD/2cZ1WpqKamM09ileSy3nAFOfw2SX6F/K/aPXZu5
+g8sWtoHE6pCtWpDd6IVU47KQ4Ur8iWqEXMYZRXBWJ9QpT2gLbBpFsK8isATy77d4
+k2tm0UwPC8Se7OyDAxdMZ9NJ+xeGEFd9O/w2oEVwpY7WrVZ2VSgUcEr/WFeQRDbg
+vtB1A/9ePXPee8V9WskutzyBHIhxh6iKCKHTaZx+qEYdU8opLKsfU1yqAP5aCp1W
+ebOM+MeEtSj8/54kcHx6HuHPMbkAqLrDY0YXcjWERBj86SZqBgunUOInPt4aPW+I
+siul/ZzWhKue8Tq0rnGz9+z1hsJj2SQHsaJdLBnUOYSEeD+CaLQhTWluaC1Ucmkg
+UGhhbSA8cG10cmk4MEBnbWFpbC5jb20+iGYEExECACYFAkkm2M4CGyMFCQlmAYAG
+CwkIBwMCBBUCCAMEFgIDAQIeAQIXgAAKCRCrb2/LzEIF5mkjAJ0YzTWVBh69Eb8s
+CrYVJtE5L9TYXACePGJalao5WW1I1kRNWWFnJrdWnMO5Ag0ESSbYzhAIAPOKGZAb
+K0DeLRE7MPf3AejlL+XjrK1D8TlOuqONbSqoiOKdk/Har+xxUINPAA+2OGrsjM7K
+4nxp4XOgZiAqoYad3E4bwBD+h33afbnADg4YQP2MAIhqujsGkBbukotA37lQTDcQ
+dnv8Z9pBUUHQWcVkbCTPxaEZwypIUUTtMeaNodXpuCaDASj5O262KSoIytTxkAfz
+OZFd8jjAkgwTNLRgLNORxse0lsV6YbjmgtHnBAMjC1m6g5M5uOaDeVPAgclEJ7Oa
+lKCP5rgWwfFZa8RHYMzWkbb69c94LZ3ek3VHe1hCqNm3XgoqNq85g4ohWVHNSsAH
+2Zs6M2K0cO3KbCMAAwYH/3JJPdC0l7FqRQJs1C8FiHHVlV8effo+v5xmtX56Yppn
+XqFVRYS0wf7GTUEUUkWyP5t32wWi6k+FYbLlxvA0irEI+jJUi0byYvIr1wtT6IkI
+5Uq6uyx1mwz4pKd4eKSyE7dFzHs0ZYeyX0IIywAOnJjlemCwgW8dFH7uCM61ua9z
+Kvl59Bv/8AlKPlZ/4JKQHAqNXIhHIedlFNVVsZRdaV8fCglqFT79GUq7AW7HMYUV
++TUtjjRqG+kLWlQZjyymXSLSl+WrRy028y1L3wlTEPqAV6mz0bpknAMk4wWoOafa
+KUuytHioUme1+/hUlrEyopqmEm0plLN5vpGsfWbjWz2ITwQYEQIADwUCSSbYzgIb
+DAUJCWYBgAAKCRCrb2/LzEIF5hhgAJ9J7S7eChmyPuB0Fj0M1n1+R5tc8ACfUgPQ
+CnuJf/xwj6QvilTNyk1fQrY=
+=fnS/
+-----END PGP PUBLIC KEY BLOCK-----

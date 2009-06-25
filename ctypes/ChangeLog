@@ -1,0 +1,242 @@
+========================================================
+ctypes-opencv - A Python wrapper for OpenCV using ctypes
+========================================================
+
+Change Log
+==========
+
+ctypes-opencv-0.7.3 bugfix release
+---------------------------------------
+
+- Added 3 functions: cvCreateMatFromNumpyArray(), cvCreateMatNDFromNumpyArray(), cvCreateImageFromNumpyArray()
+- Fixed a tiny bug in CvMatND
+- Added cvMatND()
+- Fixed issue 26: Can't save matrix with cvSave
+- Fixed issue 27: cvMat by Column Access
+- Fixed issue 28: as_numpy_array
+- Fixed issue 30: Required module not imported in interfaces.py
+- Fixed issue 31: ctypesArgumentError when calling cvCalibrateCamera2 	 
+- Fixed issue 32: function cvSmooth does not accept enought arguments
+- Fixed issue 33: cvGetSubRect
+- Added _fields_ = [] to _Structure, by David Bolen
+- Fixed a tiny bug in highgui_win32.py, by David Bolen
+- Implemented equivalence for structure data types, by David Bolen
+
+ctypes-opencv-0.7.2 development release
+---------------------------------------
+
+- Improved pil_to_ipl() and ipl_to_pil()
+- Fixed a bug in pil_to_ipl(), by Jeremy Bethmont
+- Small tweak to highgui_win32, by David Bolen
+- Fixed a synchronization issue in highgui_win32, by David Bolen
+- Added background image thread for Windows, by David Bolen
+- Fixed a bug in calling cvSetMouseCallback() in camshiftdemo.py
+- Mouse callback and parameter support, by David Bolen
+- Fixes for cvGetHist*, by David Bolen
+- General prototype/parameter default cleanup, by David Bolen
+- Suppressed KeyError exception with mouse callback/trackbar on unknown window, by David Bolen
+- Fixed a bug in watershed.py
+- Fix for crash at process termination with open windows with trackbars, by David Bolen
+- Small tweak to cx namespace, by David Bolen
+- Fixed issues in round-tripping data with ByRefArg and List* wrappers, by David Bolen
+- Fixed cvSeqPush() by David Bolen, its 'element' argument is now a pointer
+- Added default value for cvSetIdentify(), by David Bolen
+- Updated cvThreshold prototype for OpenCV 1.1, by David Bolen
+- Fixed a bug in histogram-related functions, by David Bolen
+
+ctypes-opencv-0.7.1 development release
+---------------------------------------
+
+- Improved handling C-level cvWaitKey results to support 32-bit keys. Now cvWaitKey() always returns a 32-bit integer.
+- Fixed a memory leak in callback functions, by David Bolen
+- Added two missing parameters in cvHoughCircles(), by David Bolen 
+
+ctypes-opencv-0.7.0 development release
+---------------------------------------
+
+Major change that breaks backward compatibility with 0.5 releases: A large number of functions have been improved in their calling sequences. In the previous releases, these functions had some parameters omitted because I thought they were unnecessary. However, my decisions, while offering convenience to a majority of users, made these functions not so compatible with their OpenCV counterparts. Now, the parameters are re-enabled, allowing the functions to be fully compatible with OpenCV's functions. Thanks David Bolen for this key suggestion. These functions are:
+- cvGetRows(), cvGetCols(), cvGetSubRect(), cvGetDiag()
+- cvCreateMatND(), cvCreateMatNDHeader(), cvInitMatNDHeader()
+- cvCreateSparseMat()
+- cvGetMat() and cvGetImage()
+- cvReshape()
+- cvFillPoly(), cvFillConvexPoly(), and cvPolyLine()
+- cvFindCornersSubPix()
+- cvGoodFeaturesToTrack()
+- cvExtractSURF()
+- cvFindContours()
+- cvPyrSegmentation()
+- cvMakeHistHeaderForArray()
+- cvConvexHull2()
+- cvGetCol(), cvGetRow(), cvMat()
+- cvStartReadSeq()
+- cvMakeSeqHeaderForArray()
+- cvInitTreeNodeIterator()
+- cvInitFont()
+- cvInitLineIterator()
+- cvCalcOpticalFlowPyrLK()
+- cvFindChessboardCorners() and cvDrawChessboardCorners()
+
+Other improvements:
+- Improved algorithm for detecting libraries in POSIX systems like Linux and Mac OS
+- Improved algorithm for detecting OpenCV's version
+- Added David Bolen's enhanced version of 'cx' namespace. Now you can call 'from open import cx' to import all OpenCV's functionality without 'cv' prefixes.
+- Added David Bolen's enhancement in Python 3.0 compatibility
+- Added additional prototype default values, by David Bolen
+- Added David Bolen's cvLoadCast patch to create full object
+- Restored _Structure.from_param(), couldn't find any error with the current demos
+- Fixed a bug with __del__() functions, by David Bolen
+
+ctypes-opencv-0.5.1 development release
+---------------------------------------
+
+- Added a demo for extracting SURF features, i.e. find_obj.py
+- Improved wrapper for cvFindHomography() of version 1.1
+- Added a default_errcheck() function
+- Renamed from _cvver to cvVersion
+- Updated cvPtrND(), cvGetND(), cvSetND(), cvGetRealND(), cvSetRealND(), cvClearND()
+- Added CvMatND.as_numpy_array()
+- Added functions to convert between PIL' Image and IplImage (i.e. 'pil_to_ipl' and 'ipl_to_pil'), contributed by Jérémy Bethmont
+- Improved detection of OpenCV's libraries, contributed by Jérémy Bethmont
+- Improved detection of OpenCV's version
+- Fixed a bug with cvCvMatAsNDarray() and renamed it to CvMat.as_numpy_array()
+- Fixed a bug with cvImageAsNDarray() and renamed it to IplImage.as_numpy_array()
+- Added a small notice to each demo
+- Improved cvSetData()
+- Fixed a few more small bugs
+
+ctypes-opencv-0.5.0 development release
+---------------------------------------
+
+- Major change that breaks backward compatibility: frequent use of variables as pointers to structures are changed to references to structures instead. This allows code to be more secured, more user-friendly, and run slightly faster.
+
+- Fixed many bugs
+- Fixed a major bug in callback functions that may, with high probability, crash the user's program. After this fix, ctypes-opencv is very hard to crash, unless a user deliberately tries to do so.
+- Added functions: cvInitSparseMatIterator() and cvGetNextSparseNode()
+- Added function cvMixChannels()
+- Created a few more useful functions
+- Added three more demos: camshiftdemo.py, squares.py, and watershed.py
+- Added full interface for OpenCV 1.1 functionality
+
+ctypes-opencv-0.3.0 development release
+---------------------------------------
+
+- Added a lot of demos
+- Restructured ctypes-opencv so that it could be distributed/installed using distutils
+- Added row iteration and column ieration for POINTER(CvMat)
+
+ctypes-opencv-0.2.2 bugfix release
+----------------------------------
+
+- Added cvInpaint() functions
+- Rearranged more functions
+- Rearranged planar subdivisions and added more missing functions
+- Rearranged functions in cv.h right before CvHistogram
+- added functions:
+   + cvPyrMeanShiftFiltering()
+   + cvWatershed()
+- Rearranged cv/cvtypes.h
+- Added structures
+   + CvPluginFuncInfo
+   + CvModuleInfo:
+   + CvChainPtReader
+- Added functions:
+   + cvGetNumThreads()
+   + SetNumThreads()
+   + GetThreadNum()
+- Rearranged Data Persistence and RTTI: Reading Data
+- Rearranged Miscellaneous functions
+- Added CV_NEXT_LINE_POINT()
+- Added cvAttrValue()
+- Expanded typeinfo structure:
+- Added functions related to CV_NODE:
+   + CV_NODE_TYPE()
+   + CV_NODE_IS_INT(flags)
+   + CV_NODE_IS_REAL(flags)
+   + CV_NODE_IS_STRING(flags)
+   + CV_NODE_IS_SEQ(flags)
+   + CV_NODE_IS_MAP(flags)
+   + CV_NODE_IS_COLLECTION(flags)
+   + CV_NODE_IS_FLOW(flags)
+   + CV_NODE_IS_EMPTY(flags)
+   + CV_NODE_IS_USER(flags)
+   + CV_NODE_HAS_NAME(flags)
+   + CV_NODE_SEQ_SIMPLE
+   + CV_NODE_SEQ_IS_SIMPLE(seq)
+- Added functions related to Reading Data from File Storage
+   + cvReadInt()
+   + cvReadIntByName()
+   + cvReadReal()
+   + cvReadRealByName()
+   + cvReadString()
+   + cvReadStringByName()
+- Rearranged trees and drawing functions
+- Added CvTreeNodeIterator structure
+- Added cvFont() function
+- Rearranged functions related to graph
+- Added CvGraphScanner structure
+- Added functions:
+   + cvSetRemoveByPtr()
+   + cvGetSetElem()
+   + cvGetGraphVtx()
+   + GraphVtxIdx()
+   + GraphEdgeIdx()
+   + cvGraphGetVtxCount()
+   + cvGraphGetEdgeCount()
+   + CV_IS_GRAPH_VERTEX_VISITED()
+   + CV_IS_GRAPH_EDGE_VISITED()
+- Rearranged cvseq and cvset functions
+- Added cvSliceLength(), cvSetNew() functions
+- Rearranged more cvseq functions
+- Added auto-clean feature to CvMemStorage
+- Added cvReduce(), cvNormalize()
+- Rearranged more functions
+- Added: cvCalcPCA(), cvProjectPCA(), cvBackProjectPCA()
+- Rearranged a lot more function
+- Added a few missing functions, like: cvCheckTermCriteria(), cvRange()
+- Added more features to ctypes-openc:
+   + indexing for POINTER(IplImage)
+   + indexing and slicing for POINTER(CvMat)
+   + many other things
+
+ctypes-opencv-0.2.1 stable release
+----------------------------------
+
+- Added cvRNG(), cvRandInt(), cvRandReal(), cvRandShuffle()
+- Fixed a small bug -- forgotten to export Cv* items
+
+ctypes-opencv-0.2.0 stable release
+----------------------------------
+
+- Encapsulated cxcore/cxtypes.h
+- Encapsulated cxcore/cvver.h
+- Imported from the improved CVtypes.py file in my pycv package
+
+Notes from former contributors
+==============================
+
+This file started life as cvtypes.py with the following header (that I can't read)
+
+Wrapper-Modul cvtypes.py zur Verwendung der OpenCV-Bibliothek beta5
+unter Python, wobei der Zugriff ueber ctypes erfolgt.
+Autor: Michael Otto
+To do: noch fehlende Strukturen wrappen (z. B. CvKalman)
+       noch fehlende Makros und Inlinefunktionen wrappen
+       ausgiebig testen
+Log:   2006/07/25 Dokumentationsstrings hinzugefuegt
+       2006/07/10 Fehler in cvGEMM, cvMatMulAdd und cvMatMul beseitigt
+       2006/06/28 Modul erzeugt
+
+I hacked it both automatically and by hand to bring it up to date with OpenCV 1.0 and
+to use prototype for the functions. I also added from_param methods to allow lists to many
+functions that expect a C array.
+
+I checked with Michael and he graciously agreed to let me give it away. This software is
+free for any use. If you or your lawyer are stupid enough to believe that Micheal or I have
+any liability for it, you should not use it, otherwise be our guest.
+
+Gary Bishop February 2007
+
+Updated 12 May 2007 to include modifications provided by Russell Warren
+Continuously updated by Minh-Tri Pham since 30 June 2007
+
