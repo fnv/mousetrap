@@ -45,7 +45,7 @@ Topic :: Software Development :: Libraries :: Python Modules
 """
 
 
-setup(name = 'ctypes-opencv',
+setup(name = 'ctypesopencv',
 	version = '0.7.3',
 	description = DOCLINES[0],
 	author = 'Minh-Tri Pham',
@@ -55,7 +55,7 @@ setup(name = 'ctypes-opencv',
 	platforms = 'OS Independent, Windows, Linux, MacOS',
 	classifiers = filter(None, CLASSIFIERS.split('\n')),
 	long_description = "\n".join(DOCLINES[2:]),
-	packages = ['ctypes-opencv'],
-    data_files=[('doc/ctypes-opencv', ['AUTHORS', 'ChangeLog', 'COPYING', 'README', 'THANKS', 'TODO'])],
+	packages = ['ctypesopencv'],
+    data_files=[('doc/ctypesopencv', ['AUTHORS', 'ChangeLog', 'COPYING', 'README', 'THANKS', 'TODO'])],
 )
 

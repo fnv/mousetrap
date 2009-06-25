@@ -3,9 +3,8 @@
 # -- adapted by Minh-Tri Pham to work with ctypes-opencv
 
 from ctypes import c_int
-from ctypesopencv import *
+from opencv import *
 from sys import argv, exit
-import math
 
 image = None
 hsv = None
@@ -25,16 +24,10 @@ track_window = None
 track_box = None
 track_comp = None
 hdims = 16
-
-# initial settings for value, saturation, and hue
 vmin = c_int(10)
 vmax = c_int(256)
 smin = c_int(30)
-smax = c_int(256)
-hmin = c_int(10)
-hmax = c_int(180) #this may have to be 180 and not 256, for whatever reason
 
-#runs when a mouse event (motion or clicking) occurs
 def on_mouse(event, x, y, flags, param):
     global select_object, image, selection, origin, track_object
     
@@ -82,7 +75,6 @@ def hsv2rgb(hue):
 
     return cvScalar(rgb[2], rgb[1], rgb[0], 0)
 
-#main method
 if __name__ == '__main__':
     argc = len(argv)    
     if argc == 1 or (argc == 2 and argv[1].isdigit()):
@@ -102,22 +94,13 @@ if __name__ == '__main__':
         "\tb - switch to/from backprojection view\n" \
         "\th - show/hide object histogram\n" \
         "To initialize tracking, select the object with mouse\n"
-    print "ASIHDDSF"
 
     cvNamedWindow( "Histogram", 1 )
     cvNamedWindow( "CamShiftDemo", 1 )
-    cvNamedWindow( "Mask", 1 )
-    #cvNamedWindow( "Backproject", 1)
-    #cvNamedWindow( "Hue", 1)
-
     cvSetMouseCallback( "CamShiftDemo", on_mouse )
-
     cvCreateTrackbar( "Vmin", "CamShiftDemo", vmin, 256 )
     cvCreateTrackbar( "Vmax", "CamShiftDemo", vmax, 256 )
     cvCreateTrackbar( "Smin", "CamShiftDemo", smin, 256 )
-    cvCreateTrackbar( "Smax", "CamShiftDemo", smax, 256 )
-    cvCreateTrackbar( "Hmin", "CamShiftDemo", hmin, 256 )
-    cvCreateTrackbar( "Hmax", "CamShiftDemo", hmax, 256 )
 
     while True:
         frame = cvQueryFrame( capture )
@@ -140,10 +123,8 @@ if __name__ == '__main__':
         cvCvtColor( image, hsv, CV_BGR2HSV )
 
         if track_object != 0:
-            #updates the hsv values
-            cvInRangeS( hsv, cvScalar(hmin.value,smin.value,min(vmin.value,vmax.value),0),
-                        cvScalar(hmax.value,smax.value,max(vmin.value,vmax.value),0), mask )
-
+            cvInRangeS( hsv, cvScalar(0,smin.value,min(vmin.value,vmax.value),0),
+                        cvScalar(180,256,max(vmin.value,vmax.value),0), mask )
             cvSplit(hsv, hue)
 
             if track_object < 0:
@@ -169,7 +150,6 @@ if __name__ == '__main__':
 
             cvCalcBackProject( [hue], backproject, hist )
             cvAnd(backproject, mask, backproject)
-            #CAMSHIFT HAPPENS
             niter, track_comp, track_box = cvCamShift( backproject, track_window,
                         cvTermCriteria( CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 10, 1 ))
             track_window = track_comp.rect
@@ -178,11 +158,6 @@ if __name__ == '__main__':
                 cvCvtColor( backproject, image, CV_GRAY2BGR )
             if not image.origin:
                 track_box.angle = -track_box.angle
-            # Make sure its a number.
-            if math.isnan(track_box.size.height): 
-                track_box.size.height = 0
-            if math.isnan(track_box.size.width): 
-                track_box.size.width = 0
             cvEllipseBox( image, track_box, CV_RGB(255,0,0), 3, CV_AA, 0 )
         
         if bool(select_object) and selection.width > 0 and selection.height > 0:
@@ -192,9 +167,6 @@ if __name__ == '__main__':
 
         cvShowImage( "CamShiftDemo", image )
         cvShowImage( "Histogram", histimg )
-        cvShowImage( "Mask", mask )
-        #cvShowImage( "Backproject", backproject)
-        #cvShowImage( "Hue", hue)
 
         c = '%c' % (cvWaitKey(10) & 255)
         if c == '\x1b':
