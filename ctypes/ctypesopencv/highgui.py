@@ -16,8 +16,8 @@
 # ----------------------------------------------------------------------------
 
 from ctypes import *
-from ctypes-opencv.cxcore import *
-from ctypes-opencv.cxcore import _cvReleaseImage
+from ctypesopencv.cxcore import *
+from ctypesopencv.cxcore import _cvReleaseImage
 
 
 #-----------------------------------------------------------------------------

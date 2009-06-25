@@ -15,13 +15,13 @@
 # For further inquiries, please contact Minh-Tri Pham at pmtri80@gmail.com.
 # ----------------------------------------------------------------------------
 
-from ctypes-opencv.cxcore import *
-from ctypes-opencv.cv import *
-from ctypes-opencv.highgui import *
-from ctypes-opencv.interfaces import *
+from ctypesopencv.cxcore import *
+from ctypesopencv.cv import *
+from ctypesopencv.highgui import *
+from ctypesopencv.interfaces import *
 
 try:
-    from opencv.ml import *
+    from ctypes-opencv.ml import *
 except ImportError:
     pass
 

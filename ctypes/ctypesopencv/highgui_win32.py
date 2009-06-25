@@ -47,7 +47,7 @@ from Queue import Queue, Empty
 from ctypes import windll
 from functools import wraps
 
-import opencv.highgui as hg
+import ctypesopencv.highgui as hg
 
 #
 # --------------------------------------------------------------------------
