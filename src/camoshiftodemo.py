@@ -28,10 +28,12 @@ hdims = 16
 # initial settings for value, saturation, and hue
 vmin = c_int(10)
 vmax = c_int(256)
-smin = c_int(30)
+smin = c_int(80)
 smax = c_int(256)
-hmin = c_int(10)
-hmax = c_int(180) #this may have to be 180 and not 256, for whatever reason
+hmin = c_int(25)
+hmax = c_int(40) #this may have to be 180 and not 256, for whatever reason
+h2min = c_int(170)
+h2max = c_int(175)
 
 #runs when a mouse event (motion or clicking) occurs
 def on_mouse(event, x, y, flags, param):
@@ -110,12 +112,14 @@ if __name__ == '__main__':
 
     cvSetMouseCallback( "CamShiftDemo", on_mouse )
 
-    cvCreateTrackbar( "Vmin", "CamShiftDemo", vmin, 256 )
-    cvCreateTrackbar( "Vmax", "CamShiftDemo", vmax, 256 )
-    cvCreateTrackbar( "Smin", "CamShiftDemo", smin, 256 )
-    cvCreateTrackbar( "Smax", "CamShiftDemo", smax, 256 )
-    cvCreateTrackbar( "Hmin", "CamShiftDemo", hmin, 256 )
-    cvCreateTrackbar( "Hmax", "CamShiftDemo", hmax, 256 )
+    #cvCreateTrackbar( "Vmin", "CamShiftDemo", vmin, 256 )
+    #cvCreateTrackbar( "Vmax", "CamShiftDemo", vmax, 256 )
+    #cvCreateTrackbar( "Smin", "CamShiftDemo", smin, 256 )
+    #cvCreateTrackbar( "Smax", "CamShiftDemo", smax, 256 )
+    cvCreateTrackbar( "Hmin", "CamShiftDemo", hmin, 180 )
+    cvCreateTrackbar( "Hmax", "CamShiftDemo", hmax, 180 )
+    cvCreateTrackbar( "H2min", "CamShiftDemo", h2min, 180 )
+    cvCreateTrackbar( "H2max", "CamShiftDemo", h2max, 180 )
 
     while True:
         frame = cvQueryFrame( capture )
@@ -129,6 +133,8 @@ if __name__ == '__main__':
             hsv = cvCreateImage( cvGetSize(frame), 8, 3 )
             hue = cvCreateImage( cvGetSize(frame), 8, 1 )
             mask = cvCreateImage( cvGetSize(frame), 8, 1 )
+            mask2 = cvCreateImage( cvGetSize(frame), 8, 1 )
+            maskcombo = cvCreateImage( cvGetSize(frame), 8, 1 )
             backproject = cvCreateImage( cvGetSize(frame), 8, 1 )
             hist = cvCreateHist( [hdims], CV_HIST_ARRAY, [[0, 180]] )
             histimg = cvCreateImage( cvSize(320,200), 8, 3 )
@@ -141,17 +147,21 @@ if __name__ == '__main__':
             #updates the hsv values
             cvInRangeS( hsv, cvScalar(hmin.value,smin.value,min(vmin.value,vmax.value),0),
                         cvScalar(hmax.value,smax.value,max(vmin.value,vmax.value),0), mask )
+            cvInRangeS( hsv, cvScalar(h2min.value,smin.value,min(vmin.value,vmax.value),0),
+                        cvScalar(h2max.value,smax.value,max(vmin.value,vmax.value),0), mask2 )
             cvSplit(hsv, hue)
+
+            cvOr(mask, mask2, maskcombo)
 
             if track_object < 0:
                 cvSetImageROI( hue, selection )
-                cvSetImageROI( mask, selection )
-                cvCalcHist( [hue], hist, 0, mask );
+                cvSetImageROI( maskcombo, selection )
+                cvCalcHist( [hue], hist, 0, maskcombo );
                 min_val, max_val = cvGetMinMaxHistValue(hist)
                 hbins = hist.bins[0]
                 cvConvertScale( hbins, hbins, 255. / max_val if max_val else 0., 0 )
                 cvResetImageROI( hue )
-                cvResetImageROI( mask )
+                cvResetImageROI( maskcombo )
                 track_window = selection
                 track_object = 1
 
@@ -165,7 +175,7 @@ if __name__ == '__main__':
                                  color, -1, 8, 0 )
 
             cvCalcBackProject( [hue], backproject, hist )
-            cvAnd(backproject, mask, backproject)
+            cvAnd(backproject, maskcombo, backproject)
             #CAMSHIFT HAPPENS
             niter, track_comp, track_box = cvCamShift( backproject, track_window,
                         cvTermCriteria( CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 10, 1 ))
@@ -184,7 +194,7 @@ if __name__ == '__main__':
 
         cvShowImage( "CamShiftDemo", image )
         cvShowImage( "Histogram", histimg )
-        cvShowImage( "Mask", mask )
+        cvShowImage( "Mask", maskcombo )
         #cvShowImage( "Backproject", backproject)
         #cvShowImage( "Hue", hue)
 
