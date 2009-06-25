@@ -104,7 +104,6 @@ if __name__ == '__main__':
         "\tb - switch to/from backprojection view\n" \
         "\th - show/hide object histogram\n" \
         "To initialize tracking, select the object with mouse\n"
-    print "ASIHDDSF"
 
     cvNamedWindow( "Histogram", 1 )
     cvNamedWindow( "CamShiftDemo", 1 )
