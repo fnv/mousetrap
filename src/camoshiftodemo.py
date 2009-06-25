@@ -5,6 +5,7 @@
 from ctypes import c_int
 from ctypesopencv import *
 from sys import argv, exit
+import math
 
 image = None
 hsv = None
@@ -97,6 +98,7 @@ if __name__ == '__main__':
         "\tb - switch to/from backprojection view\n" \
         "\th - show/hide object histogram\n" \
         "To initialize tracking, select the object with mouse\n"
+    print "ASIHDDSF"
 
     cvNamedWindow( "Histogram", 1 )
     cvNamedWindow( "CamShiftDemo", 1 )
@@ -129,8 +131,8 @@ if __name__ == '__main__':
         cvCvtColor( image, hsv, CV_BGR2HSV )
 
         if track_object != 0:
-            cvInRangeS( hsv, cvScalar(hmin.value,smin.value,min(vmin.value,vmax.value),0),
-                        cvScalar(hmax.value,smax.value,max(vmin.value,vmax.value),0), mask )
+            cvInRangeS( hsv, cvScalar(min(hmin.value,hmax.value),min(smin.value,smax.value),min(vmin.value,vmax.value),0),
+                        cvScalar(max(hmin.value,hmax.value),max(smin.value,smax.value),max(vmin.value,vmax.value),0), mask )
             cvSplit(hsv, hue)
 
             if track_object < 0:
@@ -164,6 +166,11 @@ if __name__ == '__main__':
                 cvCvtColor( backproject, image, CV_GRAY2BGR )
             if not image.origin:
                 track_box.angle = -track_box.angle
+            # Make sure its a number.
+            if math.isnan(track_box.size.height): 
+                track_box.size.height = 0
+            if math.isnan(track_box.size.width): 
+                track_box.size.width = 0
             cvEllipseBox( image, track_box, CV_RGB(255,0,0), 3, CV_AA, 0 )
         
         if bool(select_object) and selection.width > 0 and selection.height > 0:
