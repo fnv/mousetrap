@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+<sect1 id="starting">
+    <title>Getting Started</title>
+
+    <sect2>
+      <title>Launching MouseTrap</title>
+
+      <para>It is possible to start MouseTrap like this: </para>
+		<varlistentry>
+		  <term>Menu</term>
+		  <listitem> 
+		  <para>Choose 
+			<menuchoice>
+				<guimenu>Applications</guimenu> 
+				<guisubmenu>Accessibility</guisubmenu> 
+				<guimenuitem>MouseTrap</guimenuitem>
+			</menuchoice>. 
+		  </para></listitem>
+		</varlistentry>
+
+    </sect2>
+
+    <sect2>
+       <title>Configuring the first time </title>
+	<para> MouseTrap has a default settings command that will write the default configuration settings into the current user folder, after this it is possible to change this settings using the Prefferences Gui.	
+</para>
+<para>Command:</para>
+<para>mouseTrap --default-settings </para>
+
+     </sect2>
+
+    <sect2>
+       <title>What should you see?</title>
+
+	<!-- ==== Figure ==== -->
+	<figure id="main-gui">
+		<title>&app; - Main Window</title>
+		<screenshot>
+		  <mediaobject>
+		    <imageobject>
+		      <imagedata fileref="figures/main_gui.png" format="PNG"/>
+		    </imageobject>
+		    <textobject>
+		      <phrase>Shows MouseTrap main window.</phrase>
+		    </textobject>
+		  </mediaobject>
+		</screenshot>
+	</figure>
+	<!-- ==== End of Figure ==== -->
+
+	<!-- ==== Figure ==== -->
+	<figure id="viewer-gui">
+		<title>&app; - Viewer Gui</title>
+		<screenshot>
+		  <mediaobject>
+		    <imageobject>
+		      <imagedata fileref="figures/viewer_gui.png" format="PNG"/>
+		    </imageobject>
+		    <textobject>
+		      <phrase>Shows MouseTrap viewer window.</phrase>
+		    </textobject>
+		  </mediaobject>
+		</screenshot>
+	</figure>
+	<!-- ==== End of Figure ==== -->
+     </sect2>
+
+    <sect2>
+      <title>Understanding the viewer frame</title>
+
+      <para> The viewer frame is the second frame opened when &appname; starts.</para>
+
+      <para> It is composed by 2 main widgets, a Point Mapper which is a simple cartesian plane showing the relative position of the forehead point from the center (Where it was first detected). The second widget is a Video showing the current captured frame of the webcam, it allows users to know the state of the point in the face. </para>
+
+      <para> There are also 3 other widgets above the previusly explaned, those widgets are:</para>
+<para>
+	<varlistentry>
+            <term><emphasis role="bold">Show Point Mapper</emphasis></term>
+		  <listitem> 
+		  <para> Hide or Show the point Mapper</para>
+		</listitem>
+	</varlistentry>
+</para>
+
+<para>
+	<varlistentry>
+            <term><emphasis role="bold">Show Capture</emphasis></term>
+		  <listitem> 
+		  <para> Hide or Show the capture widget</para>
+		</listitem>
+	</varlistentry>
+</para>
+
+<para>
+	<varlistentry>
+            <term><emphasis role="bold">Flip Image</emphasis></term>
+		  <listitem> 
+		  <para>This will flip the captured image horizontaly inverting the X axis.</para>
+		  <para>
+			In some cases the webcams capture images working as a mirror and this will make mousetrap invert the X axis, so it is possible in those cases to flip the image.
+		  </para>
+		</listitem>
+	</varlistentry>
+</para>
+
+<para><emphasis role="bold">NOTE:</emphasis> It is hardly not recomended to hide the Point Mapper and the Capture view, this widgets are really useful for users to understand whats happening with mousetrap and how it is working.</para>
+    </sect2>
+    
+    <sect2>
+    <title>Clicks Panel</title>
+    
+    <figure id="viewer-gui">
+	    <title>&app; - Clicks Dialog</title>
+	    <screenshot>
+		    <mediaobject>
+			    <imageobject>
+				    <imagedata fileref="figures/clicks_gui.png" format="PNG"/>
+			    </imageobject>
+			    <textobject>
+				    <phrase>Shows MouseTrap viewer window.</phrase>
+			    </textobject>
+		    </mediaobject>
+	    </screenshot>
+	</figure>
+	<para><emphasis role="bold">Note:</emphasis> The click panel can be used just with the <link linkend="hMode">"Holde Mode"</link>.</para>
+    </sect2>
+
+</sect1>

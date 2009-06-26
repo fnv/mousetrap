@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    
+<sect1 id="hMode">
+	<title>Using Hold Mode</title>
+	<para>The simplest way to define this method is that it works as a joystick. The up/down movements of the head will move the mouse pointer Up/Down in the screen and the Left/Right movements will move the mouse pointer Left/Right on the screen. Vertical and Horizontal movements can be executed at the same time by moving the green dot diagonally.</para>
+
+	<sect2>
+	<title>Why this method?</title>
+
+	<para>It was the first method implemented by mouseTrap and it is one of the most important because it requires a really small movement ( customizable ) of the head to executes the mouse pointer movements so for people with difficulties for head movements will be easier to control the mouse.</para>
+         </sect2>
+
+        <sect2>
+	<title>Hold Mode Mapper</title>
+	<figure>
+       		<title>Hold Mode Mapper</title>
+       		<graphic fileref="figures/mapper.png"></graphic>
+        </figure>
+
+    <variablelist>
+       <varlistentry>
+          <term><emphasis role="bold">Point A</emphasis></term>
+          <listitem>
+             Setting the green point above this point will make the Clicks Dialog show up.
+          </listitem>
+       </varlistentry>
+       <varlistentry>
+          <term><emphasis role="bold">Point B</emphasis></term>
+          <listitem>
+             Setting the green point above this point will perform a scroll up.
+          </listitem>
+       </varlistentry>
+       <varlistentry>
+          <term><emphasis role="bold">Point C</emphasis></term>
+          <listitem>
+             Setting the green point above this point will perform a scroll down.
+          </listitem>
+       </varlistentry>
+       
+<varlistentry>
+          <term><emphasis role="bold">Point D</emphasis></term>
+          <listitem>
+             Setting the green point above this point will execute the default click, if the mouse pointer is dragging something it will execute a drop click. The default click can be chaged in the pefference gui.
+          </listitem>
+       </varlistentry>
+       
+<varlistentry>
+          <term><emphasis role="bold">A-B-C-D Square</emphasis></term>
+          <listitem>
+             This square represents the safe area, when the green point is inseide the safe area there will not be mouse pointer movement, but it is possible to perform clicks, scrolls and use the Clicks Panel.
+          </listitem>
+       </varlistentry>
+</variablelist>
+
+        </sect2>
+	<sect2>
+		<title>Clicks Dialog Mapper</title>
+		<figure>
+			<title>Clicks Dialog Mapper</title>
+			<graphic fileref="figures/clicks_mapper.png"></graphic>
+        </figure>
+	
+	<para>When the clicks dialog is being showed the mapper will look like <emphasis>figure 4</emphasis> and will accept 4 events. This events will allow the user to select the type of click to perform, Accept the click or just Cancel. To perform each of this features it is necessary to take the green point out of the safe area moving it to the desired acction. </para>
+	
+	<para>E.g: To <emphasis role="bold">Cancel</emphasis>, the green point has to be moved down until it gets out the safe area.</para>
+</sect2>
+
+</sect1>

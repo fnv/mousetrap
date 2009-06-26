@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=MouseTrap
+Comment=Controls the mouse via Webcam.
+Exec=mousetrap
+Icon=mousetrap
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=Utility;GNOME;GTK;Accessibility;

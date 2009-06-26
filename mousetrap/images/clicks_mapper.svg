@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg3292"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="clicks_mapper.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:export-filename="/home/flaper87/MouseTrap/docs/docbook/figures/clicks_mapper.png"
+   inkscape:export-xdpi="83.111252"
+   inkscape:export-ydpi="83.111252">
+  <defs
+     id="defs3294">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective3300" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="401.7608"
+     inkscape:cy="527.96016"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1036"
+     inkscape:window-height="676"
+     inkscape:window-x="0"
+     inkscape:window-y="120" />
+  <metadata
+     id="metadata3297">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g3304"
+       transform="translate(-114.28572,-414.28572)">
+      <rect
+         y="718.07648"
+         x="258.57144"
+         height="428.57144"
+         width="471.42856"
+         id="rect2383"
+         style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <rect
+         style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.76585293;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect3159"
+         width="102.73413"
+         height="94.162735"
+         x="436.91864"
+         y="885.28082" />
+    </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3308"
+       style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       transform="matrix(2.84411,0,0,3.3357913,-514.28702,-887.09479)"><flowRegion
+         id="flowRegion3310"><rect
+           id="rect3312"
+           width="215.16249"
+           height="56.568542"
+           x="291.93408"
+           y="382.63104" /></flowRegion><flowPara
+         id="flowPara3316">Accept</flowPara></flowRoot>    <flowRoot
+       transform="matrix(2.84411,0,0,3.3357913,-513.60376,-705.26733)"
+       style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       id="flowRoot3320"
+       xml:space="preserve"><flowRegion
+         id="flowRegion3322"><rect
+           y="382.63104"
+           x="291.93408"
+           height="56.568542"
+           width="215.16249"
+           id="rect3324" /></flowRegion><flowPara
+         id="flowPara3326">Cancel</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3328"
+       style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       transform="matrix(2.84411,0,0,3.3357913,-576.92355,-783.55415)"><flowRegion
+         id="flowRegion3330"><rect
+           id="rect3332"
+           width="215.16249"
+           height="56.568542"
+           x="291.93408"
+           y="382.63104" /></flowRegion><flowPara
+         id="flowPara3334">&lt;--</flowPara></flowRoot>    <flowRoot
+       transform="matrix(-2.84411,0,0,3.3357913,1319.692,-783.55415)"
+       style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       id="flowRoot3336"
+       xml:space="preserve"><flowRegion
+         id="flowRegion3338"><rect
+           y="382.63104"
+           x="291.93408"
+           height="56.568542"
+           width="215.16249"
+           id="rect3340" /></flowRegion><flowPara
+         id="flowPara3342">&lt;--</flowPara></flowRoot>    <path
+       sodipodi:type="arc"
+       style="opacity:1;fill:#12a027;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3.5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path3364"
+       sodipodi:cx="363.65491"
+       sodipodi:cy="510.92041"
+       sodipodi:rx="10.101525"
+       sodipodi:ry="9.0913725"
+       d="M 373.75643,510.92041 A 10.101525,9.0913725 0 1 1 353.55338,510.92041 A 10.101525,9.0913725 0 1 1 373.75643,510.92041 z"
+       transform="translate(8.0812204,8.0812204)" />
+  </g>
+</svg>

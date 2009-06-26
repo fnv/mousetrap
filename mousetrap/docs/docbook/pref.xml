@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    
+<sect1 id="pref">
+	<title>Preferences GUI</title>
+	<para> You can access the preferences dialog throught the preferences button found in the main window. The MouseTrap preferences dialog contains the following tabbed sections.</para>
+	<itemizedlist>
+	<listitem>
+		<para><guilabel>General</guilabel></para>
+		<para>The <guilabel>General</guilabel> tabbed section contains general preferences for &app; </para>
+	</listitem>
+	<listitem>
+		<para><guilabel>Camera</guilabel></para>
+		<para>The <guilabel>Camera</guilabel> module is the most important part of &app; in this section it is possible to configure importante actions and behaviors of this module.</para>
+	</listitem>
+	<listitem>
+		<para><guilabel>Mouse</guilabel></para>
+		<para>The <guilabel>Mouse</guilabel> tabbed section allow users to configure the mouse motion related settings. E.g: Motion Speed.</para>
+	</listitem>
+	<listitem>
+		<para><guilabel>Debug</guilabel></para>
+		<para>The <guilabel>Debug</guilabel> module allow users to trace out what is happening with &app; and get some extra information about it.</para>
+	</listitem>
+	</itemizedlist>
+	<sect2>
+		<title>General Tab</title>
+		<varlistentry>
+			<term><guilabel>Show Main Gui</guilabel></term>
+			<listitem> 
+				<para>It is possible to enable or disable the main window, so it wont appear when &app; is launched.</para>
+			</listitem>
+	</varlistentry>
+	</sect2>
+	<sect2>
+		<title>Camera Tab</title>
+		<varlistentry>
+			<term><guilabel>Activate Camera module</guilabel></term>
+			<listitem> 
+				<para>Enabling this will make &app; to start the camera module at start.</para>
+				<para><guilabel>Note:</guilabel> Disabling this is useful for developers when new modules are being tested.</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term><guilabel>Flip Image</guilabel></term>
+			<listitem> 
+				<para>Enabling this will make &app; to flip the image automatically when it is started. This is useful for cameras that take captures as a mirror.</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term><guilabel>Show Point Mapper</guilabel></term>
+			<listitem> 
+				<para>Enabling this will make &app; show the point mapper when it is started.</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term><guilabel>Show Capture</guilabel></term>
+			<listitem> 
+				<para>Enabling this will make &app; show the capture widget when it is started.</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term><guilabel>Required Movement</guilabel></term>
+			<listitem> 
+				<para>This is the value of the head movement needed to start moving the mouse pointer. Changging this value will make the safe area bigger or smaller depending of the value selected. Default: 10</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term><guilabel>Input Video Device Index</guilabel></term>
+			<listitem> 
+				<para>This is the value of the int next to our video device E.g: /dev/video0</para>
+				<para>Changing this value will cause &app; to use another webcam in case there is more than one.</para>
+			</listitem>
+		</varlistentry>
+	</sect2>
+	<sect2>
+		<title>Mouse Tab</title>
+		<varlistentry>
+			<term><guilabel>Step Speed</guilabel></term>
+			<listitem> 
+				<para>This value is the size of each mouse step, changging its value increase the speed of the mouse movements.</para>
+				<para><guilabel>Note:</guilabel> This value is used just by the <link linkend="hMode">Hold Mode</link>.</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term><guilabel>Default Click</guilabel></term>
+			<listitem> 
+				<para>This is the click that will be performed when the default click corner is reached by the green point. It is possible to change its value and set the most used click type.</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term><guilabel>Select Mouse Mode</guilabel></term>
+			<listitem> 
+				<para>With this option is possible to select the way we want to control the mouse pointer.</para>
+				<itemizedlist>
+					<listitem>
+						<para><guilabel><link linkend="hMode">Hold Mode</link></guilabel></para>
+						<para> This is a simple joystick mode that will make the mouse pointer move by holding the head to the desired side.</para>
+					</listitem>
+					<listitem>
+						<para><guilabel><link linkend="sMode">Screen Mode</link></guilabel></para>
+						<para>This mode emulates a real mouse pointer.This will move the mouse pointer to the green point current position taken from the mapper.</para>
+					</listitem>
+				</itemizedlist>
+			</listitem>
+		</varlistentry>
+	</sect2>
+	<sect2>
+		<title>Debug Tab</title>
+		<varlistentry>
+			<term><guilabel>Debugging level</guilabel></term>
+			<listitem> 
+				<para>This value indicates the type of debug that should be performed. Depending of the value it will make &app; to print information, warnings or errors found.</para>
+			<itemizedlist>
+				<listitem>
+					<para><guilabel>ACTIONS = 600</guilabel></para>
+					<para>This debug level is used to know when a feature fails, normaly that feature doesn't make mouseTrap crash.</para>
+				</listitem>
+				<listitem>
+					<para><guilabel>MODULES = 400</guilabel></para>
+					<para>This debug level is used to know when a module fails while loading.</para>
+				</listitem>
+				<listitem>
+					<para><guilabel>LOAD = 200</guilabel></para>
+					<para>This debug level is used to know when mouseTrap crashes while starting.</para>
+				</listitem>
+				<listitem>
+					<para><guilabel>ALL = 0</guilabel></para>
+					<para>It will show all debugging errors.</para>
+				</listitem>
+				<listitem>
+					<para><guilabel>EXTREME = 100*100</guilabel></para>
+					<para>This is just for tracing out all the executed code.</para>
+				</listitem>
+			</itemizedlist>
+			</listitem>
+		</varlistentry>
+	</sect2>
+</sect1>

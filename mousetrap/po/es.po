@@ -1,0 +1,285 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: mouseTrap-0.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-12-26 13:34+0100\n"
+"PO-Revision-Date: 2008-12-26 13:39+0100\n"
+"Last-Translator: Flavio Percoco Premoli <flaper87@flaper87.org>\n"
+"Language-Team: FlaPer87 <flaper87@flaper87.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-SearchPath-0: /home/flaper87/MouseTrap/src\n"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:92
+msgid "mouseTrap Preferences"
+msgstr "Preferencias de mouseTrap"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:119
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:123
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:127
+msgid "Accept"
+msgstr "Aceptar"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:150
+msgid "Show main window"
+msgstr "Mostrar Ventana Principal "
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:161
+msgid "General"
+msgstr "General"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:175
+msgid "Activate Camera module"
+msgstr "Activar el modulo de la Camara"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:181
+#: /home/flaper87/MouseTrap/src/mouseTrap/mainGui.py:141
+msgid "Flip Image"
+msgstr "Voltear Imagen"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:187
+msgid "Show Point Mapper"
+msgstr "Mostrar Posición del Punto:"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:193
+msgid "Show Capture"
+msgstr "Mostrar Captura"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:199
+msgid "Input Video Device Index: "
+msgstr "Numero del dispositivo de video"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:207
+msgid "Camera"
+msgstr "Camara"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:221
+msgid "Step Speed: "
+msgstr "Velocidad del Raton:"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:224
+msgid "Default Click:"
+msgstr "Click Principal"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:226
+#: /home/flaper87/MouseTrap/src/mouseTrap/dialogs.py:233
+msgid "Left Click"
+msgstr "Click Izquierdo"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:227
+#: /home/flaper87/MouseTrap/src/mouseTrap/dialogs.py:241
+msgid "Double Click"
+msgstr "Doble Click"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:228
+#: /home/flaper87/MouseTrap/src/mouseTrap/dialogs.py:249
+msgid "Drag/Drop Click"
+msgstr "Click Arrastrar/Dejar"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:229
+#: /home/flaper87/MouseTrap/src/mouseTrap/dialogs.py:264
+msgid "Right Click"
+msgstr "Click Derecho"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:251
+msgid "Select Mouse Mode:"
+msgstr "Seleccionar Modo del Raton:"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:279
+msgid "Mouse"
+msgstr "Raton"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:296
+msgid "Debugging Level:"
+msgstr "Nivel de Debug:"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/prefGui.py:314
+msgid "Debug"
+msgstr "Debug"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/dialogs.py:81
+msgid "Confirmation Dialog"
+msgstr "Diálogo de Confirmación"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/dialogs.py:97
+msgid "Error Dialog"
+msgstr "Diálogo de Error"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/dialogs.py:107
+#: /home/flaper87/MouseTrap/src/mouseTrap/dialogs.py:117
+msgid "Information Dialog"
+msgstr "Diálogo de información"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/dialogs.py:219
+msgid "Clicks Panel"
+msgstr "Panel de Clicks"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/mainGui.py:103
+msgid "_Preferences"
+msgstr "_Preferencias"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/mainGui.py:108
+msgid "_Exit"
+msgstr "_Salir"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/mainGui.py:113
+msgid "_Help"
+msgstr "_Ayuda"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/mainGui.py:129
+msgid "Start Point Mapper: "
+msgstr "Iniciar Posición del Punto:"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/mainGui.py:135
+msgid "Show Capture: "
+msgstr "Mostrar Captura:"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/mainGui.py:145
+msgid "Recalc Point"
+msgstr "Calcular Punto"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/events.py:225
+msgid "The events module load failed"
+msgstr "La carga del modulo de eventos falló"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:377
+msgid "Usage: mouseTrap [OPTION...]"
+msgstr "Uso: mouseTrap [OPTION...]"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:382
+msgid "        Show this help message"
+msgstr "       Muestra este mensaje de ayuda"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:388
+msgid "              Input video device index. E.g -i 0"
+msgstr "             Número del dispositivo de vídeo"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:393
+#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:401
+msgid "main-window"
+msgstr "main-window"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:394
+#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:402
+msgid "cam"
+msgstr "cam"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:396
+msgid "     Enable the selected options"
+msgstr "    Habilita las opciones seleccionadas"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:404
+msgid "    Disable the selected options"
+msgstr "   Deshabilita las opciones seleccionadas."
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:409
+msgid "                 Shows mouseTrap version"
+msgstr "                Muestra la versión de mouseTrap"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/mouseTrap.py:412
+msgid "Report bugs to flaper87@flaper87.org"
+msgstr "Reportar errores a flaper87@flaper87.org"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/scripts/profiles/dragProfile.py:44
+msgid "Mouse Drag/Drop Mode"
+msgstr "Método Drag/Drop"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/scripts/profiles/screenProfile.py:43
+msgid "Mouse Absolute Movements"
+msgstr "Movimientos Absolutos"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/scripts/profiles/screenProfile.py:44
+msgid "Mouse Relative Movements"
+msgstr "Movimientos Relativos"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/scripts/profiles/screenProfile.py:232
+msgid "Start X: "
+msgstr "Inizio X:"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/scripts/profiles/screenProfile.py:235
+msgid "Start Y: "
+msgstr "Inizio Y:"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/scripts/profiles/screenProfile.py:238
+msgid "Width: "
+msgstr "Ancho:"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/scripts/profiles/screenProfile.py:241
+msgid "Height: "
+msgstr "Altura:"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/scripts/profiles/screenProfile.py:252
+msgid "Screen Mode"
+msgstr "Método Pantalla"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/scripts/profiles/holdProfile.py:209
+msgid "Required Movement: "
+msgstr "Movimiento Requerido:"
+
+#: /home/flaper87/MouseTrap/src/mouseTrap/scripts/profiles/holdProfile.py:218
+msgid "Hold Mode"
+msgstr "Método Hold"
+
+#~ msgid "Viewer Frame"
+#~ msgstr "Visor"
+#~ msgid "Cancel"
+#~ msgstr "Cancelar"
+#~ msgid ""
+#~ "\n"
+#~ "# This is the user settings File"
+#~ msgstr ""
+#~ "\n"
+#~ "# Este es el archivo de configuración del usuario"
+#~ msgid ""
+#~ "\n"
+#~ "# Please Try to don't edit this file manually"
+#~ msgstr ""
+#~ "\n"
+#~ "# Por Favor Intentar no editar este archivo manualmente"
+#~ msgid ""
+#~ "\n"
+#~ "# Use the preffGui of mouseTrap.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "# Usar la ventana de configuración de mouseTrap. \n"
+#~ msgid "Holding With Constant Speed"
+#~ msgstr "Mantener con Velocidad Constante"
+#~ msgid "Holding With Automatic Acceleration"
+#~ msgstr "Mantener con Aceleración Automática"
+#~ msgid "Normal"
+#~ msgstr "Normal"
+#~ msgid "Required"
+#~ msgstr "Requerido"
+
+#, fuzzy
+#~ msgid "Higest"
+#~ msgstr "Mayor"
+#~ msgid "Next"
+#~ msgstr "Sig"
+#~ msgid "Prev"
+#~ msgstr "Previo"
+#~ msgid "Flip Image: "
+#~ msgstr "Voltear Imagen:"
+#~ msgid "Holding With Constant Acceleration"
+#~ msgstr "Sostener con Velocidad Constante"
+#~ msgid "Activate main window"
+#~ msgstr "main-window"
+#~ msgid "    Enable the selected options"
+#~ msgstr "\tHabilita las opciones seleccionadas"
+#~ msgid "            Set the mouse timeout in seconds"
+#~ msgstr "\t\t\tIndica el tiempo de espera del mouse en segundos"
+#~ msgid "listener"
+#~ msgstr "listener"
+#~ msgid "Activate listener module"
+#~ msgstr "Activar el modulo Escucha"
+#~ msgid "Time Out in Seconds:"
+#~ msgstr "Tiempo de espera en segundos:"
+#~ msgid "Listener"
+#~ msgstr "Escucha"
+#~ msgid "_Apply"
+#~ msgstr "_Aplicar"
+

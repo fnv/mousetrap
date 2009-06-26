@@ -1,0 +1,250 @@
+#!/bin/bash
+
+# MouseTrap
+#
+# Copyright 2009 Flavio Percoco Premoli
+#
+# This file is part of mouseTrap.
+#
+# MouseTrap is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License v2 as published
+# by the Free Software Foundation.
+#
+# mouseTrap is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with mouseTrap.  If not, see <http://www.gnu.org/licenses/>.
+
+# This script performs some clean up and will run mousetrap.  It will also
+# rerun mousetrap if it detects that mousetrap died an unnatural death.
+# IMPORTANT: Parts of this script have been taken from the Orcas launch script. Thanks!!
+
+#__id__        = "$Id$"
+#__version__   = "$Revision$"
+#__date__      = "$Date$"
+#__copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
+#__license__   = "GPLv2"
+
+ARGS="$*"
+# If you set RUNONCE to "true", then this will just run Orca once and quit.
+#
+RUNONCE="false"
+
+# A value of 1 means to run Orca.  A value of 0 means quit.
+#
+RUN=1
+
+# Initially there will be no watchdog process id.
+#
+watchdog_pid=0
+
+# The watchdog will periodically ping mousetrap to see if it is responding.
+# If mousetrap isn't responding, the watchdog will kill the mousetrap process.
+# The watchdog logic requires 'dbus-send', so we won't do it if we can't
+# find dbus-send in the path.  Note also that you can force MTP_WATCHDOG=0 if you
+# do not want a background process that periodically pings mousetrap to see
+# if it is responding.  We only do this if we can get to the DBus Session
+# bus.  Otherwise, we have no hope of being able to monitor mousetrap.
+#
+IFS=:
+DBUSSENDCMD=
+MTP_WATCHDOG=0
+if [ "x$DBUS_SESSION_BUS_ADDRESS" != "x" ]
+then
+    for dir in $PATH:/usr/sfw/bin:/usr/local/bin; do
+        test -x "$dir/dbus-send" && {
+            DBUSSENDCMD="$dir/dbus-send"
+            MTP_WATCHDOG=1
+            break
+        }
+    done
+fi
+
+# [[WDW - disabled the watchdog by default since it is problematic.]]
+MTP_WATCHDOG=0
+
+# Cleans up any mousetrap-related processes that might be running,
+# restricting it to those processes owned by the user. These include
+# mousetrap itself
+
+cleanup()
+{
+    USERID=`id | cut -f2 -d= | cut -f1 -d\(`
+    PIDS=`ps -eo pid,ruid,args | grep $USERID | egrep "mousetrap[.]mousetrap" | grep -v grep | awk '{print $1}'`
+
+    IFS='
+    '
+    PIDS=`echo $PIDS`
+
+    if [ "x$PIDS" != "x" ]
+    then
+        kill -9 $PIDS > /dev/null 2>&1
+    fi
+}
+
+# Runs a watchdog process in the background.  It merely attempts to
+# get to mousetrap via some other means than the AT-SPI.  Here we use
+# a Ping on the mousetrap DBus service.  If it doesn't respond, then
+# we assume mousetrap is dead.
+#
+watchdog()
+{
+    (
+        sleep 15 # Give mousetrap a chance to start.
+        while [ "$MTP_WATCHDOG" -gt 0 ]
+        do
+            sleep 5
+            USERID=`id | cut -f2 -d= | cut -f1 -d\(`
+            PIDS=`ps -eo pid,ruid,args | egrep mousetrap | grep -v grep | awk '{print $1}'`
+
+            if [ "x$PIDS" = "x" ]
+            then
+                exit
+            else
+                $DBUSSENDCMD --reply-timeout=30000 --print-reply --dest=org.gnome.mousetrap / org.freedesktop.DBus.Peer.Ping > /dev/null 2>&1
+                if [ "$?" -ne 0 ]
+                then
+                    echo mousetrap watchdog detected something bad.  Cleaning up.
+                    cleanup
+                fi
+            fi
+        done
+    ) &
+}
+
+kill_watchdog()
+{
+    if [ "x$watchdog_pid" != x0 ]
+    then
+        kill -9 $watchdog_pid > /dev/null 2>&1
+    fi
+}
+
+kill_mousetrap()
+{
+    kill_watchdog
+    cleanup
+    exit
+}
+
+hup_mousetrap()
+{
+    cleanup
+}
+
+
+mousetrap() {
+
+    if [ -z "$1" ]
+    then
+        cleanup
+    fi
+
+    exec_prefix=@prefix@
+    default_python=`ls -l /usr/bin/ | grep -e "python ->" | sed 's/.*> //'`
+    PYTHONPATH=${PYTHONPATH}:${exec_prefix}/lib/${default_python}/site-packages:$PWD/mousetrap
+    export PYTHONPATH
+
+    getDesktop
+
+	/usr/bin/python -c "import mousetrap.mousetrap as mousetrap; mousetrap.Controller().start();" "$ARGS"
+}
+
+getDesktop() {
+
+    if [ "x$DESKTOP_SESSION" = "default" -o "x$DESKTOP_SESSION" = "x" ]
+    then
+        user=`whoami`
+        desktop=`ps -eo pid,ruser,ruid,args | egrep gnome-session | grep -v grep | grep $user`
+
+        if [ "x$desktop" = "x" ]
+        then
+            export DESKTOP_MANAGER=other
+        else
+            export DESKTOP_MANAGER=gnome
+        fi
+
+    else
+        export DESKTOP_MANAGER=$DESKTOP_SESSION
+    fi
+
+}
+
+main()
+{
+    if [ "$MTP_WATCHDOG" -gt 0 ]
+    then
+        watchdog
+        watchdog_pid=$!
+    fi
+    while [ "$RUN" -gt 0 ]
+    do
+        mousetrap &
+        mousetrap_pid=$!
+        wait $mousetrap_pid
+
+        RUN=$?  # quit on a normal exit status from mousetrap
+
+        # We will stop re-running mousetrap on SEGV's (139 = SEGV + 128).
+        # The reason for this is that there are cases where Python
+        # will SEGV when mousetrap attempts to exit normally.  This happens
+        # because of something going on in pyorbit.  This should be
+        # fixed in pyorbit 2.14.1, but not everyone has that.
+        # So...we'll check for it.
+        #
+        if [ "$RUN" -eq 139 ]
+        then
+            RUN=0
+        fi
+
+        # We will also stop re-running mousetrap on KILL's (137 = KILL + 128).
+        # The reason for this is that if someone has done a "kill -KILL"
+        # on the Python process, it was probably on purpose and they want
+        # everything to die.
+        #
+        if [ "$RUN" -eq 137 ]
+        then
+            RUN=0
+        fi
+    done
+    kill_watchdog
+}
+
+
+trap kill_mousetrap QUIT TERM INT ABRT
+trap hup_mousetrap HUP
+
+if [ "x$RUNONCE" = "xfalse" -a "x$ARGS" = "x" ]
+then
+    main
+else
+    if [ `grep -c "\-q" <<< $ARGS` -gt 0 ]
+    then
+        cleanup
+    else
+        # If the user passed in a flag that results in mousetrap only
+        # outputting data to the console, don't kill any other mousetrap
+        # process.  We do this by looking for flags that *should*
+        # result in a cleanup (i.e., every legal command except
+        # -?, --help, -v, and --version).  This way, if the user
+        # erroneously types an illegal command line argument, the
+        # help text is emitted and the other mousetrap is not killed.
+        #
+        if [ `egrep -c "\-h|\-d|\-e|\-t" <<< $ARGS` -eq 0 ]
+        then
+            if [ `egrep -c "\-h" <<< $ARGS` -eq 0 ]
+            then
+                mousetrap "NO_CLEANUP"
+            else
+                mousetrap
+            fi
+        else
+            mousetrap &
+            mousetrap_pid=$!
+            wait $mousetrap_pid
+        fi
+    fi
+fi

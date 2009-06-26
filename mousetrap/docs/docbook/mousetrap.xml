@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" 
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+[
+<!ENTITY app "<application>MouseTrap</application>">
+<!ENTITY appname "MouseTrap">
+<!ENTITY appversion "0.2">
+<!ENTITY date "March 2008">
+<!ENTITY manrevision "0.1">
+<!ENTITY author1 "Flavio Percoco Premoli">
+<!ENTITY author2 "Percoco Premoli">
+<!ENTITY publisher "Flavio Percoco Premoli">
+<!ENTITY atrc "Adaptive Technology Resource Centre">
+<!ENTITY legal SYSTEM "legal.xml">
+<!ENTITY intro SYSTEM "intro.xml">
+<!ENTITY starting SYSTEM "starting.xml">
+<!ENTITY hMode SYSTEM "hMode.xml">
+<!ENTITY pref SYSTEM "pref.xml">
+]>
+
+<article id="index">
+<articleinfo> 
+	 <title>&appname; Manual V&manrevision;</title> 
+	 <copyright> 
+		<year>2008</year> 
+		<holder>&publisher;</holder> 
+	 </copyright>  
+	  
+	 <publisher> 
+		<publishername>&publisher;</publishername> 
+	 </publisher> 
+		&legal; 
+	 <legalnotice id="feedback"> 
+		<title>Feedback</title> 
+		<para>To report a bug or make a suggestion regarding the &appname; application or this manual, 
+		follow the directions in the <ulink url="ghelp:gnome-feedback" type="help">GNOME Feedback Page</ulink>.
+		</para>
+	 </legalnotice> 
+	 <authorgroup> 
+		<author> 
+		  <firstname>&author1;</firstname> 
+		  <surname>&author2;</surname> 
+		  <affiliation> 
+			 <orgname>&publisher;</orgname> 
+		  </affiliation> 
+		</author>  
+	 </authorgroup> 
+	 <revhistory> 
+      <revision> 
+		<revnumber>MouseTrap Manual V0.1</revnumber> 
+		<date>July 2008</date> 
+		<revdescription> 
+	  		<para role="author">Flavio Percoco Premoli
+	    	<email>flaper87@flaper87.org</email>
+	  		</para>
+		</revdescription> 
+      </revision> 
+      <revision> 
+		<revnumber>MouseTrap (MouseTrap) - User Manual V1.0</revnumber> 
+		<date>2008</date> 
+		<revdescription> 
+	  		<para role="author">Flavio Percoco Premoli 
+	    	<email>flaper87@flaper87.org</email>
+	  		</para>
+		</revdescription> 
+      </revision> 
+	 </revhistory> 
+	 <releaseinfo> This manual describes version &appversion; of &appname;.</releaseinfo> 
+	 		
+  </articleinfo>
+
+  <indexterm><primary>MouseTrap</primary></indexterm>
+  <indexterm><primary>Mouse Control Via Webcam</primary></indexterm>
+
+&intro; 
+&starting;
+&hMode;
+&pref;
+</article>

@@ -1,0 +1,26 @@
+#!/bin/sh
+
+getDesktop() {
+
+    if [ "x$DESKTOP_SESSION" = "default" -o "x$DESKTOP_SESSION" = "x" ]
+    then
+        user=`whoami`
+        desktop=`ps -eo pid,ruser,ruid,args | egrep gnome-session | grep -v grep | grep $user`
+
+        if [ "x$desktop" = "x" ]
+        then
+            export DESKTOP_MANAGER=other
+        else
+            export DESKTOP_MANAGER=gnome
+        fi
+
+    else
+        export DESKTOP_MANAGER=$DESKTOP_SESSION
+    fi
+
+}
+
+getDesktop
+export PYTHONPATH=/usr/lib/python2.6/site-packages:../
+cd ..
+/usr/bin/python -c "import mousetrap.mousetrap as mousetrap; mousetrap.Controller().start();" "$ARGS"

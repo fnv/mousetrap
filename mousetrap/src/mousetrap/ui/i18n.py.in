@@ -1,0 +1,53 @@
+# -*- coding: utf-8 -*-
+
+# MouseTrap
+#
+# Copyright 2009 Flavio Percoco Premoli
+#
+# This file is part of mouseTrap.
+#
+# MouseTrap is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License v2 as published
+# by the Free Software Foundation.
+#
+# mouseTrap is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with mouseTrap.  If not, see <http://www.gnu.org/licenses/>.
+
+"""
+Provides i18n support for mouseTrap using the gettext module.  Tells
+gettext where to find localized strings and creates an alias, _, that
+maps to the gettext.gettext function.  This function will accept a
+string and return a localized string for that string.
+"""
+
+__id__        = "$Id$"
+__version__   = "$Revision$"
+__date__      = "$Date$"
+__copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
+__license__   = "GPLv2"
+
+import os       # to get localdir path
+import gettext  # to get gettext (i18n) support
+
+# Alias gettext.gettext to _ and gettext.ngettext to ngettext
+#
+_ = gettext.gettext
+ngettext = gettext.ngettext
+
+
+# Tell gettext where to find localized strings.
+#
+localedir = os.path.join ("@prefix@", "@DATADIRNAME@", "locale")
+gettext.bindtextdomain ("@GETTEXT_PACKAGE@", localedir)
+gettext.textdomain("mousetrap")
+
+########################################################################
+#                                                                      #
+# Utility methods to facilitate easier translation                     #
+#                                                                      #
+########################################################################

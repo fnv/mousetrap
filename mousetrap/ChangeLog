@@ -1,0 +1,89 @@
+commit c23829bc8f7cc8debf266e6cd6273c0398cb9648
+Author: Flavio Percoco Premoli <flaper87@gmail.com>
+Date:   Mon May 4 05:39:09 2009 +0200
+
+    Settings Dialog Update
+
+commit e6523cbaf859c05c9948798ac1c93e80e60ad370
+Author: Flavio Percoco Premoli <flaper87@gmail.com>
+Date:   Sun May 3 08:15:11 2009 +0200
+
+    Added ChangeLog file
+
+commit 6a9d9789722f2473434d4692daf796346a20ae97
+Author: Flavio Percoco Premoli <flaper87@gmail.com>
+Date:   Sun May 3 08:06:06 2009 +0200
+
+    Merging svn's ng branch with git's ng branch
+
+commit 447265508a42e8ba4d4c82b301d36eb59aa8b464
+Author: Flavio Percoco <flaper@src.gnome.org>
+Date:   Fri Apr 3 16:00:06 2009 +0000
+
+    Settings Dialog Update
+    
+    svn path=/branches/ng/; revision=30
+
+commit fa1e4b79f40fc126a45077f18a2ed154ab2f18a4
+Author: Flavio Percoco <flaper@src.gnome.org>
+Date:   Tue Mar 31 12:06:44 2009 +0000
+
+    Missing files
+    
+    svn path=/branches/ng/; revision=29
+
+commit c468683e8f484a21e05833f36d26f0701223ac0a
+Author: Flavio Percoco <flaper@src.gnome.org>
+Date:   Tue Mar 31 12:03:56 2009 +0000
+
+    BugFix
+    
+    svn path=/branches/ng/; revision=28
+
+commit d68899ff80835e1426660e6007f660afea7cfa13
+Author: Flavio Percoco <flaper@src.gnome.org>
+Date:   Tue Mar 31 12:02:22 2009 +0000
+
+    Settings handler added, User preferences dialog under construction
+    
+    svn path=/branches/ng/; revision=27
+
+commit 903f9efaf1d72c6c73c5112687b84ae2e3dd09aa
+Author: Flavio Percoco <flaper@src.gnome.org>
+Date:   Sun Feb 22 18:48:32 2009 +0000
+
+    Uncommented movement line
+    
+    svn path=/branches/ng/; revision=22
+
+commit 655b267bb701d88b87e386ddf95c24a49efdbec4
+Author: Flavio Percoco <flaper@src.gnome.org>
+Date:   Sun Feb 22 18:24:52 2009 +0000
+
+    Added mouse movements
+    
+    svn path=/branches/ng/; revision=21
+
+commit aa4e37bd166fa69c51165f5ddacbf4cba59d1b7e
+Author: Flavio Percoco <flaper@src.gnome.org>
+Date:   Sat Feb 21 21:34:12 2009 +0000
+
+    Added missing files, some paths fixed
+    
+    svn path=/branches/ng/; revision=20
+
+commit e4ee0ab7f5ee5947b6065e9c77ce0e266100b3d0
+Author: Flavio Percoco <flaper@src.gnome.org>
+Date:   Sat Feb 21 21:20:07 2009 +0000
+
+    Deleted .emacs.desktop file
+    
+    svn path=/branches/ng/; revision=19
+
+commit 07d635cc4cb23c663e7f157d6672335acd353df7
+Author: Flavio Percoco <flaper@src.gnome.org>
+Date:   Sat Feb 21 21:17:24 2009 +0000
+
+    Added new branch for the new generation MouseTrap's development
+    
+    svn path=/branches/ng/; revision=18

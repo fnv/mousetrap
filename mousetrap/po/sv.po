@@ -1,0 +1,235 @@
+# Swedish translation for mousetrap.
+# Copyright (C) 2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the mousetrap package.
+# Daniel Nylander <po@danielnylander.se>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mousetrap\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-03-03 18:35+0100\n"
+"PO-Revision-Date: 2009-03-03 21:19+0100\n"
+"Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
+"Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/mouseTrap/dialogs.py:81
+msgid "Confirmation Dialog"
+msgstr ""
+
+#: ../src/mouseTrap/dialogs.py:97
+msgid "Error Dialog"
+msgstr "Feldialog"
+
+#: ../src/mouseTrap/dialogs.py:107
+#: ../src/mouseTrap/dialogs.py:117
+msgid "Information Dialog"
+msgstr "Informationsdialog"
+
+#: ../src/mouseTrap/dialogs.py:219
+msgid "Clicks Panel"
+msgstr ""
+
+#: ../src/mouseTrap/dialogs.py:233
+#: ../src/mouseTrap/prefGui.py:226
+msgid "Left Click"
+msgstr ""
+
+#: ../src/mouseTrap/dialogs.py:241
+#: ../src/mouseTrap/prefGui.py:227
+msgid "Double Click"
+msgstr ""
+
+#: ../src/mouseTrap/dialogs.py:249
+#: ../src/mouseTrap/prefGui.py:228
+msgid "Drag/Drop Click"
+msgstr ""
+
+#: ../src/mouseTrap/dialogs.py:264
+#: ../src/mouseTrap/prefGui.py:229
+msgid "Right Click"
+msgstr ""
+
+#: ../src/mouseTrap/mainGui.py:103
+msgid "_Preferences"
+msgstr "_Inställningar"
+
+#: ../src/mouseTrap/mainGui.py:108
+msgid "_Exit"
+msgstr "A_vsluta"
+
+#: ../src/mouseTrap/mainGui.py:113
+msgid "_Help"
+msgstr "_Hjälp"
+
+#: ../src/mouseTrap/mainGui.py:129
+msgid "Start Point Mapper: "
+msgstr ""
+
+#: ../src/mouseTrap/mainGui.py:135
+msgid "Show Capture: "
+msgstr ""
+
+#: ../src/mouseTrap/mainGui.py:141
+#: ../src/mouseTrap/prefGui.py:181
+msgid "Flip Image"
+msgstr ""
+
+#: ../src/mouseTrap/mainGui.py:145
+msgid "Recalc Point"
+msgstr ""
+
+#: ../src/mouseTrap/mouseTrap.py:377
+msgid "Usage: mouseTrap [OPTION...]"
+msgstr "Användning: mouseTrap [FLAGGA...]"
+
+#. '-?, --help' that is used to display usage information.
+#.
+#: ../src/mouseTrap/mouseTrap.py:382
+msgid "        Show this help message"
+msgstr "        Visa detta hjälpmeddelande"
+
+#. Option:
+#. '-i' that is used to set the input camera index. E.g: -i 0
+#: ../src/mouseTrap/mouseTrap.py:388
+msgid "              Input video device index. E.g -i 0"
+msgstr ""
+
+#. Options:
+#. -e, --enable Allow the users to enable modules not permantly
+#. Options:
+#. -d, --disable Allow the users to disable modules not permanently.
+#: ../src/mouseTrap/mouseTrap.py:393
+#: ../src/mouseTrap/mouseTrap.py:401
+msgid "main-window"
+msgstr ""
+
+#: ../src/mouseTrap/mouseTrap.py:394
+#: ../src/mouseTrap/mouseTrap.py:402
+msgid "cam"
+msgstr ""
+
+#: ../src/mouseTrap/mouseTrap.py:396
+msgid "     Enable the selected options"
+msgstr ""
+
+#: ../src/mouseTrap/mouseTrap.py:404
+msgid "    Disable the selected options"
+msgstr ""
+
+#. Options:
+#. -t --timeout To change the mouse timeout not permanently.
+#: ../src/mouseTrap/mouseTrap.py:409
+msgid "                 Shows mouseTrap version"
+msgstr ""
+
+#: ../src/mouseTrap/mouseTrap.py:412
+msgid "Report bugs to flaper87@flaper87.org"
+msgstr "Rapportera fel till flaper87@flaper87.org"
+
+#: ../src/mouseTrap/prefGui.py:92
+msgid "mouseTrap Preferences"
+msgstr ""
+
+#: ../src/mouseTrap/prefGui.py:119
+#: ../src/mouseTrap/prefGui.py:123
+#: ../src/mouseTrap/prefGui.py:127
+msgid "Accept"
+msgstr "Acceptera"
+
+#: ../src/mouseTrap/prefGui.py:150
+msgid "Show main window"
+msgstr "Visa huvudfönstret"
+
+#: ../src/mouseTrap/prefGui.py:161
+msgid "General"
+msgstr "Allmänt"
+
+#: ../src/mouseTrap/prefGui.py:175
+msgid "Activate Camera module"
+msgstr ""
+
+#: ../src/mouseTrap/prefGui.py:187
+msgid "Show Point Mapper"
+msgstr ""
+
+#: ../src/mouseTrap/prefGui.py:193
+msgid "Show Capture"
+msgstr ""
+
+#: ../src/mouseTrap/prefGui.py:199
+msgid "Input Video Device Index: "
+msgstr ""
+
+#: ../src/mouseTrap/prefGui.py:207
+msgid "Camera"
+msgstr "Kamera"
+
+#: ../src/mouseTrap/prefGui.py:221
+msgid "Step Speed: "
+msgstr ""
+
+#: ../src/mouseTrap/prefGui.py:224
+msgid "Default Click:"
+msgstr ""
+
+#: ../src/mouseTrap/prefGui.py:251
+msgid "Select Mouse Mode:"
+msgstr ""
+
+#: ../src/mouseTrap/prefGui.py:279
+msgid "Mouse"
+msgstr "Mus"
+
+#: ../src/mouseTrap/prefGui.py:296
+msgid "Debugging Level:"
+msgstr "Felsökningsnivå:"
+
+#: ../src/mouseTrap/prefGui.py:314
+msgid "Debug"
+msgstr "Felsökning"
+
+#. # Internal Modes
+#: ../src/mouseTrap/scripts/profiles/dragProfile.py:44
+msgid "Mouse Drag/Drop Mode"
+msgstr ""
+
+#: ../src/mouseTrap/scripts/profiles/holdProfile.py:209
+msgid "Required Movement: "
+msgstr ""
+
+#: ../src/mouseTrap/scripts/profiles/holdProfile.py:218
+msgid "Hold Mode"
+msgstr ""
+
+#. # Internal Modes
+#: ../src/mouseTrap/scripts/profiles/screenProfile.py:43
+msgid "Mouse Absolute Movements"
+msgstr ""
+
+#: ../src/mouseTrap/scripts/profiles/screenProfile.py:44
+msgid "Mouse Relative Movements"
+msgstr ""
+
+#: ../src/mouseTrap/scripts/profiles/screenProfile.py:232
+msgid "Start X: "
+msgstr ""
+
+#: ../src/mouseTrap/scripts/profiles/screenProfile.py:235
+msgid "Start Y: "
+msgstr ""
+
+#: ../src/mouseTrap/scripts/profiles/screenProfile.py:238
+msgid "Width: "
+msgstr "Bredd: "
+
+#: ../src/mouseTrap/scripts/profiles/screenProfile.py:241
+msgid "Height: "
+msgstr "Höjd: "
+
+#: ../src/mouseTrap/scripts/profiles/screenProfile.py:252
+msgid "Screen Mode"
+msgstr "Skärmläge"
+

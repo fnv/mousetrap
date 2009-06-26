@@ -1,0 +1,8 @@
+*.pyc
+prepare.sh
+.svn
+environment.py
+i18n.py
+compile
+*.patch
+*~
