@@ -18,7 +18,10 @@ class CalibrationGUI(gtk.Window):
 	def __init__(self, controller):
 		gtk.Window.__init__(self)
 		
+		# The MouseTrap controller object
 		self.ctr = controller
+		
+		# The captured image
 		self.cap_image = None
 	
 	
@@ -54,7 +57,17 @@ class CalibrationGUI(gtk.Window):
 		gtk.window_set_default_icon(icon)
 	
 	def Ipl_to_Gtk(self, image):
+		"""
+		Converts an IPL image to a GTK image
 		
+		Arguments:
+			image - an IPL image to convert
+		"""
+		
+		buff = gtk.gdk.pixbuf_new_from_data( img.imageData, gtk.gdk.COLORSPACE_RGB, False, 8, \
+									int(img.width), int(img.height), img.widthStep )
+		
+		self.cap_image.set_from_pixbuf(buff)
 
 def showCalibrationGui(controller):
 	"""
