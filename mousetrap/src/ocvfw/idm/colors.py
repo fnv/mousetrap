@@ -19,7 +19,7 @@
 # along with Ocvfw.  If not, see <http://www.gnu.org/licenses/>>.
 
 
-"""Forehead IDM"""
+"""Color-tracking IDM"""
 
 __id__        = "$Id$"
 __version__   = "$Revision$"
@@ -39,9 +39,9 @@ import math
 #   This is used by the settings gui to identify the idm
 # a_description: IDM's Description
 # a_settings: Possible settings needed by the idm. For Example: { 'var_name' : { 'value' : default_value}, 'var_name2' : { 'value' : default_value} }
-a_name = "IDM Name"
-a_description = "Forehead point tracker based on LK Algorithm"
-a_settings = { 'speed' : {"value":2}}
+a_name = "colors"
+a_description = "Color tracker based on CAMshift algorithm"
+a_settings = {}
 
 class Module(object):
     """
