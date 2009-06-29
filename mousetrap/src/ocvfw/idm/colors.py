@@ -75,6 +75,34 @@ class Module(object):
 
         # Prepares the IDM using the settings.
         self.prepare_config()
+        image = None
+        self.hsv = None
+        self.hue = None
+        self.mask = None
+        self.backproject = None
+        self.histimg = None
+        self.hist = None
+
+        backproject_mode = 0
+        select_object = 0
+        self.track_object = 0
+        show_hist = 1
+        origin = None
+        selection = None
+        self.track_window = None
+        self.track_box = None
+        self.track_comp = None
+        self.hdims = 16
+
+       # initial settings for value, saturation, and hue
+        self.vmin = c_int(10)
+        self.vmax = c_int(256)
+        self.smin = c_int(80)
+        self.smax = c_int(256)
+        self.hmin = c_int(25)
+        self.hmax = c_int(40) #this may have to be 180 and not 256, for whatever reason
+        self.h2min = c_int(170)
+        self.h2max = c_int(175)
 
     def prepare_config(self):
         """
@@ -94,36 +122,10 @@ class Module(object):
         for key in self.stgs:
             pass
 
-        image = None
-        hsv = None
-        hue = None
-        mask = None
-        backproject = None
-        histimg = None
-        hist = None
-
-        backproject_mode = 0
-        select_object = 0
-        track_object = 0
-        show_hist = 1
-        origin = None
-        selection = None
-        track_window = None
-        track_box = None
-        track_comp = None
-        hdims = 16
-
-       # initial settings for value, saturation, and hue
-        vmin = c_int(10)
-        vmax = c_int(256)
-        smin = c_int(80)
-        smax = c_int(256)
-        hmin = c_int(25)
-        hmax = c_int(40) #this may have to be 180 and not 256, for whatever reason
-        h2min = c_int(170)
-        h2max = c_int(175)
+ 
 
     def on_mouse(event, x, y, flags, param):
+        print "ADSFSF"
         global select_object, image, selection, origin, track_object
     
         if image is None:
@@ -209,7 +211,7 @@ class Module(object):
 
         if not capture:
             print "Could not initialize capturing..."
-            exit(-1)"""
+            exit(-1)
 
         #HOTT KEYS!!!!1
         print "Hot keys: \n" \
@@ -219,7 +221,7 @@ class Module(object):
             "\th - show/hide object histogram\n" \
             "To initialize tracking, select the object with mouse\n"
 
-        #what windows do we want?
+        #what windows do we want?"""
         cvNamedWindow( "Histogram", 1 )
         cvNamedWindow( "CamShiftDemo", 1 ) #main image
         cvNamedWindow( "Mask", 1 )
@@ -227,23 +229,23 @@ class Module(object):
         #cvNamedWindow( "Hue", 1)
 
         #enables mouse event monitoring in the main image window
-        cvSetMouseCallback( "CamShiftDemo", on_mouse )
+        cvSetMouseCallback( "CamShiftDemo", self.on_mouse )
 
-        #cvCreateTrackbar( "Vmin", "CamShiftDemo", vmin, 256 )
-        #cvCreateTrackbar( "Vmax", "CamShiftDemo", vmax, 256 )
-        #cvCreateTrackbar( "Smin", "CamShiftDemo", smin, 256 )
-        #cvCreateTrackbar( "Smax", "CamShiftDemo", smax, 256 )
+        cvCreateTrackbar( "Vmin", "CamShiftDemo", self.vmin, 256 )
+        cvCreateTrackbar( "Vmax", "CamShiftDemo", self.vmax, 256 )
+        cvCreateTrackbar( "Smin", "CamShiftDemo", self.smin, 256 )
+        cvCreateTrackbar( "Smax", "CamShiftDemo", self.smax, 256 )
 
         #select the ranges of hues you want to track
-        cvCreateTrackbar( "Hmin", "CamShiftDemo", hmin, 180 )
-        cvCreateTrackbar( "Hmax", "CamShiftDemo", hmax, 180 )
-        cvCreateTrackbar( "H2min", "CamShiftDemo", h2min, 180 )
-        cvCreateTrackbar( "H2max", "CamShiftDemo", h2max, 180 )
+        cvCreateTrackbar( "Hmin", "CamShiftDemo", self.hmin, 180 )
+        cvCreateTrackbar( "Hmax", "CamShiftDemo", self.hmax, 180 )
+        #cvCreateTrackbar( "H2min", "CamShiftDemo", h2min, 180 )
+        #cvCreateTrackbar( "H2max", "CamShiftDemo", h2max, 180 )
 
         #loop
-        while True:
+        """while True:
             #get next frame
-            frame = cvQueryFrame( capture )
+            frame = cvQueryFrame( self.cap.image )
             if not frame:
                 break
 
@@ -251,87 +253,96 @@ class Module(object):
                 # allocate all the buffers
                 image = cvCreateImage( cvGetSize(frame), 8, 3 )
                 image.origin = frame.origin
-                hsv = cvCreateImage( cvGetSize(frame), 8, 3 )
-                hue = cvCreateImage( cvGetSize(frame), 8, 1 )
-                mask = cvCreateImage( cvGetSize(frame), 8, 1 )
-                mask2 = cvCreateImage( cvGetSize(frame), 8, 1 )
-                maskcombo = cvCreateImage( cvGetSize(frame), 8, 1 )
-                backproject = cvCreateImage( cvGetSize(frame), 8, 1 )
-                hist = cvCreateHist( [hdims], CV_HIST_ARRAY, [[0, 180]] )
-                histimg = cvCreateImage( cvSize(320,200), 8, 3 )
-                cvZero( histimg )
+                hsv = cvCreateImage( cvGetSize(frame), 8, 3 )"""
+        self.hue = cvCreateImage( cvSize(640,480), 8, 1 )
+        self.mask = cvCreateImage( cvSize(640,480), 8, 1 )
+        """mask2 = cvCreateImage( cvGetSize(frame), 8, 1 )
+        maskcombo = cvCreateImage( cvGetSize(frame), 8, 1 )"""
+        self.backproject = cvCreateImage( cvSize(640,480), 8, 1 )
+        self.hist = cvCreateHist( [self.hdims], CV_HIST_ARRAY, [[0, 180]] )
+        self.histimg = cvCreateImage( cvSize(320,200), 8, 3 )
+        cvZero( self.histimg )
+        self.cap.sync()
+        print(type(self.cap.image()))
 
-            cvCopy(frame, image)
-            cvCvtColor( image, hsv, CV_BGR2HSV ) #make the image hsv
+        #cvCopy(frame, image)
+        self.hsv = self.cap.color("hsv", channel=3, copy=True) #make the image hsv
+        #cvCvtColor( self.cap.image, self.hsv, CV_BGR2HSV )
+        self.track_object=-1
+        print "ABOUT TO GOT IN"
+        if self.track_object != 0:
+            print "GOT IN"
+            #updates the hsv values to be masked
+            print type(self.hsv)
+            scalar1=cvScalar(self.hmin.value,self.smin.value,min(self.vmin.value,self.vmax.value),0)
+            scalar2=cvScalar(self.hmax.value,self.smax.value,max(self.vmin.value,self.vmax.value),0)
+            cvInRangeS( self.hsv, scalar1, scalar2, self.mask )
+            #cvInRangeS( self.hsv, cvScalar(h2min.value,smin.value,min(vmin.value,vmax.value),0),
+            #                cvScalar(h2max.value,smax.value,max(vmin.value,vmax.value),0), mask2 )
+            cvSplit(self.hsv, self.hue) #extract hue information?
 
-            if track_object != 0:
-                #updates the hsv values to be masked
-                cvInRangeS( hsv, cvScalar(hmin.value,smin.value,min(vmin.value,vmax.value),0),
-                            cvScalar(hmax.value,smax.value,max(vmin.value,vmax.value),0), mask )
-                cvInRangeS( hsv, cvScalar(h2min.value,smin.value,min(vmin.value,vmax.value),0),
-                            cvScalar(h2max.value,smax.value,max(vmin.value,vmax.value),0), mask2 )
-                cvSplit(hsv, hue) #extract hue information?
+            #cvOr(mask, mask2, maskcombo) #combine the masks so that EITHER color is accepted
+            selection=cvRect(10,10,20,20)
+            if track_object < 0: #OH OKAY negative means it's tracking so... make a histogram     
+                cvSetImageROI( self.hue, selection )
+                cvSetImageROI( self.mask, selection )
+                cvCalcHist( [self.hue], self.hist, 0, self.mask );
+                min_val, max_val = cvGetMinMaxHistValue(hist)
+                hbins = self.hist.bins[0]
+                cvConvertScale( hbins, hbins, 255. / max_val if max_val else 0., 0 )
+                cvResetImageROI( self.hue ) # ^ hisogram stuff, v tracking stuff
+                cvResetImageROI( self.mask )
+                track_window = selection #the original window to track is your mouse selection
+                track_object = 1 #now objects are being tracked
 
-                cvOr(mask, mask2, maskcombo) #combine the masks so that EITHER color is accepted
-
-                if track_object < 0: #OH OKAY negative means it's tracking so... make a histogram
-                    cvSetImageROI( hue, selection )
-                    cvSetImageROI( maskcombo, selection )
-                    cvCalcHist( [hue], hist, 0, maskcombo );
-                    min_val, max_val = cvGetMinMaxHistValue(hist)
-                    hbins = hist.bins[0]
-                    cvConvertScale( hbins, hbins, 255. / max_val if max_val else 0., 0 )
-                    cvResetImageROI( hue ) # ^ hisogram stuff, v tracking stuff
-                    cvResetImageROI( maskcombo )
-                    track_window = selection #the original window to track is your mouse selection
-                    track_object = 1 #now objects are being tracked
-
-                    #more histogram stuff -- now we're displaying it
-                    cvZero( histimg )
-                    bin_w = histimg.width / hdims
-                    for i in xrange(hdims):
-                        val = cvRound( cvGetReal1D(hbins,i)*histimg.height/255 )
-                        color = hsv2rgb(i*180./hdims)
-                        cvRectangle( histimg, cvPoint(i*bin_w,histimg.height),
-                                     cvPoint((i+1)*bin_w,histimg.height - val),
+                #more histogram stuff -- now we're displaying it
+                cvZero( self.histimg )
+                bin_w = self.histimg.width / self.hdims
+                for i in xrange(self.hdims):
+                    val = cvRound( cvGetReal1D(hbins,i)*self.histimg.height/255 )
+                    color = self.hsv2rgb(i*180./self.hdims)                    cvRectangle( self.histimg, cvPoint(i*bin_w,self.histimg.height),
+                                     cvPoint((i+1)*bin_w,self.histimg.height - val),
                                      color, -1, 8, 0 )
-
                 #calculate the back projection (dunno what this is)
-                cvCalcBackProject( [hue], backproject, hist )
+                cvCalcBackProject( [self.hue], self.backproject, self.hist )
                 #mask the backprojection (why? who knows)
-                cvAnd(backproject, maskcombo, backproject)
+                cvAnd(self.backproject, self.mask, self.backproject)
                 #CAMSHIFT HAPPENS
-                niter, track_comp, track_box = cvCamShift( backproject, track_window,
+                niter, self.track_comp, self.track_box = cvCamShift( self.backproject, self.track_window,
                             cvTermCriteria( CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 10, 1 ))
                 track_window = track_comp.rect #no idea
                 
-                if backproject_mode:
-                    cvCvtColor( backproject, image, CV_GRAY2BGR ) #why??
-                if not image.origin:
+                if self.backproject_mode:
+                    cvCvtColor( self.backproject, self.cap.image, CV_GRAY2BGR ) #why??
+                if not self.cap.image.origin:
                     track_box.angle = -track_box.angle #why??
                 # Make sure its a number.
-                if math.isnan(track_box.size.height): 
-                    track_box.size.height = 0
+                if math.isnan(self.track_box.size.height): 
+                    self.track_box.size.height = 0
                 if math.isnan(track_box.size.width): 
-                    track_box.size.width = 0
+                    self.track_box.size.width = 0
                 #draws an ellipse around it. the ellipse is GREEN!!!!
-                cvEllipseBox( image, track_box, CV_RGB(0,255,0), 3, CV_AA, 0 )
+                cvEllipseBox( self.cap.image, self.track_box, CV_RGB(0,255,0), 3, CV_AA, 0 )
             
             #still lost
             if bool(select_object) and selection.width > 0 and selection.height > 0:
-                cvSetImageROI( image, selection )
-                cvXorS( image, cvScalarAll(255), image )
-                cvResetImageROI( image )
+                cvSetImageROI( self.cap.image, selection )
+                cvXorS( self.cap.image, cvScalarAll(255), self.cap.image )
+                cvResetImageROI( self.cap.image )
 
-            #hey let's show some stuff in those empty windows!!
-            cvShowImage( "CamShiftDemo", image )
-            cvShowImage( "Histogram", histimg )
-            cvShowImage( "Mask", maskcombo )
+            #hey let's show some stuff in those empty windows!!"""
+            print "Showing the windows"
+            print type(self.hsv)
+            print type(self.histimg)
+            print type(self.mask)
+            cvShowImage( "CamShiftDemo", self.hsv )
+            cvShowImage( "Histogram", self.histimg )
+            cvShowImage( "Mask", self.mask )
             #cvShowImage( "Backproject", backproject)
             #cvShowImage( "Hue", hue)
 
             #HOTT KEYS!!!!1
-            c = '%c' % (cvWaitKey(10) & 255)
+            """c = '%c' % (cvWaitKey(10) & 255)
             if c == '\x1b':
                 break
             elif c == 'b':
@@ -345,10 +356,11 @@ class Module(object):
                     cvDestroyWindow( "Histogram" )
                 else:
                     cvNamedWindow( "Histogram", 1 )
-
+        print "Hoiahdfoiahs"
+        return image
         # Calls the resize method passing the new with, height
         # specifying that the new image has to be a copy of the original
-        # so, self.cap.resize will copy the original instead of modifying it.
+        # so, self.cap.resize will copy the original instead of modifying it."""
         return self.cap.resize(200, 160, True)
 
     def get_pointer(self):
@@ -365,4 +377,5 @@ class Module(object):
         # Following the forehad IDM, The return is self.cap.forehead
         # which is created in the get_forehead function as an attribute
         # of self.cap
+        self.cap.pointer=Point("point", "color", ( 1, 2 ), parent=self.cap, follow=True) 
         return self.cap.pointer

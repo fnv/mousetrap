@@ -5,8 +5,8 @@
 # Script to run pylint on the MouseTrap sources you've modified or added.
 # See http://live.gnome.org/MouseTrap/Pylint for more info.
 #
-exec_prefix=/usr/local
-INSTALL_DIR=/usr/lib/python2.6/dist-packages
+exec_prefix=/usr/local/mousetrap
+INSTALL_DIR=/usr/local/mousetrap/lib/python2.6/site-packages
 if [ "x$*" == "x" ]
 then
     if [ -d .git ]
