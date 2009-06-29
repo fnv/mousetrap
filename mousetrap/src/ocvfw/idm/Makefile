@@ -209,6 +209,7 @@ top_builddir = ../../..
 top_srcdir = ../../..
 ocvfw_pathdir = $(pyexecdir)
 ocvfw_python_PYTHON = \
+    colors.py \
 	forehead.py \
 	__init__.py
 
