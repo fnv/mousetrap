@@ -39,11 +39,48 @@ class CalibrationGUI(gtk.Window):
 		"""
 		Defines the window for the capture
 		"""
+		
+		self.setWindowsIcon()
+        self.set_title("Color Tracking Settings")
+        self.connect("destroy", self.close)
+        
+        self.vBox = gtk.VBox()
+        self.buttonsBox = gtk.HButtonBox()
+
+        self.okButton = gtk.Button(stock = gtk.STOCK_OK)
+        self.okButton.connect("clicked", self.finalizeSettings)
+        self.buttonsBox.pack_start(self.okButton, True, True)
+        
+        self.applyButton = gtk.Button(stock = gtk.STOCK_APPLY)
+        self.applyButton.connect("clicked", self.applySettings)
+        self.buttonsBox.pack_start(self.applyButton, True True)
+        
+        self.closeButton = gtk.Button(stock = gtk.STOCK_CANCEL)
+        self.closeButton.connect("clicked", self.close)
+        self.buttonsBox.pack_start(self.closeButton, True True)
+        
+        self.vBox.pack_start(self.buttonsBox, True, True)
+        
+        
+        self.cap_image = gtk.image()
+        
+        self.cap_expander = gtk.expander_new_with_mnemonic("Camera Image")
+        self.cap_expander.add(self.cap_image)
+        self.cap_expander.set_expanded(True)
+		self.vBox.pack_start(self.cap_expander)
+		
+		self.vBox.show_all()
+		self.add(self.vBox)
+		self.show()
 	
 	def buildInterface(self):
 		"""
-		Build the Calibration GUI
+		Build the Calibration GUI. Consists of the capture
+        and a color selector
 		"""
+        
+            
+
 	def setWindowsIcon(self):
 		"""
 		Set the icon for the window
@@ -56,18 +93,26 @@ class CalibrationGUI(gtk.Window):
 		
 		gtk.window_set_default_icon(icon)
 	
-	def Ipl_to_Gtk(self, image):
+	def UpdateFrame(self, image):
 		"""
-		Converts an IPL image to a GTK image
+		Updates the 
 		
 		Arguments:
-			image - an IPL image to convert
+			image - The image to display on the image frame
 		"""
 		
+
+		if not image:
+		    return False
+    
 		buff = gtk.gdk.pixbuf_new_from_data( img.imageData, gtk.gdk.COLORSPACE_RGB, False, 8, \
 									int(img.width), int(img.height), img.widthStep )
 		
 		self.cap_image.set_from_pixbuf(buff)
+		
+    def _finalizeSettings(self):
+    
+    def _applySettings(self):       
 
 def showCalibrationGui(controller):
 	"""
