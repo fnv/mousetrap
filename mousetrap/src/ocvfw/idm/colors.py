@@ -41,7 +41,9 @@ import math
 # a_settings: Possible settings needed by the idm. For Example: { 'var_name' : { 'value' : default_value}, 'var_name2' : { 'value' : default_value} }
 a_name = "colors"
 a_description = "Color tracker based on CAMshift algorithm"
-a_settings = {}
+a_settings = {'hue' : {"value":2},
+              'saturation' : {"value":2},
+              'value' : {"value":2}}
 
 class Module(object):
     """
@@ -188,6 +190,20 @@ class Module(object):
         
         # This sets the final image default color to rgb. The default color is bgr.
         self.cap.change(color="rgb")
+
+    def _convertColorDepth(self, color):
+        """
+        Converts from 16 to 8 bit color depth. Necessary
+        for OpenCV functions and GDK colors to interact as the
+        former expects colors from 0-255 and the latter expects
+        0-65535.
+        
+        Arguments:
+        - self: The main object pointer
+        - color: The integer color value to convert to 0-255
+        """
+        return (int)(color / 65535.0) * 255
+       
 
     def get_image(self):
         """

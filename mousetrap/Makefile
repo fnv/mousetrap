@@ -83,13 +83,13 @@ DIST_ARCHIVES = $(distdir).tar.gz
 GZIP_ENV = --best
 distuninstallcheck_listfiles = find . -type f -print
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /home/rfoeckin/apps/mousetrap-hfoss/mousetrap/mousetrap/missing --run aclocal-1.10
+ACLOCAL = ${SHELL} /home/ryan/Desktop/ourMouseTrap/mousetrap/missing --run aclocal-1.10
 ALL_LINGUAS = 
-AMTAR = ${SHELL} /home/rfoeckin/apps/mousetrap-hfoss/mousetrap/mousetrap/missing --run tar
+AMTAR = ${SHELL} /home/ryan/Desktop/ourMouseTrap/mousetrap/missing --run tar
 AR = ar
-AUTOCONF = ${SHELL} /home/rfoeckin/apps/mousetrap-hfoss/mousetrap/mousetrap/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/rfoeckin/apps/mousetrap-hfoss/mousetrap/mousetrap/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/rfoeckin/apps/mousetrap-hfoss/mousetrap/mousetrap/missing --run automake-1.10
+AUTOCONF = ${SHELL} /home/ryan/Desktop/ourMouseTrap/mousetrap/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/ryan/Desktop/ourMouseTrap/mousetrap/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/ryan/Desktop/ourMouseTrap/mousetrap/missing --run automake-1.10
 AWK = mawk
 CATALOGS = 
 CATOBJEXT = .gmo
@@ -98,7 +98,7 @@ CCDEPMODE = depmode=none
 CFLAGS = -g -O2
 CPP = gcc -E
 CPPFLAGS = 
-CURRENT_DIR = /home/rfoeckin/apps/mousetrap-hfoss/mousetrap/mousetrap
+CURRENT_DIR = /home/ryan/Desktop/ourMouseTrap/mousetrap
 CYGPATH_W = echo
 DATADIRNAME = share
 DEFS = -DHAVE_CONFIG_H
@@ -139,8 +139,8 @@ LT_CURRENT = 0
 LT_RELEASE = 
 LT_REVISION = 0
 LT_VERSION_INFO = -version-info ${LT_CURRENT}:${LT_REVISION}:${LT_AGE}
-MAINT = 
-MAKEINFO = ${SHELL} /home/rfoeckin/apps/mousetrap-hfoss/mousetrap/mousetrap/missing --run makeinfo
+MAINT = #
+MAKEINFO = ${SHELL} /home/ryan/Desktop/ourMouseTrap/mousetrap/missing --run makeinfo
 MKDIR_P = /bin/mkdir -p
 MKINSTALLDIRS = ./mkinstalldirs
 MOUSETRAP_VERSION = 0.4
@@ -178,10 +178,10 @@ STRIP = strip
 USE_NLS = yes
 VERSION = 0.4
 XGETTEXT = /usr/bin/xgettext
-abs_builddir = /home/rfoeckin/apps/mousetrap-hfoss/mousetrap/mousetrap
-abs_srcdir = /home/rfoeckin/apps/mousetrap-hfoss/mousetrap/mousetrap
-abs_top_builddir = /home/rfoeckin/apps/mousetrap-hfoss/mousetrap/mousetrap
-abs_top_srcdir = /home/rfoeckin/apps/mousetrap-hfoss/mousetrap/mousetrap
+abs_builddir = /home/ryan/Desktop/ourMouseTrap/mousetrap
+abs_srcdir = /home/ryan/Desktop/ourMouseTrap/mousetrap
+abs_top_builddir = /home/ryan/Desktop/ourMouseTrap/mousetrap
+abs_top_srcdir = /home/ryan/Desktop/ourMouseTrap/mousetrap
 ac_ct_CC = gcc
 ac_ct_DUMPBIN = 
 am__include = include
@@ -209,7 +209,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = $(SHELL) /home/rfoeckin/apps/mousetrap-hfoss/mousetrap/mousetrap/install-sh
+install_sh = $(SHELL) /home/ryan/Desktop/ourMouseTrap/mousetrap/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -223,11 +223,11 @@ oldincludedir = /usr/include
 pdfdir = ${docdir}
 pkgpyexecdir = ${pyexecdir}/mousetrap
 pkgpythondir = ${pythondir}/mousetrap
-prefix = /usr/local/mousetrap
+prefix = /usr/local
 program_transform_name = s,x,x,
 psdir = ${docdir}
-pyexecdir = /usr/local/mousetrap/lib/python2.6/site-packages
-pythondir = /usr/local/mousetrap/lib/python2.6/site-packages
+pyexecdir = /usr/lib/python2.6/dist-packages
+pythondir = /usr/lib/python2.6/dist-packages
 sbindir = ${exec_prefix}/sbin
 sharedstatedir = ${prefix}/com
 srcdir = .
@@ -262,7 +262,7 @@ all: config.h
 .SUFFIXES:
 am--refresh:
 	@:
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
+$(srcdir)/Makefile.in: # $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -289,9 +289,9 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	$(SHELL) ./config.status --recheck
 
-$(top_srcdir)/configure:  $(am__configure_deps)
+$(top_srcdir)/configure: # $(am__configure_deps)
 	cd $(srcdir) && $(AUTOCONF)
-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
+$(ACLOCAL_M4): # $(am__aclocal_m4_deps)
 	cd $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 
 config.h: stamp-h1
@@ -303,7 +303,7 @@ config.h: stamp-h1
 stamp-h1: $(srcdir)/config.h.in $(top_builddir)/config.status
 	@rm -f stamp-h1
 	cd $(top_builddir) && $(SHELL) ./config.status config.h
-$(srcdir)/config.h.in:  $(am__configure_deps) 
+$(srcdir)/config.h.in: # $(am__configure_deps) 
 	cd $(top_srcdir) && $(AUTOHEADER)
 	rm -f stamp-h1
 	touch $@

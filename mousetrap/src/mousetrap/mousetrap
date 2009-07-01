@@ -143,7 +143,7 @@ mousetrap() {
         cleanup
     fi
 
-    exec_prefix=/usr/local/mousetrap
+    exec_prefix=/usr/local
     default_python=`ls -l /usr/bin/ | grep -e "python ->" | sed 's/.*> //'`
     PYTHONPATH=${PYTHONPATH}:${exec_prefix}/lib/${default_python}/site-packages:$PWD/mousetrap
     export PYTHONPATH
