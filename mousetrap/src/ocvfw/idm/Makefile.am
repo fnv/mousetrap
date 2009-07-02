@@ -1,7 +1,7 @@
 ocvfw_pathdir=$(pyexecdir)
 
 ocvfw_python_PYTHON = \
-    colors.py \
+    color.py \
 	forehead.py \
 	__init__.py
 
