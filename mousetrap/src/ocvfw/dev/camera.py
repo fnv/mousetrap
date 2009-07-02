@@ -31,8 +31,8 @@ import gobject
 
 from warnings import *
 from .. import debug, commons
-from opencv import cv
-from opencv import highgui as hg
+from ctypesopencv import cv
+from ctypesopencv import highgui as hg
 from .._ocv import Ocvfw as ocv
 
 

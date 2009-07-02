@@ -32,8 +32,8 @@ import debug
 
 
 try:
-    from opencv import cv
-    from opencv import highgui
+    from ctypesopencv import cv
+    from ctypesopencv import highgui
 except:
     print "This modules depends of opencv libraries"
 
