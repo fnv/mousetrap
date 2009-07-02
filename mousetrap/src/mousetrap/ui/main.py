@@ -123,22 +123,20 @@ class MainGui( gtk.Window ):
             #if self.cfg.get("main", "algorithm") == "color":
             self.pal_expander = gtk.expander_new_with_mnemonic("Color _Picker")
             
-	    # Create a vertical box inside the color picker expander for layout
-	    self.pickerBox = gtk.VBox()
-	    
-	    self.picker = gtk.ColorSelection()
+            # Create a vertical box inside the color picker expander for layout
+            self.pickerBox = gtk.VBox(spacing=10)
+            
+            self.picker = gtk.ColorSelection()
             self.picker.set_has_palette(True)
-	    self.pickerBox.pack_start(self.picker)
-	    
-	    self.saveColorButton = gtk.Button(stock=gtk.STOCK_SAVE)
-	    self.saveColorButton.connect("clicked", self._changeColors)
-	    self.pickerBox.pack_start(self.saveColorButton)
-	    
+            self.pickerBox.pack_start(self.picker)
+            
+            self.saveColorButton = gtk.Button(stock=gtk.STOCK_SAVE)
+            self.saveColorButton.connect("clicked", self._changeColors)
+            self.pickerBox.pack_start(self.saveColorButton)
+            
             self.pal_expander.add(self.pickerBox)
-
-            #self.picker.connect("color-changed", self._changeColors)
-            
-            
+                
+                
             self.vBox.pack_start(self.pal_expander)
 
         if self.cfg.getboolean("gui", "showPointMapper"):
@@ -263,12 +261,15 @@ class MainGui( gtk.Window ):
         Updates the configuration file with the new color values
         """
         color = self.picker.get_current_color()
-	
-	self.cfg.set("color", "blue", color.blue)
-        self.cfg.set("color", "green", color.green)
-	self.cfg.set("color", "red", color.red)
         
-        self.finalizeConfigChanges()
+        # Note: This is reversed (GBR), but it's written to the config file as RGB.
+        # This is because ConfigParser.set presumably places these on a stack before
+        # they are written. If called in RGB order, they are written as BGR.
+        self.cfg.set("color", "blue", color.blue)
+        self.cfg.set("color", "green", color.green)
+        self.cfg.set("color", "red", color.red)
+        
+        self._finalizeConfigChanges()
     
     def _loadHelp( self, *args ):
         """
@@ -287,9 +288,9 @@ class MainGui( gtk.Window ):
             "mouseTrap needs <b>gnome</b> module to show the help. Please install gnome-python and try again.", None )
             debug.exception( "mainGui", "The help load failed" )
 
-    def finalizeConfigChanges(self):
+    def _finalizeConfigChanges(self):
         """
-        Writes to the config file any changes that have been made
+        Writes to the config file any changes that have been made..
         """
         self.cfg.write(open(env.configPath + "userSettings.cfg", "w"))
         
