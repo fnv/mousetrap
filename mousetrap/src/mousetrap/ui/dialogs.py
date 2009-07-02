@@ -249,7 +249,7 @@ class IdmSettings(gtk.Window):
 
         Arguments:
         - self: The main object pointer.
-        """
+        """	
         for key in self.idm_stgs:
             self.main_vbox.pack_start(self.create_labled_input(key), False, False)
 

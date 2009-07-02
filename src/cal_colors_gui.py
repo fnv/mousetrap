@@ -21,6 +21,9 @@ class CalibrationGUI(gtk.Window):
 		# The MouseTrap controller object
 		self.ctr = controller
 		
+		# The config object
+		self.cfg = self.controller.cfg
+		
 		# The captured image
 		self.cap_image = None
 	
@@ -111,8 +114,14 @@ class CalibrationGUI(gtk.Window):
 		self.cap_image.set_from_pixbuf(buff)
 		
     def _finalizeSettings(self):
+    """
+    Updates the settings and closes the windows
+    """
     
-    def _applySettings(self):       
+    def _applySettings(self):
+    """
+    Updates the settings and does not close the windows
+    """  
 
 def showCalibrationGui(controller):
 	"""
