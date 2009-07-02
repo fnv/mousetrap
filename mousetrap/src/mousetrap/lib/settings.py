@@ -83,7 +83,15 @@ class Settings( ConfigParser.ConfigParser ):
             conf.write("\nshowCapture = True")
             conf.write("\nshowMainGui = True")
             conf.write("\nshowPointMapper = True")
-
+            
+            conf.write("\n\n[forehead]")
+            conf.write("\nspeed = 5")
+            
+            conf.write("\n\n[color]")
+            conf.write("\nred = 0")
+            conf.write("\ngreen = 0")
+            conf.write("\nblue = 0")
+            
             conf.write("\n\n[access]")
             conf.write("\nreqMovement = 10")
 

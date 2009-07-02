@@ -122,14 +122,23 @@ class MainGui( gtk.Window ):
             # Expander and color selector for color tracking algorithms
             #if self.cfg.get("main", "algorithm") == "color":
             self.pal_expander = gtk.expander_new_with_mnemonic("Color _Picker")
-            self.picker = gtk.ColorSelection()
+            
+	    # Create a vertical box inside the color picker expander for layout
+	    self.pickerBox = gtk.VBox()
+	    
+	    self.picker = gtk.ColorSelection()
             self.picker.set_has_palette(True)
+	    self.pickerBox.pack_start(self.picker)
+	    
+	    self.saveColorButton = gtk.Button(stock=gtk.STOCK_SAVE)
+	    self.saveColorButton.connect("clicked", self._changeColors)
+	    self.pickerBox.pack_start(self.saveColorButton)
+	    
+            self.pal_expander.add(self.pickerBox)
+
+            #self.picker.connect("color-changed", self._changeColors)
             
-            #TODO: This should only save to the config when prompted by the user. Will
-            #       add a "Save" button soon.
-            self.picker.connect("color-changed", self._changeColors)
             
-            self.pal_expander.add(self.picker)
             self.vBox.pack_start(self.pal_expander)
 
         if self.cfg.getboolean("gui", "showPointMapper"):
@@ -254,10 +263,10 @@ class MainGui( gtk.Window ):
         Updates the configuration file with the new color values
         """
         color = self.picker.get_current_color()
-        self.cfg.set("color", "red", color.red)
+	
+	self.cfg.set("color", "blue", color.blue)
         self.cfg.set("color", "green", color.green)
-        self.cfg.set("color", "blue", color.blue)
-        
+	self.cfg.set("color", "red", color.red)
         
         self.finalizeConfigChanges()
     
