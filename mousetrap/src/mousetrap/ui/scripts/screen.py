@@ -57,7 +57,7 @@ class ScriptClass(Mapper):
 
     def update_items(self, point):
         self.point = point
-        self.point.set_opencv(self.point)
+        #self.point.set_opencv(self.point)
         self.calc_move()
         self.queue_draw()
 
@@ -99,12 +99,10 @@ class ScriptClass(Mapper):
 
         new_x, new_y = [ (float(poss)/self.vscreen[par[i]])*env.screen[par[i]]
                           for i,poss in enumerate([ (self.vscreen["width"]/2) - ( self.center["x"] - self.vpoint["x"]),
-                          #for i,poss in enumerate([ (self.vscreen["width"]/2) - ( self.center["x"]),
                                                     (self.vscreen["height"]/2) - ( self.center["y"] - self.vpoint["y"] ) ])]
-                                                    #(self.vscreen["height"]/2) - ( self.center["y"]) ])]
 
-        #mouse.move( new_x, new_y)
-        mouse.move(self.point.x, self.point.y)
+        mouse.move( new_x, new_y)
+        #mouse.move(self.point.x, self.point.y)
 
     def prefferences(self):
         """
