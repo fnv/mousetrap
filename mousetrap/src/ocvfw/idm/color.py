@@ -19,7 +19,7 @@
 # along with Ocvfw.  If not, see <http://www.gnu.org/licenses/>>.
 
 
-"""Forehead IDM"""
+"""Color IDM"""
 
 __id__        = "$Id$"
 __version__   = "$Revision$"
@@ -36,8 +36,11 @@ from ocvfw.dev.camera import Camera, Capture, Point
 # a_description: IDM's Description
 # a_settings: Possible settings needed by the idm. For Example: { 'var_name' : { 'value' : default_value}, 'var_name2' : { 'value' : default_value} }
 a_name = "color"
-a_description = "Forehead point tracker based on LK Algorithm"
-a_settings = { 'speed' : {"value":2}}
+
+a_description = "Color tracker using CAMshift algorithm"
+a_settings = {'hue' : {"value":2},
+              'saturation' : {"value":2},
+              'value' : {"value":2}}
 
 class Module(object):
     """
@@ -61,6 +64,10 @@ class Module(object):
         # Controller instance
         self.ctr          = controller
         
+        self.cfg = self.ctr.cfg
+
+        if not self.cfg.has_section("color"):
+		    self.cfg.add_section("color")
         # Capture instance
         # The capture is the object containing the image 
         # and all the possible methods to modify it.
@@ -71,6 +78,10 @@ class Module(object):
 
         # Prepares the IDM using the settings.
         self.prepare_config()
+
+        #TODO: ADD CONDITIONAL TO ENSURE SETTINGS ARE SET EVEN IF YOU HAVE AN OLD CONFIG FILE
+
+        self.hsv = None
 
     def prepare_config(self):
         """
@@ -107,6 +118,19 @@ class Module(object):
         # This sets the final image default color to rgb. The default color is bgr.
         self.cap.change(color="rgb")
 
+    def _convertColorDepth(self, color):
+        """
+        Converts from 16 to 8 bit color depth. Necessary
+        for OpenCV functions and GDK colors to interact as the
+        former expects colors from 0-255 and the latter expects
+        0-65535.
+        
+        Arguments:
+        - self: The main object pointer
+        - color: The integer color value to convert to 0-255
+        """
+        return (int)(color / 65535.0) * 255
+
     def get_image(self):
         """
         Gets the last queried and formated image.
@@ -134,6 +158,8 @@ class Module(object):
         Arguments:
         - self: The main object pointer
         """
+
+        self.cap.pointer = Point("color_point", "color", ( 100, 200 ), parent=self.cap, follow=False)
 
         # The return value has to be a Point() type object
         # Following the forehad IDM, The return is self.cap.forehead
