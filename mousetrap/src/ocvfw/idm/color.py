@@ -35,7 +35,7 @@ from ocvfw.dev.camera import Camera, Capture, Point
 #   This is used by the settings gui to identify the idm
 # a_description: IDM's Description
 # a_settings: Possible settings needed by the idm. For Example: { 'var_name' : { 'value' : default_value}, 'var_name2' : { 'value' : default_value} }
-a_name = "IDM Name"
+a_name = "color"
 a_description = "Forehead point tracker based on LK Algorithm"
 a_settings = { 'speed' : {"value":2}}
 
@@ -118,7 +118,8 @@ class Module(object):
 
         returns self.cap.resize(200, 160, True)
         """
-
+        self.cap.sync()
+        self.hsv = self.cap.color("hsv", channel=3, copy=True)
         # Calls the resize method passing the new with, height
         # specifying that the new image has to be a copy of the original
         # so, self.cap.resize will copy the original instead of modifying it.
