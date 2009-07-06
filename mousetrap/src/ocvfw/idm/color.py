@@ -142,14 +142,10 @@ class Module(object):
         returns self.cap.resize(200, 160, True)
         """
 
-        self.image = self.cap.image()
-
-        #print type(self.image)
-
         # Calls the resize method passing the new with, height
         # specifying that the new image has to be a copy of the original
         # so, self.cap.resize will copy the original instead of modifying it.
-        return self.image #self.cap.resize(200, 160, True)
+        return self.cap.resize(200, 160, True)
 
     def get_pointer(self):
         """
