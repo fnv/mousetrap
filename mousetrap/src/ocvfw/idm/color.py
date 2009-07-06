@@ -238,7 +238,7 @@ class Module(object):
         self.cap.sync() #needed? YES
 
         self.hsv = self.cap.color("hsv", channel=3, copy=True)
-        self.cap.color("bgr", channel=3, copy=True)
+        #self.cap.color("bgr", channel=3, copy=True)
         self.image = self.cap.image()
 
         if self.track_object != 0:
@@ -292,8 +292,9 @@ class Module(object):
             if (not hasattr(self.cap, "obj_center")):
                 self.cap.add(Point("point", "obj_center", ( int(self.track_box.center.x), int(self.track_box.center.y )), parent=self.cap, follow=True))
             else:
-                self.cap.obj_center = Point("point", "obj_center", ( int(self.track_box.center.x), int(self.track_box.center.y )), parent=self.cap, follow=True)
-           
+                self.cap.obj_center.set_opencv(cvPoint(int(self.track_box.center.x), int(self.track_box.center.y)))
+                #self.cap.obj_center.x = 
+
             #still lost
         if bool(self.select_object) and self.selection.width > 0 and self.selection.height > 0:
             cvSetImageROI( self.image, self.selection )
@@ -305,7 +306,8 @@ class Module(object):
         #hey let's show some stuff in those empty windows!!"""
         cvShowImage( "Histogram", self.histimg )
         cvShowImage( "Mask", self.mask)
-
+        
+        self.cap.color("rgb", channel=3, copy=True)
         # Calls the resize method passing the new with, height
         # specifying that the new image has to be a copy of the original
         # so, self.cap.resize will copy the original instead of modifying it.
