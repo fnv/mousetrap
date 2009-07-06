@@ -128,10 +128,10 @@ class Capture(object):
             self.__image = self.color(self.__color_set)
 
         # TODO: Workaround, I've to fix it
-        if len(self.__camera.img_lkpoints["last"]) > 0:
+        """if len(self.__camera.img_lkpoints["last"]) > 0:
             self.__camera.show_lkpoints()
 
-        self.__camera.swap_lkpoints()
+        self.__camera.swap_lkpoints()"""
 
         self.show_rectangles(self.rectangles())
 
@@ -305,8 +305,8 @@ class Capture(object):
             setattr(self, graphic.label, graphic)
             self.__graphics[graphic.type].append(graphic)
 
-            if graphic.is_point():
-                self.__camera.set_lkpoint(graphic)
+            """if graphic.is_point():
+                self.__camera.set_lkpoint(graphic) NEEDED?!?!?"""
         else:
             warn("The Graphic %s already exists. It wont be added" % graphic.label, RuntimeWarning)
             return False

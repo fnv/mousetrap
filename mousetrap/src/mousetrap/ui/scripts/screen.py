@@ -57,6 +57,7 @@ class ScriptClass(Mapper):
 
     def update_items(self, point):
         self.point = point
+        #self.point.set_opencv(self.point)
         self.calc_move()
         self.queue_draw()
 
@@ -101,6 +102,7 @@ class ScriptClass(Mapper):
                                                     (self.vscreen["height"]/2) - ( self.center["y"] - self.vpoint["y"] ) ])]
 
         mouse.move( new_x, new_y)
+        #mouse.move(self.point.x, self.point.y)
 
     def prefferences(self):
         """

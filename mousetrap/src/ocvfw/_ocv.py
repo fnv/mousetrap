@@ -276,7 +276,7 @@ class Ocvfw:
         if not  self.img:
             self.storage        = cv.cvCreateMemStorage(0)
             self.imgSize        = cv.cvGetSize (frame)
-            self.img            = cv.cvCreateImage ( self.imgSize, 8, 3 )
+            self.img            = cv.cvCreateImage ( self.imgSize, 16, 3 )
             #self.img.origin     = frame.origin
             self.grey           = cv.cvCreateImage ( self.imgSize, 8, 1 )
             self.yCrCb          = cv.cvCreateImage ( self.imgSize, 8, 3 )
@@ -286,6 +286,7 @@ class Ocvfw:
             self.small_img       = cv.cvCreateImage( cv.cvSize( cv.cvRound ( self.imgSize.width/self.imageScale),
                                     cv.cvRound ( self.imgSize.height/self.imageScale) ), 8, 3 )
         self.img = frame
+
         cv.cvCvtColor(self.img, self.grey, cv.CV_BGR2GRAY)
 
         self.wait_key(10)
