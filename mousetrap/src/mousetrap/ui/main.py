@@ -35,6 +35,8 @@ import mousetrap.debug as debug
 import mousetrap.environment as env
 from mousetrap.addons import cpu
 
+import ctypesopencv as cv
+
 class MainGui( gtk.Window ):
     """
     MouseTrap main GUI Class
@@ -114,7 +116,7 @@ class MainGui( gtk.Window ):
 
         if self.cfg.getboolean("gui", "showCapture"):
             self.cap_expander = gtk.expander_new_with_mnemonic("_Camera Image")
-            #self.cap_expander.add(self.cap_image)
+            self.cap_expander.add(self.cap_image)
             #expander.connect('notify::expanded', self.expanded_cb)          
             self.cap_expander.set_expanded(True)
             self.vBox.pack_start(self.cap_expander)
@@ -196,8 +198,12 @@ class MainGui( gtk.Window ):
             return False
 
         #self.script.update_items(point)
-        buff = gtk.gdk.pixbuf_new_from_data( img.imageData, gtk.gdk.COLORSPACE_RGB, False, 8, \
-                                             int(img.width), int(img.height), img.widthStep )
+        """buff = gtk.gdk.pixbuf_new_from_data( img.imageData, gtk.gdk.COLORSPACE_RGB, False, img.depth, \
+                                             int(img.width), \
+                                             int(img.height), \
+                                             img.widthStep ) """
+
+        buff = gtk.gdk.pixbuf_new_from_array(img.as_numpy_array(), gtk.gdk.COLORSPACE_RGB, img.depth)
 
         #sets new pixbuf
         self.cap_image.set_from_pixbuf(buff)
