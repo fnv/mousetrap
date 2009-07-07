@@ -233,8 +233,6 @@ class Module(object):
 
         returns self.cap.resize(200, 160, True)
         """
-        self.cap.sync()
-        self.hsv = self.cap.color("hsv", channel=3, copy=True)
 
         #self.image = self.cap.image().origin needed??
         self.cap.sync() #needed? YES
