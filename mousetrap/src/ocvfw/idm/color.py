@@ -310,7 +310,6 @@ class Module(object):
         cvShowImage( "Mask", self.mask)
         
         self.cap.color("rgb", channel=3, copy=True)
->>>>>>> c8f831b2e42f67531ced99b4771aeaf5e01cd912:mousetrap/src/ocvfw/idm/color.py
         # Calls the resize method passing the new with, height
         # specifying that the new image has to be a copy of the original
         # so, self.cap.resize will copy the original instead of modifying it.
