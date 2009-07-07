@@ -199,7 +199,7 @@ class Module(object):
         # Starts the Capture using the async method.
         # This means that self.cap.sync() wont be called periodically
         # by the idm because the Capture syncs the image asynchronously (See dev/camera.py)
-        self.cap = Capture(async=True, idx=cam)
+        self.cap = Capture(async=False, idx=cam)
         
         # This sets the final image default color to rgb. The default color is bgr.
         self.cap.change(color="rgb")
@@ -246,9 +246,6 @@ class Module(object):
         self.hsv = self.cap.color("hsv", channel=3, copy=True)
 
         #self.image = self.cap.image().origin needed??
-        self.cap.sync() #needed? YES
-
-        self.hsv = self.cap.color("hsv", channel=3, copy=True)
         #self.cap.color("bgr", channel=3, copy=True)
         self.image = self.cap.image()
 
