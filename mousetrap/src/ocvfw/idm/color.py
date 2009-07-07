@@ -88,6 +88,8 @@ class Module(object):
         self.image = None
         self.hsv = None
 
+        self.first_time=True # To keep track of whether or not we have initalized image objects
+
         self.backproject_mode = 0 #needed?
         self.select_object = 0
         self.track_object = 0
@@ -119,14 +121,7 @@ class Module(object):
         cvCreateTrackbar( "Hmin", "Mask", self.hmin, 180 )
         cvCreateTrackbar( "Hmax", "Mask", self.hmax, 180 )
 
-        #how can we get the frame size??
-        self.hue = cvCreateImage( cvSize(640,480), 8, 1 )
-        self.mask = cvCreateImage( cvSize(640,480), 8, 1 )
-        self.backproject = cvCreateImage( cvSize(640,480), 8, 1 )
-        self.hist = cvCreateHist( [self.hdims], CV_HIST_ARRAY, [[0, 180]] )
-        self.histimg = cvCreateImage( cvSize(320,200), 8, 3 )
-        self.temp = cvCreateImage( cvSize(640, 480), 8, 3) #needed?
-        cvZero( self.histimg )
+
 
     def prepare_config(self):
         """
@@ -233,7 +228,21 @@ class Module(object):
 
         returns self.cap.resize(200, 160, True)
         """
+        # Needed to sync image in Mousetrap with camera frame?
         self.cap.sync()
+
+        # Initialization of images.  Only needs to happen once.
+        if self.first_time:
+            #how can we get the frame size??
+            self.hue = cvCreateImage( cvGetSize(self.cap.image()), 8, 1 )
+            self.mask = cvCreateImage(  cvGetSize(self.cap.image()), 8, 1 )
+            self.backproject = cvCreateImage(  cvGetSize(self.cap.image()), 8, 1 )
+            self.hist = cvCreateHist( [self.hdims], CV_HIST_ARRAY, [[0, 180]] )
+            self.histimg = cvCreateImage( cvSize(320,200), 8, 3 )
+            self.temp = cvCreateImage(  cvGetSize(self.cap.image()), 8, 3) #needed?
+            cvZero( self.histimg )
+            self.first_time=False
+
         self.hsv = self.cap.color("hsv", channel=3, copy=True)
 
         #self.image = self.cap.image().origin needed??
@@ -310,7 +319,7 @@ class Module(object):
         cvShowImage( "Mask", self.mask)
         
         self.cap.color("rgb", channel=3, copy=True)
->>>>>>> c8f831b2e42f67531ced99b4771aeaf5e01cd912:mousetrap/src/ocvfw/idm/color.py
+
         # Calls the resize method passing the new with, height
         # specifying that the new image has to be a copy of the original
         # so, self.cap.resize will copy the original instead of modifying it.
