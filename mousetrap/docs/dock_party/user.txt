@@ -1,0 +1,28 @@
+/**
+* Project: MouseTrap
+* File name: docs/dock_party/user.txt
+* Description: User Documentation for MouseTrap Color IDM
+* Python version 2.6, OpenCV, ctypes-opencv
+*
+* LICENSE: This source file is subject to GPL v2.0 license
+* that is available through the world-wide-web at the following URI:
+* http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+*
+* @author       Rachel Foecking
+* @author       Ryan Gee
+* @author       Foster Nichols
+* @copyright    Humanitarian FOSS Project (http://www.hfoss.org), Copyright (C) 2009.
+* @package
+* @subpackage
+* @tutorial
+* @license  http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+* @version
+*/
+
+ABOUT MOUSETRAP
+
+MouseTrap is an application that allows a user to control the movement of the cursor through a variety of physical movements. There are a number of image detection modules (IDMs) that allow for different use cases. The currently implemented IDMs are forehead tracking, and color-based object tracking. This document will explain how to use the color-based object tracking IDM.
+
+COLOR IDM
+
+When starting MouseTrap, 

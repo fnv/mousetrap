@@ -1,0 +1,20 @@
+/**
+* Project: MouseTrap
+* File name: docs/dock_party/dev.txt
+* Description: Developer Documentation for Image Detection Modules
+* Python version 2.6, OpenCV, ctypes-opencv
+*
+* LICENSE: This source file is subject to GPL v2.0 license
+* that is available through the world-wide-web at the following URI:
+* http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+*
+* @author       Rachel Foecking
+* @author       Ryan Gee
+* @author       Foster Nichols
+* @copyright    Humanitarian FOSS Project (http://www.hfoss.org), Copyright (C) 2009.
+* @package
+* @subpackage
+* @tutorial
+* @license  http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+* @version
+*/
