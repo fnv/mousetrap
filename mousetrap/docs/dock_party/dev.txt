@@ -18,3 +18,13 @@
 * @license  http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 * @version
 */
+
+ABOUT MOUSETRAP
+
+MouseTrap is an application that allows a user to control the movement of the cursor through a variety of physical movements. There are a number of image detection modules (IDMs) that allow for different use cases. The currently implemented IDMs are forehead tracking, and color-based object tracking. This document will explain how to create a new IDM.
+
+MAKING A NEW IDM
+
+
+
+

@@ -19,7 +19,7 @@
 # along with Ocvfw.  If not, see <http://www.gnu.org/licenses/>>.
 
 
-"""Forehead IDM"""
+"""IDM Name"""
 
 __id__        = "$Id$"
 __version__   = "$Revision$"
@@ -36,8 +36,8 @@ from ocvfw.dev.camera import Camera, Capture, Point
 # a_description: IDM's Description
 # a_settings: Possible settings needed by the idm. For Example: { 'var_name' : { 'value' : default_value}, 'var_name2' : { 'value' : default_value} }
 a_name = "IDM Name"
-a_description = "Forehead point tracker based on LK Algorithm"
-a_settings = { 'speed' : {"value":2}}
+a_description = "Description of IDM"
+a_settings = { 'var' : {"value":2}}
 
 class Module(object):
     """
