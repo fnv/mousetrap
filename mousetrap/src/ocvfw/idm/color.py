@@ -29,8 +29,11 @@ __license__   = "GPLv2"
 
 import ocvfw.commons as commons
 from ocvfw.dev.camera import Camera, Capture, Point
-from ctypes import c_int
+
+from ctypes import c_int 
+""" Using ctypes-opencv, instead of the python bindings provided by OpenCV. """
 from ctypesopencv import *
+
 from sys import argv, exit
 import math
 
@@ -38,9 +41,8 @@ import math
 # a_name: IDM's name
 #   This is used by the settings gui to identify the idm
 # a_description: IDM's Description
-# a_settings: Possible settings needed by the idm. For Example: { 'var_name' : { 'value' : default_value}, 'var_name2' : { 'value' : default_value} }
+# a_settings: Possible settings needed by the idm. For Example: { 'var_name' : { 'value' : default_value}, 'var_name2' : { 'value' : default_value} }  These settings are loaded from usrSettings.cfg in /home/username/.mousetrap.
 a_name = "color"
-
 a_description = "Color tracker using CAMshift algorithm"
 a_settings = {'hue' : {"value":2},
               'saturation' : {"value":2},
@@ -85,6 +87,8 @@ class Module(object):
 
         #TODO: ADD CONDITIONAL TO ENSURE SETTINGS ARE SET EVEN IF YOU HAVE AN OLD CONFIG FILE
 
+        # Initialization of variables needed for color tracking CAMshift algorithm.
+
         self.image = None
         self.hsv = None
 
@@ -100,12 +104,14 @@ class Module(object):
         self.track_box = None
         self.track_comp = None
         self.hdims = 16
-        self.vmin = c_int(10)
+
+        # Variables to control the ranges for the color mask.
+        self.vmin = c_int(10)   # Value
         self.vmax = c_int(256)
-        self.smin = c_int(80)
+        self.smin = c_int(80)   # Saturation
         self.smax = c_int(256)
-        self.hmin = c_int(0)
-        self.hmax = c_int(180) #out of 180, not 256
+        self.hmin = c_int(0)    # Hue
+        self.hmax = c_int(180)  # out of 180, not 256
         self.h2min = c_int(170)
         self.h2max = c_int(175)
 
@@ -142,7 +148,16 @@ class Module(object):
             pass
 
     def on_mouse(self, event, x, y, flags, param):
-    
+        """
+        Mouse event callback function.  Draws a selection box when a mouse event occurs.
+        
+        Arguments:
+        - self: The main object pointer
+        - event: type of mouse event that occurred.
+        - X parameter of the mouse position.
+        - Y parameter of the mouse position.
+        """
+
         if self.image is None:
             return
 
@@ -172,7 +187,14 @@ class Module(object):
                 self.track_object = -1
 
 
-    def hsv2rgb(stupid, hue):
+    def hsv2rgb(self, hue):
+        """
+        Converts an HSV hue to RGB.
+        
+        Arguments:
+        - self: The main object pointer
+        - hue: the hue to convert to RGB.
+        """
         rgb=[0,0,0]
         
         sector_data= ((0,2,1), (1,2,0), (1,0,2), (2,0,1), (2,1,0), (0,1,2))
@@ -233,7 +255,7 @@ class Module(object):
 
         # Initialization of images.  Only needs to happen once.
         if self.first_time:
-            #how can we get the frame size??
+            # TODO: What is a better way to get the image size?
             self.hue = cvCreateImage( cvGetSize(self.cap.image()), 8, 1 )
             self.mask = cvCreateImage(  cvGetSize(self.cap.image()), 8, 1 )
             self.backproject = cvCreateImage(  cvGetSize(self.cap.image()), 8, 1 )
@@ -243,30 +265,33 @@ class Module(object):
             cvZero( self.histimg )
             self.first_time=False
 
-        self.hsv = self.cap.color("hsv", channel=3, copy=True)
+        self.hsv = self.cap.color("hsv", channel=3, copy=True) # Convert to HSV
 
         #self.image = self.cap.image().origin needed??
-        #self.cap.color("bgr", channel=3, copy=True)
         self.image = self.cap.image()
 
+        # If a selection has been made or if an object is already being tracked:
         if self.track_object != 0:
+            # Set up some scalars using the min/max values for hue, saturation, and value
             scalar1=cvScalar(self.hmin.value,self.smin.value,min(self.vmin.value,self.vmax.value),0)
             scalar2=cvScalar(self.hmax.value,self.smax.value,max(self.vmin.value,self.vmax.value),0)
+            # Create a mask using the scalars            
             cvInRangeS( self.hsv, scalar1, scalar2, self.mask )
 
             cvSplit(self.hsv, self.hue)
-
+            # If a selection has just been made and objects are not yet being tracked:
             if self.track_object < 0:
-                cvSetImageROI( self.hue, self.selection)
+                # Set the range of interest for the hue and mask images
+                cvSetImageROI( self.hue, self.selection) 
                 cvSetImageROI( self.mask, self.selection)
-                cvCalcHist( [self.hue], self.hist, 0, self.mask );
+                cvCalcHist( [self.hue], self.hist, 0, self.mask )
                 min_val, max_val = cvGetMinMaxHistValue(self.hist)
                 hbins = self.hist.bins[0]
                 cvConvertScale( hbins, hbins, 255. / max_val if max_val else 0., 0 )
                 cvResetImageROI( self.hue ) # ^ hisogram stuff, v tracking stuff
                 cvResetImageROI( self.mask )
-                self.track_window = self.selection #the original window to track is your mouse selection
-                self.track_object = 1 #now objects are being tracked
+                self.track_window = self.selection # the original window to track is your mouse selection
+                self.track_object = 1 # now objects are being tracked
 
                 #more histogram stuff -- now we're displaying it
                 cvZero( self.histimg )
@@ -289,12 +314,12 @@ class Module(object):
                 cvCvtColor( self.backproject, self.image, CV_GRAY2BGR ) #why??
             if not self.origin:
                 self.track_box.angle = -self.track_box.angle #why??"""
-            # Make sure its a number.
+            # Make sure it's a number.
             if math.isnan(self.track_box.size.height): 
                 self.track_box.size.height = 0
             if math.isnan(self.track_box.size.width): 
                 self.track_box.size.width = 0
-            #draws an ellipse around it. the ellipse is GREEN!!!!
+            #draws an ellipse around it. the ellipse is GREEN!!!! sometimes
             cvEllipseBox( self.image, self.track_box, CV_RGB(0,255,0), 3, CV_AA, 0 )
 
             if (not hasattr(self.cap, "obj_center")):
