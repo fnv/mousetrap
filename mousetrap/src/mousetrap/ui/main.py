@@ -121,25 +121,24 @@ class MainGui( gtk.Window ):
             self.cap_expander.set_expanded(True)
             self.vBox.pack_start(self.cap_expander)
             
-            # Expander and color selector for color tracking algorithms
-            #if self.cfg.get("main", "algorithm") == "color":
-            self.pal_expander = gtk.expander_new_with_mnemonic("Color _Picker")
             
-            # Create a vertical box inside the color picker expander for layout
-            self.pickerBox = gtk.VBox(spacing=10)
-            
-            self.picker = gtk.ColorSelection()
-            self.picker.set_has_palette(True)
-            self.pickerBox.pack_start(self.picker)
-            
-            self.saveColorButton = gtk.Button(stock=gtk.STOCK_SAVE)
-            self.saveColorButton.connect("clicked", self._changeColors)
-            self.pickerBox.pack_start(self.saveColorButton)
-            
-            self.pal_expander.add(self.pickerBox)
+            if self.cfg.get("main", "algorithm") == "color":
+                self.pal_expander = gtk.expander_new_with_mnemonic("Color _Picker")
+                # Create a vertical box inside the color picker expander for layout
+                self.pickerBox = gtk.VBox(spacing=10)
                 
                 
-            self.vBox.pack_start(self.pal_expander)
+                self.picker = gtk.ColorSelection()
+                self.picker.set_has_palette(True)
+                self.pickerBox.pack_start(self.picker)
+                
+                self.saveColorButton = gtk.Button(stock=gtk.STOCK_SAVE)
+                self.saveColorButton.connect("clicked", self._changeColors)
+                self.pickerBox.pack_start(self.saveColorButton)
+                
+                self.pal_expander.add(self.pickerBox)
+                
+                self.vBox.pack_start(self.pal_expander)
 
         if self.cfg.getboolean("gui", "showPointMapper"):
             self.map_expander = gtk.expander_new_with_mnemonic("_Script Mapper")
