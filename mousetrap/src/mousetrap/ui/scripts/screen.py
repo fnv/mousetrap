@@ -53,6 +53,12 @@ class ScriptClass(Mapper):
         self.point       = None
         self.border_with = 0
 
+        self.threshold = 1 # Threshold for mouse movement.  If any mouse movement is 
+                           # smaller than self.threshold pixels (I guess) then the mouse is not moved.
+                           # Trying to reduce jitteriness. Not working.
+        self.same_location_count = 0 # Yeah this variable name is bad.  It means the number of times
+                                     # that the cursor has been in the same location under the threshold.
+
         self.connect("expose_event", self.expose_event)
 
     def update_items(self, point):
@@ -94,12 +100,20 @@ class ScriptClass(Mapper):
             return False
 
         x, y = mouse.position()
+        
+        # If the difference between the new point and the last point is less than the threshold:
+        if -self.threshold < self.point.rel_diff.x < self.threshold or -self.threshold < self.point.rel_diff.y < self.threshold:
+            self.same_location_count+=1
+            # If the point has been in the same location for more than 5 frames:
+            if self.same_location_count > 5:
+                mouse.move(x,y) # Leave the mouse in the same location
+                return False
 
         par = ["width", "height"]
 
         new_x, new_y = [ (float(poss)/self.vscreen[par[i]])*env.screen[par[i]]
-                          for i,poss in enumerate([ (self.vscreen["width"]/2) - ( self.center["x"] - self.vpoint["x"]),
-                                                    (self.vscreen["height"]/2) - ( self.center["y"] - self.vpoint["y"] ) ])]
+                      for i,poss in enumerate([ (self.vscreen["width"]/2) - ( self.center["x"] - self.vpoint["x"]),
+                                                (self.vscreen["height"]/2) - ( self.center["y"] - self.vpoint["y"] ) ])]
 
         mouse.move( new_x, new_y)
         #mouse.move(self.point.x, self.point.y)
