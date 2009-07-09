@@ -25,6 +25,15 @@ MouseTrap is an application that allows a user to control the movement of the cu
 
 MAKING A NEW IDM
 
+First create a copy of the idm_example.py file found in the dev_tools folder. Rename it to whatever you want your IDM to be called when a user selects it from the preferences menu. Consult the file for advice on what each method does.
 
+FLOW OF MOUSETRAP
+
+<mousetrap.py>
+When mousetrap starts, the configuration settings are loaded from the config file, found in the .mousetrap directory in the user's home folder. The program loads the IDM listed in the config file. By default, this is the "forehead" algorithm. To run with a different at startup, use the --algo= option.=
+
+The initialization also starts the camera and sets the update rates for new images to display and new pointer positions. update_frame displays the image (and the position of the pointer as a green dot in the Script Mapper window). update_pointers takes the point position and actually moves the mouse.
+
+The initialization then starts the MainGui, builds the interface, and loads the addons.
 
 
