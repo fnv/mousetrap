@@ -266,8 +266,8 @@ class Module(object):
             self.hmin.value = int(max(temphue - 10, 0))
             self.hmax.value = int(min(temphue + 10, 180))
 
+            #creates a woobly selection box one should put one's object in before tracking
             self.origin = cvPoint(self.image.width / 2, self.image.height / 2)
-
             self.selection = cvRect(self.origin.x-50,self.origin.y-50,100,100)
 
             self.first_time=False
@@ -329,7 +329,6 @@ class Module(object):
             if (not hasattr(self.cap, "obj_center")):
                 self.cap.add(Point("point", "obj_center", ( int(self.track_box.center.x), int(self.track_box.center.y )), parent=self.cap, follow=True))
             else:
-
                 self.cap.obj_center.set_opencv(cvPoint(int(self.track_box.center.x), int(self.track_box.center.y)))
 
             #this displays the selection box before tracking starts
@@ -370,12 +369,14 @@ class Module(object):
         - self: The main object pointer
         """
 
+        # The return value has to be a Point() type object
+        # Following the forehad IDM, The return is self.cap.obj_center
+        # which is created in the get_image function as an attribute
+        # of self.cap
+
         if hasattr(self.cap, "obj_center"):
             return self.cap.obj_center
         else:
             pass
 
-            # The return value has to be a Point() type object
-            # Following the forehad IDM, The return is self.cap.forehead
-            # which is created in the get_forehead function as an attribute
-            # of self.cap
+
