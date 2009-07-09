@@ -237,7 +237,42 @@ class Module(object):
         - self: The main object pointer
         - color: The integer color value to convert to 0-255
         """
-        return (int)(color / 65535.0) * 255
+        return int((color / 65535.0) * 255)
+
+    def rgb2hue(self, red, green, blue):
+
+        red = self._convertColorDepth(red) / 255.0
+        green = self._convertColorDepth(green) / 255.0
+        blue = self._convertColorDepth(blue) / 255.0
+
+        print str(red) +" "+ str(green) +" "+ str(blue)
+
+        var_Min = min( red, green, blue )
+        var_Max = max( red, green, blue )
+        del_Max = var_Max - var_Min
+
+        if ( del_Max == 0 ):
+           hue = 0
+        else:
+            S = del_Max / var_Max
+
+            del_R = ( ( ( var_Max - red ) / 6 ) + ( del_Max / 2 ) ) / del_Max
+            del_G = ( ( ( var_Max - green ) / 6 ) + ( del_Max / 2 ) ) / del_Max
+            del_B = ( ( ( var_Max - blue ) / 6 ) + ( del_Max / 2 ) ) / del_Max
+
+            if ( red == var_Max ):
+                hue = del_B - del_G
+            elif ( green == var_Max ):
+                hue = ( 1 / 3 ) + del_R - del_B
+            elif ( blue == var_Max ):
+                hue = ( 2 / 3 ) + del_G - del_R
+
+            if ( hue < 0 ):
+                hue += 1
+            if ( hue > 1 ):
+                hue -= 1
+
+        return (hue * 180) / 2
 
     def get_image(self):
         """
@@ -263,6 +298,14 @@ class Module(object):
             self.histimg = cvCreateImage( cvSize(320,200), 8, 3 )
             self.temp = cvCreateImage(  cvGetSize(self.cap.image()), 8, 3) #needed?
             cvZero( self.histimg )
+
+            temphue = self.rgb2hue(float(self.cfg.get("color", "red")), float(self.cfg.get("color", "green")), float(self.cfg.get("color", "blue")))
+            print str(temphue)
+            self.hmin.value = int(max(temphue - 10, 0))
+            self.hmax.value = int(min(temphue + 10, 180))
+            print str(self.hmin.value)
+            print str(self.hmax.value)
+
             self.first_time=False
 
         self.hsv = self.cap.color("hsv", channel=3, copy=True) # Convert to HSV
