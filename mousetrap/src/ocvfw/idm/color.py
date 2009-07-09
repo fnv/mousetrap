@@ -118,8 +118,6 @@ class Module(object):
         cvNamedWindow( "Histogram", 1 )
         cvNamedWindow( "Mask", 1 )
 
-        cvSetMouseCallback( "Mask", self.on_mouse )
-
         cvCreateTrackbar( "Vmin", "Mask", self.vmin, 256 )
         cvCreateTrackbar( "Vmax", "Mask", self.vmax, 256 )
         cvCreateTrackbar( "Smin", "Mask", self.smin, 256 )
@@ -146,46 +144,6 @@ class Module(object):
         # For each key do something if required by the module
         for key in self.stgs:
             pass
-
-    def on_mouse(self, event, x, y, flags, param):
-        """
-        Mouse event callback function.  Draws a selection box when a mouse event occurs.
-        
-        Arguments:
-        - self: The main object pointer
-        - event: type of mouse event that occurred.
-        - X parameter of the mouse position.
-        - Y parameter of the mouse position.
-        """
-
-        if self.image is None:
-            return
-
-        if self.origin:
-            y = self.image.height - y
-
-        if self.select_object:
-            self.selection.x = min(x,self.origin.x)
-            self.selection.y = min(y,self.origin.y)
-            self.selection.width = self.selection.x + abs(x - self.origin.x)
-            self.selection.height = self.selection.y + abs(y - self.origin.y)
-            
-            self.selection.x = max( self.selection.x, 0 )
-            self.selection.y = max( self.selection.y, 0 )
-            self.selection.width = min( self.selection.width, self.image.width )
-            self.selection.height = min( self.selection.height, self.image.height )
-            self.selection.width -= self.selection.x
-            self.selection.height -= self.selection.y
-
-        if event == CV_EVENT_LBUTTONDOWN:
-            self.origin = cvPoint(x,y)
-            self.selection = cvRect(x,y,0,0)
-            self.select_object = 1
-        elif event == CV_EVENT_LBUTTONUP:
-            self.select_object = 0
-            if self.selection.width > 0 and self.selection.height > 0:
-                self.track_object = -1
-
 
     def hsv2rgb(self, hue):
         """
@@ -240,12 +198,14 @@ class Module(object):
         return int((color / 65535.0) * 255)
 
     def rgb2hue(self, red, green, blue):
+        """
+        Converts the rgb values from the config file into the corresponding hue value.
+        Does OpenCV have a way to do this? Would it be better to use their method?
+        """
 
         red = self._convertColorDepth(red) / 255.0
         green = self._convertColorDepth(green) / 255.0
         blue = self._convertColorDepth(blue) / 255.0
-
-        print str(red) +" "+ str(green) +" "+ str(blue)
 
         var_Min = min( red, green, blue )
         var_Max = max( red, green, blue )
@@ -288,30 +248,31 @@ class Module(object):
         # Needed to sync image in Mousetrap with camera frame?
         self.cap.sync()
 
+        #self.image = self.cap.image().origin needed??
+        self.image = self.cap.image()
+
         # Initialization of images.  Only needs to happen once.
         if self.first_time:
             # TODO: What is a better way to get the image size?
-            self.hue = cvCreateImage( cvGetSize(self.cap.image()), 8, 1 )
-            self.mask = cvCreateImage(  cvGetSize(self.cap.image()), 8, 1 )
-            self.backproject = cvCreateImage(  cvGetSize(self.cap.image()), 8, 1 )
+            self.hue = cvCreateImage( cvGetSize(self.image), 8, 1 )
+            self.mask = cvCreateImage(  cvGetSize(self.image), 8, 1 )
+            self.backproject = cvCreateImage(  cvGetSize(self.image), 8, 1 )
             self.hist = cvCreateHist( [self.hdims], CV_HIST_ARRAY, [[0, 180]] )
             self.histimg = cvCreateImage( cvSize(320,200), 8, 3 )
-            self.temp = cvCreateImage(  cvGetSize(self.cap.image()), 8, 3) #needed?
+            self.temp = cvCreateImage(  cvGetSize(self.image), 8, 3) #needed?
             cvZero( self.histimg )
 
             temphue = self.rgb2hue(float(self.cfg.get("color", "red")), float(self.cfg.get("color", "green")), float(self.cfg.get("color", "blue")))
-            print str(temphue)
             self.hmin.value = int(max(temphue - 10, 0))
             self.hmax.value = int(min(temphue + 10, 180))
-            print str(self.hmin.value)
-            print str(self.hmax.value)
+
+            self.origin = cvPoint(self.image.width / 2, self.image.height / 2)
+
+            self.selection = cvRect(self.origin.x-50,self.origin.y-50,100,100)
 
             self.first_time=False
 
         self.hsv = self.cap.color("hsv", channel=3, copy=True) # Convert to HSV
-
-        #self.image = self.cap.image().origin needed??
-        self.image = self.cap.image()
 
         # If a selection has been made or if an object is already being tracked:
         if self.track_object != 0:
@@ -368,11 +329,11 @@ class Module(object):
             if (not hasattr(self.cap, "obj_center")):
                 self.cap.add(Point("point", "obj_center", ( int(self.track_box.center.x), int(self.track_box.center.y )), parent=self.cap, follow=True))
             else:
-                self.cap.obj_center.set_opencv(cvPoint(int(self.track_box.center.x), int(self.track_box.center.y)))
-                #self.cap.obj_center.x = 
 
-            #still lost
-        if bool(self.select_object) and self.selection.width > 0 and self.selection.height > 0:
+                self.cap.obj_center.set_opencv(cvPoint(int(self.track_box.center.x), int(self.track_box.center.y)))
+
+            #this displays the selection box before tracking starts
+        if not self.track_object:
             cvSetImageROI( self.image, self.selection )
             cvXorS( self.image, cvScalarAll(255), self.image )
             cvResetImageROI( self.image )
@@ -384,6 +345,15 @@ class Module(object):
         cvShowImage( "Mask", self.mask)
         
         self.cap.color("rgb", channel=3, copy=True)
+
+        #Press t to start tracking! Press x to stop tracking!
+        c = '%c' % (cvWaitKey(10) & 255)
+        if c == 't':
+            if self.selection.width > 0 and self.selection.height > 0:
+                self.track_object = -1
+        if c == 'x':
+            #self.cap.remove("obj_center")
+            self.track_object = 0
 
         # Calls the resize method passing the new with, height
         # specifying that the new image has to be a copy of the original
@@ -401,12 +371,11 @@ class Module(object):
         """
 
         if hasattr(self.cap, "obj_center"):
-            self.cap.pointer = self.cap.obj_center
+            return self.cap.obj_center
         else:
-            self.cap.pointer = Point("point", "obj_center", ( 100, 200 ), parent=self.cap, follow=True)
+            pass
 
             # The return value has to be a Point() type object
             # Following the forehad IDM, The return is self.cap.forehead
             # which is created in the get_forehead function as an attribute
             # of self.cap
-        return self.cap.pointer
