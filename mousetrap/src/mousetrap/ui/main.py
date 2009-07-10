@@ -88,6 +88,8 @@ class MainGui( gtk.Window ):
         self.add_accel_group( accelGroup )
 
         self.accelGroup = accelGroup
+        
+        self.add_events(gtk.gdk.KEY_PRESS_MASK)
 
         self.set_title( "MouseTrap" )
         self.connect( "destroy", self.close)
@@ -109,6 +111,8 @@ class MainGui( gtk.Window ):
         self.helpButton = gtk.Button(stock=gtk.STOCK_HELP)
         self.helpButton.connect("clicked", self._loadHelp)
         self.buttonsBox.pack_start( self.helpButton, True, True )
+
+         w.connect("key-release-event", wakeup)
 
         self.vBox.pack_start( self.buttonsBox, False, False )
 
