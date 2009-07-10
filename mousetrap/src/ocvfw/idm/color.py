@@ -263,8 +263,9 @@ class Module(object):
             cvZero( self.histimg )
 
             temphue = self.rgb2hue(float(self.cfg.get("color", "red")), float(self.cfg.get("color", "green")), float(self.cfg.get("color", "blue")))
-            self.hmin.value = int(max(temphue - 10, 0))
-            self.hmax.value = int(min(temphue + 10, 180))
+            print "hue: " + str(temphue)
+            self.hmin.value = int(max(temphue - 25, 0))
+            self.hmax.value = int(min(temphue + 25, 180))
 
             #creates a woobly selection box one should put one's object in before tracking
             self.origin = cvPoint(self.image.width / 2, self.image.height / 2)
