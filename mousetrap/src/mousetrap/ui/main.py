@@ -138,6 +138,11 @@ class MainGui( gtk.Window ):
                 
                 self.saveColorButton = gtk.Button(stock=gtk.STOCK_SAVE)
                 self.saveColorButton.connect("clicked", self._changeColors)
+                
+                # Weird config file hack. See Module.update_hue_range() docs
+                if self.cfg.getboolean("main", "startCam"):
+                    self.saveColorButton.connect("clicked", self.ctr.idm.Module.update_hue_range())
+                
                 self.pickerBox.pack_start(self.saveColorButton)
                 
                 self.pal_expander.add(self.pickerBox)
