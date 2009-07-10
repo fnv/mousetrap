@@ -44,9 +44,7 @@ import math
 # a_settings: Possible settings needed by the idm. For Example: { 'var_name' : { 'value' : default_value}, 'var_name2' : { 'value' : default_value} }  These settings are loaded from usrSettings.cfg in /home/username/.mousetrap.
 a_name = "color"
 a_description = "Color tracker using CAMshift algorithm"
-a_settings = {'red' : {"value":2},
-              'green' : {"value":2},
-              'blue' : {"value":2}}
+a_settings = {}
 
 class Module(object):
     """
