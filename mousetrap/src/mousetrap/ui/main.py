@@ -112,8 +112,6 @@ class MainGui( gtk.Window ):
         self.helpButton.connect("clicked", self._loadHelp)
         self.buttonsBox.pack_start( self.helpButton, True, True )
 
-         w.connect("key-release-event", wakeup)
-
         self.vBox.pack_start( self.buttonsBox, False, False )
 
         self.cap_image    = gtk.Image()
@@ -141,7 +139,7 @@ class MainGui( gtk.Window ):
                 
                 # Weird config file hack. See Module.update_hue_range() docs
                 if self.cfg.getboolean("main", "startCam"):
-                    self.saveColorButton.connect("clicked", self.ctr.idm.Module.update_hue_range())
+                    self.saveColorButton.connect("clicked", self.ctr.idm.update_hue_range)
                 
                 self.pickerBox.pack_start(self.saveColorButton)
                 
