@@ -44,9 +44,9 @@ import math
 # a_settings: Possible settings needed by the idm. For Example: { 'var_name' : { 'value' : default_value}, 'var_name2' : { 'value' : default_value} }  These settings are loaded from usrSettings.cfg in /home/username/.mousetrap.
 a_name = "color"
 a_description = "Color tracker using CAMshift algorithm"
-a_settings = {'hue' : {"value":2},
-              'saturation' : {"value":2},
-              'value' : {"value":2}}
+a_settings = {'red' : {"value":2},
+              'green' : {"value":2},
+              'blue' : {"value":2}}
 
 class Module(object):
     """
@@ -232,7 +232,7 @@ class Module(object):
             if ( hue > 1 ):
                 hue -= 1
 
-        return (hue * 180) / 2
+        return (hue * 360) / 2
 
     def get_image(self):
         """
@@ -265,6 +265,7 @@ class Module(object):
             temphue = self.rgb2hue(float(self.cfg.get("color", "red")), float(self.cfg.get("color", "green")), float(self.cfg.get("color", "blue")))
             self.hmin.value = int(max(temphue - 10, 0))
             self.hmax.value = int(min(temphue + 10, 180))
+            print str(self.hmin.value) + ", " + str(self.hmax.value)
 
             #creates a woobly selection box one should put one's object in before tracking
             self.origin = cvPoint(self.image.width / 2, self.image.height / 2)
