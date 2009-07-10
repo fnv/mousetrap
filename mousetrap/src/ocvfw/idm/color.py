@@ -232,6 +232,28 @@ class Module(object):
 
         return (hue * 360) / 2
 
+    def update_hue_range(self):
+		"""
+		WARNING: HACK by Ryan
+		This method is used as a callback connected to the color picker
+		save button's click event. I had to do this because we need to update
+		the hue min/max in this idm whenever the user saves a new color.
+		However, we can't poll a file's status to see if it's changed, so
+		we routed the event to two callbacks.
+		
+		Suggestion: Maybe use a dictionary for configure settings and
+		serialize it on quit. This would trivialize querying a settings
+		structure and allow us comparatively free use of the data. Right now
+		we're forced to keep in mind how often we query settings because
+		hard drives are SLOW.
+		"""
+        temphue = self.rgb2hue(float(self.cfg.get("color", "red")),\
+								float(self.cfg.get("color", "green")),\
+								float(self.cfg.get("color", "blue")))
+
+        self.hmin.value = int(max(temphue - 10, 0))
+        self.hmax.value = int(min(temphue + 10, 180))
+
     def get_image(self):
         """
         Gets the last queried and formated image.
