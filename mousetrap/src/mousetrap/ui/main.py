@@ -277,9 +277,9 @@ class MainGui( gtk.Window ):
         # Note: This is reversed (GBR), but it's written to the config file as RGB.
         # This is because ConfigParser.set presumably places these on a stack before
         # they are written. If called in RGB order, they are written as BGR.
-        self.cfg.set("color", "blue", color.blue)
-        self.cfg.set("color", "green", color.green)
-        self.cfg.set("color", "red", color.red)
+        self.cfg.set("color", "blue", str(color.blue))
+        self.cfg.set("color", "green", str(color.green))
+        self.cfg.set("color", "red", str(color.red))
         
         self._finalizeConfigChanges()
     

@@ -52,13 +52,13 @@ class ScriptClass(Mapper):
 
         self.point       = None
         self.border_with = 0
-
+        """
         self.threshold = 1 # Threshold for mouse movement.  If any mouse movement is 
                            # smaller than self.threshold pixels (I guess) then the mouse is not moved.
                            # Trying to reduce jitteriness. Not working.
         self.same_location_count = 0 # Yeah this variable name is bad.  It means the number of times
                                      # that the cursor has been in the same location under the threshold.
-
+        """
         self.connect("expose_event", self.expose_event)
 
     def update_items(self, point):
@@ -80,10 +80,11 @@ class ScriptClass(Mapper):
         self.center = { "x" : self.width / 2,
                         "y" : self.height / 2 }
 
-        self.vscreen = { "x" : self.center["x"] - 40,
-                         "y" : self.center["y"] - 30,
-                         "width"  : 80,
-                         "height" : 60}
+        #we need to figure out how to get access to the cfg file from here
+        self.vscreen = { "x" : self.center["x"] - 80,
+                         "y" : self.center["y"] - 60,
+                         "width"  : 160,
+                         "height" : 120}
 
         self.draw_rectangle( self.vscreen["x"], self.vscreen["y"],
                              self.vscreen["width"], self.vscreen["height"],
@@ -100,7 +101,7 @@ class ScriptClass(Mapper):
             return False
 
         x, y = mouse.position()
-        
+        """
         # If the difference between the new point and the last point is less than the threshold:
         if -self.threshold < self.point.rel_diff.x < self.threshold or -self.threshold < self.point.rel_diff.y < self.threshold:
             self.same_location_count+=1
@@ -108,7 +109,7 @@ class ScriptClass(Mapper):
             if self.same_location_count > 5:
                 mouse.move(x,y) # Leave the mouse in the same location
                 return False
-
+        """
         par = ["width", "height"]
 
         new_x, new_y = [ (float(poss)/self.vscreen[par[i]])*env.screen[par[i]]

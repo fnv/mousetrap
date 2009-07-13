@@ -71,7 +71,7 @@ class Module(object):
         self.cfg = self.ctr.cfg
 
         if not self.cfg.has_section("color"):
-		    self.cfg.add_section("color")
+            self.cfg.add_section("color")
         # Capture instance
         # The capture is the object containing the image 
         # and all the possible methods to modify it.
@@ -198,37 +198,57 @@ class Module(object):
     def rgb2hue(self, red, green, blue):
         """
         Converts the rgb values from the config file into the corresponding hue value.
-        Does OpenCV have a way to do this? Would it be better to use their method?
+        This method was stolen from the gtk source!
         """
 
-        red = self._convertColorDepth(red) / 255.0
-        green = self._convertColorDepth(green) / 255.0
-        blue = self._convertColorDepth(blue) / 255.0
-
-        var_Min = min( red, green, blue )
-        var_Max = max( red, green, blue )
-        del_Max = var_Max - var_Min
-
-        if ( del_Max == 0 ):
-           hue = 0
+        hue = 0.0
+          
+        if (red > green):
+            if (red > blue):
+                cmax = red
+            else:
+                cmax = blue
+            
+            if (green < blue):
+                cmin = green
+            else:
+                cmin = blue;
         else:
-            S = del_Max / var_Max
-
-            del_R = ( ( ( var_Max - red ) / 6 ) + ( del_Max / 2 ) ) / del_Max
-            del_G = ( ( ( var_Max - green ) / 6 ) + ( del_Max / 2 ) ) / del_Max
-            del_B = ( ( ( var_Max - blue ) / 6 ) + ( del_Max / 2 ) ) / del_Max
-
-            if ( red == var_Max ):
-                hue = del_B - del_G
-            elif ( green == var_Max ):
-                hue = ( 1 / 3 ) + del_R - del_B
-            elif ( blue == var_Max ):
-                hue = ( 2 / 3 ) + del_G - del_R
-
-            if ( hue < 0 ):
-                hue += 1
-            if ( hue > 1 ):
-                hue -= 1
+            if (green > blue):
+                cmax = green
+            else:
+                cmax = blue
+           
+            if (red < blue):
+                cmin = red
+            else:
+                cmin = blue
+        
+        val = cmax
+        
+        if (cmax != 0.0):
+            sat = (cmax - cmin) / cmax
+        else:
+            sat = 0.0
+        
+        if (sat == 0.0):
+            hue = 0.0
+        else:
+            delta = cmax - cmin
+            
+            if (red == cmax):
+                hue = (green - blue) / delta
+            elif (green == cmax):
+                hue = 2 + (blue - red) / delta
+            elif (blue == cmax):
+                hue = 4 + (red - green) / delta
+            
+            hue /= 6.0;
+            
+            if (hue < 0.0):
+                hue += 1.0
+            elif (hue > 1.0):
+                hue -= 1.0
 
         return (hue * 360) / 2
 
@@ -240,17 +260,19 @@ class Module(object):
         the hue min/max in this idm whenever the user saves a new color.
         However, we can't poll a file's status to see if it's changed, so
         we routed the event to two callbacks.
-		
+        
         Suggestion: Maybe use a dictionary for configure settings and
         serialize it on quit. This would trivialize querying a settings
         structure and allow us comparatively free use of the data. Right now
         we're forced to keep in mind how often we query settings because
         hard drives are SLOW.
         """
-        temphue = self.rgb2hue(float(self.cfg.get("color", "red")),float(self.cfg.get("color", "green")),(self.cfg.get("color", "blue")))
 
-        self.hmin.value = int(max(temphue - 10, 0))
-        self.hmax.value = int(min(temphue + 10, 180))
+        temphue = self.rgb2hue(float(self.cfg.get("color", "red")), float(self.cfg.get("color", "green")), float(self.cfg.get("color", "blue")))
+
+        hrange = self.cfg.hrange / 2
+        self.hmin.value = int(max(temphue - hrange, 0))
+        self.hmax.value = int(min(temphue + hrange, 180))
 
     def get_image(self):
         """
@@ -282,9 +304,9 @@ class Module(object):
 
             temphue = self.rgb2hue(float(self.cfg.get("color", "red")), float(self.cfg.get("color", "green")), float(self.cfg.get("color", "blue")))
 
-            print "hue: " + str(temphue)
-            self.hmin.value = int(max(temphue - 10, 0))
-            self.hmax.value = int(min(temphue + 10, 180))
+            hrange = self.cfg.hrange / 2
+            self.hmin.value = int(max(temphue - hrange, 0))
+            self.hmax.value = int(min(temphue + hrange, 180))
             print str(self.hmin.value) + ", " + str(self.hmax.value)
 
 
