@@ -20,6 +20,7 @@
 
 import os
 import gobject
+import mousetrap.debug as debug
 import mousetrap.environment as env
 
 from subprocess import Popen, PIPE
@@ -35,6 +36,7 @@ class Addon(AddonsBase):
         AddonsBase.__init__(self, controller)
         
         gobject.timeout_add(1000, self.check_cpu)
+        debug.debug("addon.cpu", "CPU addon started")
 
     def check_cpu(self):
         """

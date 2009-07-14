@@ -35,8 +35,6 @@ import mousetrap.debug as debug
 import mousetrap.environment as env
 from mousetrap.addons import cpu
 
-import ctypesopencv as cv
-
 class MainGui( gtk.Window ):
     """
     MouseTrap main GUI Class
@@ -114,6 +112,10 @@ class MainGui( gtk.Window ):
 
         self.vBox.pack_start( self.buttonsBox, False, False )
 
+        self.adds_vbox = gtk.VBox()
+        self.adds_vbox.show_all()
+        self.vBox.pack_start( self.adds_vbox, False, False )
+
         self.cap_image    = gtk.Image()
 
         if self.cfg.getboolean("gui", "showCapture"):
@@ -176,6 +178,8 @@ class MainGui( gtk.Window ):
         self.add(self.vBox)
         self.show()
 
+        debug.debug("ui.main", "Interface Built")
+
     def load_addons(self):
         """
         Loads the enabled addons
@@ -189,9 +193,10 @@ class MainGui( gtk.Window ):
                     globals(), locals(),[''])
 
             setattr(self, add, tmp.Addon(self.ctr))
+        debug.debug("ui.main", "Addons loaded")
 
 
-    def update_frame(self, img, point):
+    def update_frame(self, cap, point):
         """
         Updates the image
 
@@ -200,19 +205,22 @@ class MainGui( gtk.Window ):
         - img: The IPLimage object.
         """
 
-        if not img:
+        if not cap.image():
             return False
 
         #self.script.update_items(point)
         """buff = gtk.gdk.pixbuf_new_from_data( img.imageData, gtk.gdk.COLORSPACE_RGB, False, img.depth, \
                                              int(img.width), \
                                              int(img.height), \
-                                             img.widthStep ) """
+                                             img.widthStep ) 
 
         buff = gtk.gdk.pixbuf_new_from_array(img.as_numpy_array(), gtk.gdk.COLORSPACE_RGB, img.depth)
 
         #sets new pixbuf
-        self.cap_image.set_from_pixbuf(buff)
+        self.cap_image.set_from_pixbuf(buff)"""
+
+        #sets new pixbuf -- Flavio's new way, untested
+        self.cap_image.set_from_pixbuf(cap.to_gtk_buff().scale_simple(200, 160, gtk.gdk.INTERP_BILINEAR))
 
 #     def recalcPoint( self, widget, flip = ''):
 #         """

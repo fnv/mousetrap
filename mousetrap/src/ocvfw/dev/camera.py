@@ -28,49 +28,49 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import gobject
-
 from warnings import *
-from .. import debug, commons
-from ctypesopencv import cv
-from ctypesopencv import highgui as hg
-from .._ocv import Ocvfw as ocv
+from .. import debug
+from .. import commons as co
+from ocvfw import _ocv as ocv
 
+Camera = None
 
-class __Camera(ocv):
+try:
+    import gtk
+except ImportError:
+    debug.info("Camera", "Gtk not imported")
 
-    def init(self):
-        """
-        Initialize the camera.
+def _camera(backend):
+    if not hasattr(ocv, backend):
+        debug.warning("Camera", "Not such backend %s falling back to OcvfwPython" % backend)
+        backend = "OcvfwPython"
+    
+    bknd = getattr(ocv, backend)
 
-        Arguments:
-        - self: The main object pointer.
-        - idx: The camera device index.
-        - fps: The frames per second to be queried.
-        - async: Enable/Disable asynchronous image querying. Default: False
-        """
-        self.idx = 0
+    @co.singleton
+    class Camera(bknd):
+        def __init__(self):
+            bknd.__init__(self)
 
-    def set_camera(self, idx):
-        self.idx = idx
-
-    def start(self):
-        self.start_camera(self.idx)
-
-
-Camera = __Camera()
+    return Camera()
 
 
 class Capture(object):
 
-    def __init__(self, image=None, fps=100, async=False, idx=0):
+    def __init__(self, image=None, fps=100, async=False, idx=0, backend="OcvfwPython"):
+
+        global Camera
 
         self.__lock        = False
         self.__flip        = {}
         self.__color       = "bgr"
         self.__props       = { "color" : "rgb" }
-        self.__camera      = Camera
-        self.__camera.set_camera(idx)
-        self.__camera.start()
+
+
+        Camera = _camera(backend)
+        Camera.set_camera_idx(idx)
+        Camera.start_camera()
+        debug.debug("Camera", "Loaded backend %s" % backend)
 
         self.__graphics    = { "rect"  : [],
                                "point" : []}
@@ -80,8 +80,8 @@ class Capture(object):
         self.__image_log   = []
         self.__image_orig  = None
 
-        color_vars         = [x for x in dir(cv) if '2' in x and str(getattr(cv, x)).isdigit()]
-        self.__color_int   = dict(zip([x.lower() for x in color_vars], [getattr(cv,x) for x in color_vars]))
+        color_vars         = [x for x in dir(co.cv) if '2' in x and str(getattr(co.cv, x)).isdigit()]
+        self.__color_int   = dict(zip([x.lower() for x in color_vars], [getattr(co.cv,x) for x in color_vars]))
 
         self.roi           = None
 
@@ -114,28 +114,34 @@ class Capture(object):
         - self: The main object pointer.
         """
 
-        self.__camera.query_image()
+        Camera.query_image()
 
         if not self.__image:
-            self.__images_cn   = { 1 : cv.cvCreateImage ( self.__camera.imgSize, 8, 1 ),
-                                   3 : cv.cvCreateImage ( self.__camera.imgSize, 8, 3 ),
-                                   4 : cv.cvCreateImage ( self.__camera.imgSize, 8, 4 ) }
+            self.__images_cn   = { 1 : co.cv.cvCreateImage ( Camera.imgSize, 8, 1 ),
+                                   3 : co.cv.cvCreateImage ( Camera.imgSize, 8, 3 ),
+                                   4 : co.cv.cvCreateImage ( Camera.imgSize, 8, 4 ) }
 
         self.__color       = "bgr"
-        self.__image_orig  = self.__image = self.__camera.img
+        self.__image_orig  = self.__image = Camera.img
 
         if self.__color != self.__color_set:
             self.__image = self.color(self.__color_set)
 
-        # TODO: Workaround, I've to fix it
-        """if len(self.__camera.img_lkpoints["last"]) > 0:
-            self.__camera.show_lkpoints()
+        # TODO: Workaround, I've to fix it # We commented this out
+        if len(Camera.img_lkpoints["last"]) > 0:
+            Camera.show_lkpoints()
 
-        self.__camera.swap_lkpoints()"""
+        if Camera.lk_swap():
+            Camera.swap_lkpoints()
 
         self.show_rectangles(self.rectangles())
 
         return self.async
+
+    def set_camera(self, key, value):
+      """
+      """
+      Camera.set(key, value)
 
     #@property
     def image(self, new_img = None):
@@ -164,14 +170,34 @@ class Capture(object):
         if self.__image is None:
             return False
 
-        tmp = cv.cvCreateImage( cv.cvSize( width, height ), 8, self.__ch )
-        cv.cvResize( self.__image, tmp, cv.CV_INTER_AREA )
+        tmp = co.cv.cvCreateImage( co.cv.cvSize( width, height ), 8, self.__ch )
+        co.cv.cvResize( self.__image, tmp, co.cv.CV_INTER_AREA )
 
         if not copy:
             self.__image = tmp
 
         return tmp
 
+    def to_gtk_buff(self):
+        """
+        Converts image to gtkImage and returns it
+
+        Arguments:
+        - self: The main object pointer.
+        """
+
+        img = self.__image
+
+        if "as_numpy_array" in dir(img):
+            buff = gtk.gdk.pixbuf_new_from_array(img.as_numpy_array(), 
+                                                 gtk.gdk.COLORSPACE_RGB, 
+                                                 img.depth)
+        else:
+            buff = gtk.gdk.pixbuf_new_from_data(img.imageData, 
+                                                gtk.gdk.COLORSPACE_RGB, False, 8,
+                                                int(img.width), int(img.height), 
+                                                img.widthStep )
+        return buff
 
     def points(self):
         """
@@ -201,10 +227,10 @@ class Capture(object):
         #debug.debug("Camera", "Showing existing rectangles -> %d" % len(rectangles))
 
         for rect in rectangles:
-            cv.cvRectangle( self.__image, cv.cvPoint(rect.x, rect.y), cv.cvPoint(rect.size[0], rect.size[1]), cv.CV_RGB(255,0,0), 3, 8, 0 )
+            co.cv.cvRectangle( self.__image, co.cv.cvPoint(rect.x, rect.y), co.cv.cvPoint(rect.size[0], rect.size[1]), co.cv.CV_RGB(255,0,0), 3, 8, 0 )
 
     def draw_point(self, x, y):
-        cv.cvCircle(self.__image, [x,y], 3, cv.cvScalar(0, 255, 0, 0), -1, 8, 0)
+        co.cv.cvCircle(self.__image, [x,y], 3, co.cv.cvScalar(0, 255, 0, 0), -1, 8, 0)
 
     def original(self):
         """
@@ -230,9 +256,9 @@ class Capture(object):
         rect = args[0]
 
         if len(args) > 1:
-            rect = cv.cvRect( args[0], args[1], args[2], args[3] )
+            rect = co.cv.cvRect( args[0], args[1], args[2], args[3] )
 
-        return cv.cvGetSubRect(self.__image, rect)
+        return co.cv.cvGetSubRect(self.__image, rect)
 
 
     def flip(self, flip):
@@ -245,10 +271,10 @@ class Capture(object):
         """
 
         if "hor" or "both" in flip:
-            cv.cvFlip( self.__image, self.__image, 1)
+            co.cv.cvFlip( self.__image, self.__image, 1)
 
         if "ver" or "both" in flip:
-            cv.cvFlip( self.__image, self.__image, 0)
+            co.cv.cvFlip( self.__image, self.__image, 0)
 
         return self.__image
 
@@ -263,11 +289,11 @@ class Capture(object):
         returns self.color if color == None
         """
 
-        channel = channel if channel != None else commons.get_ch(new_color)
+        channel = channel if channel != None else co.get_ch(new_color)
 
         if new_color:
             tmp = self.__images_cn[channel]
-            cv.cvCvtColor( self.__image, tmp, self.__color_int['cv_%s2%s' % (self.__color, new_color) ])
+            co.cv.cvCvtColor( self.__image, tmp, self.__color_int['cv_%s2%s' % (self.__color, new_color) ])
             self.__color = new_color
             self.__ch = channel
 
@@ -284,7 +310,7 @@ class Capture(object):
         - self: The main object pointer.
         - properties: The properties to change.
         """
-        #self.__size     = size  if size  != None else self.__camera.imgSize
+        #self.__size     = size  if size  != None else Camera.imgSize
         self.__color_set = color if color.lower() != None else self.__color_set
         self.__flip      = flip  if flip  != None else self.__flip
 
@@ -346,10 +372,10 @@ class Capture(object):
         """
 
         if roi is None:
-            return self.__camera.get_haar_points(haar_csd)
+            return Camera.get_haar_points(haar_csd)
 
         roi = cv.cvRect(roi["start"], roi["end"], roi["width"], roi["height"])
-        return self.__camera.get_haar_roi_points(haar_csd, roi, orig)
+        return Camera.get_haar_roi_points(haar_csd, roi, orig)
 
     def message(self, message):
         """
@@ -439,7 +465,7 @@ class Point(Graphic):
         self.__ocv = None
         self.last  = None
         self.diff  = None
-        self.orig  = cv.cvPoint( self.x, self.y )
+        self.orig  = co.cv.cvPoint( self.x, self.y )
 
     def set_opencv(self, opencv):
         """
@@ -459,10 +485,10 @@ class Point(Graphic):
             self.last = self.__ocv
 
             # Update the diff attr
-            self.rel_diff = cv.cvPoint( self.last.x - self.x,
+            self.rel_diff = co.cv.cvPoint( self.last.x - self.x,
                                         self.last.y - self.y )
 
-            self.abs_diff = cv.cvPoint( self.x - self.orig.x,
+            self.abs_diff = co.cv.cvPoint( self.x - self.orig.x,
                                         self.y - self.orig.y )
 
         self.__ocv = opencv

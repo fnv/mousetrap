@@ -18,7 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Ocvfw.  If not, see <http://www.gnu.org/licenses/>>.
 
-
 """Little  Framework for OpenCV Library."""
 
 __id__        = "$Id$"
@@ -29,20 +28,9 @@ __license__   = "GPLv2"
 
 import time
 import debug
+import commons as co
 
-
-try:
-    from ctypesopencv import cv
-    from ctypesopencv import highgui
-except:
-    print "This modules depends of opencv libraries"
-
-
-class Ocvfw:
-    """
-    This Class controlls the main camera functions.
-    It works as a little framework for OpenCV.
-    """
+class OcvfwBase:
 
     def __init__( self ):
         """
@@ -54,88 +42,105 @@ class Ocvfw:
         self.img_lkpoints = { "current" : [],
                               "last"    : [],
                               "points"  : [] }
+
+        self.__lk_swap = False
         self.imageScale   = 1.5
 
-    def add_message(self, message, font=cv.CV_FONT_HERSHEY_COMPLEX, poss=None):
+    def set(self, key, value):
         """
-        Write a message into the image.
+        """
+        if hasattr(self, "%s" % key):
+            getattr(self, "%s" % key)(value)
+            debug.debug("OcvfwBase", "Changed %s value to %s" % (key, value))
+            return True
+        
+        debug.debug("OcvfwBase", "%s not found" % (key))
+        return False
+
+    def lk_swap(self, set=None):
+        """
+        Enables/Disable the lk points swapping action.
 
         Arguments:
         - self: The main object pointer.
-        - message: A string with the message.
-        - font: An OpenCV font to use.
-        - poss: The position of the message in the image. NOTE: Not enabled yet.
+        - set: The new value. If None returns the current state.
+        """
+        
+        if set is None:
+            return self.__lk_swap
+        
+        self.__lk_swap = set
+
+    def new_image(self, size, num, ch):
+        """
+        Creates a new image 
         """
 
-        font = cv.cvInitFont ( font, 1, 1, 0.0, 1, cv.CV_AA)
-        textSize, ymin = cv.cvGetTextSize (message, font)
-        pt1 = cv.cvPoint ( ( self.img.width - textSize.width ) / 2 , 20 )
-        cv.cvPutText (self.img, message, pt1, font, cv.cvScalar (255, 0, 0))
+        if type(size) == "<type 'tuple'>":
+            size = co.cv.cvSize( size[0], size[1])
 
-    def get_haar_points(self, haarCascade, method=cv.CV_HAAR_DO_CANNY_PRUNING):
+        return co.cv.cvCreateImage( size, num, ch)
+
+    def set_camera_idx(self, idx):
         """
-        Search for points matching the haarcascade selected.
+        Changes the camera device index.
 
         Arguments:
         - self: The main object pointer.
-        - haarCascade: The selected cascade.
-        - methode: The search method to use. DEFAULT: cv.CV_HAAR_DO_CANNY_PRUNING.
-
-        Returns a list with the matches.
+        - idx: The camera index. For Example: 0 for /dev/video0
         """
+        self.idx = idx
 
-        cascade = cv.cvLoadHaarClassifierCascade( haarCascade, self.imgSize )
-
-        if not cascade:
-            debug.exception( "ocvfw", "The Haar Classifier Cascade load failed" )
-
-        cv.cvResize( self.img, self.small_img, cv.CV_INTER_LINEAR )
-
-        cv.cvClearMemStorage( self.storage )
-
-        points = cv.cvHaarDetectObjects( self.small_img, cascade, self.storage, 1.2, 2, method, cv.cvSize(20, 20) )
-
-        if points:
-            matches = [ [ cv.cvPoint( int(r.x*self.imageScale), int(r.y*self.imageScale)), \
-                          cv.cvPoint( int((r.x+r.width)*self.imageScale), int((r.y+r.height)*self.imageScale) )] \
-                          for r in points]
-            debug.debug( "ocvfw", "cmGetHaarPoints: detected some matches" )
-            return matches
-
-    def get_haar_roi_points(self, haarCascade, rect, origSize=(0, 0), method=cv.CV_HAAR_DO_CANNY_PRUNING):
+    def wait_key(self, num):
         """
-        Search for points matching the haarcascade selected.
+        Simple call to the highgui.cvWaitKey function, which has to be called periodically.
 
         Arguments:
         - self: The main object pointer.
-        - haarCascade: The selected cascade.
-        - methode: The search method to use. DEFAULT: cv.CV_HAAR_DO_CANNY_PRUNING.
+        - num: An int value.
+        """
+        return co.hg.cvWaitKey(num)
 
-        Returns a list with the matches.
+    def start_camera(self, params = None):
+        """
+        Starts the camera capture using highgui.
+
+        Arguments:
+        - params: A list with the capture properties. NOTE: Not implemented yet.
+        """
+        self.capture = co.hg.cvCreateCameraCapture( int(self.idx) )
+        debug.debug( "ocvfw", "cmStartCamera: Camera Started" )
+
+    def query_image(self, bgr=False, flip=False):
+        """
+        Queries the new frame.
+
+        Arguments:
+        - self: The main object pointer.
+        - bgr: If True. The image will be converted from RGB to BGR.
+
+        Returns The image even if it was stored in self.img
         """
 
-        cascade = cv.cvLoadHaarClassifierCascade( haarCascade, self.imgSize )
+        frame = co.hg.cvQueryFrame( self.capture )
 
-        if not cascade:
-            debug.exception( "ocvfw", "The Haar Classifier Cascade load failed" )
+        if not  self.img:
+            self.storage        = co.cv.cvCreateMemStorage(0)
+            self.imgSize        = co.cv.cvGetSize (frame)
+            self.img            = co.cv.cvCreateImage ( self.imgSize, 8, 3 ) #16?
+            #self.img.origin     = frame.origin
+            self.grey           = co.cv.cvCreateImage ( self.imgSize, 8, 1 )
+            self.yCrCb          = co.cv.cvCreateImage ( self.imgSize, 8, 3 )
+            self.prevGrey       = co.cv.cvCreateImage ( self.imgSize, 8, 1 )
+            self.pyramid        = co.cv.cvCreateImage ( self.imgSize, 8, 1 )
+            self.prevPyramid    = co.cv.cvCreateImage ( self.imgSize, 8, 1 )
+            self.small_img       = co.cv.cvCreateImage( co.cv.cvSize( co.cv.cvRound ( self.imgSize.width/self.imageScale),
+                                    co.cv.cvRound ( self.imgSize.height/self.imageScale) ), 8, 3 )
+        self.img = frame
+        co.cv.cvCvtColor(self.img, self.grey, co.cv.CV_BGR2GRAY)
 
-        cv.cvClearMemStorage(self.storage)
-
-        imageROI = cv.cvGetSubRect(self.img, rect)
-
-        if cascade:
-            points = cv.cvHaarDetectObjects( imageROI, cascade, self.storage,
-                                    1.2, 2, method, cv.cvSize(20,20) )
-        else:
-            debug.exception( "ocvfw", "The Haar Classifier Cascade load Failed (ROI)" )
-
-        if points:
-            matches = [ [ cv.cvPoint( int(r.x+origSize[0]), int(r.y+origSize[1])), \
-                          cv.cvPoint( int(r.x+r.width+origSize[0]), int(r.y+r.height+origSize[1] ))] \
-                          for r in points]
-
-            debug.debug( "ocvfw", "cmGetHaarROIPoints: detected some matches" )
-            return matches
+        self.wait_key(10)
+        return True
 
     def set_lkpoint(self, point):
         """
@@ -143,19 +148,19 @@ class Ocvfw:
 
         Arguments:
         - self: The main object pointer.
-        - point: A cv.cvPoint Point.
+        - point: A co.cv.cvPoint Point.
         """
 
-        cvPoint = cv.cvPoint( point.x, point.y )
+        cvPoint = co.cv.cvPoint( point.x, point.y )
 
-        self.img_lkpoints["current"] = [ cv.cvPointTo32f ( cvPoint ) ]
+        self.img_lkpoints["current"] = [ co.cv.cvPointTo32f ( cvPoint ) ]
 
         if self.img_lkpoints["current"]:
-            cv.cvFindCornerSubPix (
+            co.cv.cvFindCornerSubPix (
                 self.grey,
                 self.img_lkpoints["current"],
-                cv.cvSize (20, 20), cv.cvSize (-1, -1),
-                cv.cvTermCriteria (cv.CV_TERMCRIT_ITER | cv.CV_TERMCRIT_EPS, 20, 0.03))
+                co.cv.cvSize (20, 20), co.cv.cvSize (-1, -1),
+                co.cv.cvTermCriteria (co.cv.CV_TERMCRIT_ITER | co.cv.CV_TERMCRIT_EPS, 20, 0.03))
 
             point.set_opencv( cvPoint )
             self.img_lkpoints["points"].append(point)
@@ -190,11 +195,11 @@ class Ocvfw:
         """
 
         # calculate the optical flow
-        self.img_lkpoints["current"], status = cv.cvCalcOpticalFlowPyrLK (
+        self.img_lkpoints["current"], status = co.cv.cvCalcOpticalFlowPyrLK (
             self.prevGrey, self.grey, self.prevPyramid, self.pyramid,
             self.img_lkpoints["last"], len( self.img_lkpoints["last"] ),
-            cv.cvSize (20, 20), 3, len( self.img_lkpoints["last"] ), None,
-            cv.cvTermCriteria (cv.CV_TERMCRIT_ITER|cv.CV_TERMCRIT_EPS, 20, 0.03), 0)
+            co.cv.cvSize (20, 20), 3, len( self.img_lkpoints["last"] ), None,
+            co.cv.cvTermCriteria (co.cv.CV_TERMCRIT_ITER|co.cv.CV_TERMCRIT_EPS, 20, 0.03), 0)
 
         # initializations
         counter = 0
@@ -207,7 +212,7 @@ class Ocvfw:
 
             # this point is a correct point
             current = self.img_lkpoints["points"][counter]
-            current.set_opencv(cv.cvPoint(int(point.x), int(point.y)))
+            current.set_opencv(co.cv.cvPoint(int(point.x), int(point.y)))
 
             new_points.append( point )
 
@@ -225,15 +230,6 @@ class Ocvfw:
         # set back the self.imgPoints we keep
         self.img_lkpoints["current"] = new_points
 
-    def wait_key(self, num):
-        """
-        Simple call to the highgui.cvWaitKey function, which has to be called periodically.
-
-        Arguments:
-        - self: The main object pointer.
-        - num: An int value.
-        """
-        return highgui.cvWaitKey(num)
 
     def swap_lkpoints(self):
         """
@@ -250,48 +246,138 @@ class Ocvfw:
         self.img_lkpoints["last"], self.img_lkpoints["current"] = \
                                    self.img_lkpoints["current"], self.img_lkpoints["last"]
 
-    def start_camera(self, idx, params = None):
-        """
-        Starts the camera capture using highgui.
 
-        Arguments:
-        - params: A list with the capture properties. NOTE: Not implemented yet.
-        """
-        self.capture = highgui.cvCreateCameraCapture( int(idx) )
-        debug.debug( "ocvfw", "cmStartCamera: Camera Started" )
+class OcvfwCtypes(OcvfwBase):
+    """
+    This Class controlls the main camera functions.
+    It works as a little framework for Openco.cv.
 
-    def query_image(self, bgr=False, flip=False):
+    This Backend uses ctypes opencv python bindings.
+    """
+    
+
+    def __init__(self):
         """
-        Queries the new frame.
+        Initialize the module and set its main variables.
+        """
+        co.cv = __import__("ctypesopencv.cv",
+                        globals(),
+                        locals(),
+                        [''])
+        
+        co.hg = __import__("ctypesopencv.highgui",
+                        globals(),
+                        locals(),
+                        [''])
+ 
+        OcvfwBase.__init__(self)
+
+
+class OcvfwPython(OcvfwBase):
+    """
+    This Class controlls the main camera functions.
+    It works as a little framework for Openco.cv.
+
+    This Backend uses normal opencv python bindings.
+    """
+
+    co.cv = __import__("opencv.cv",
+                        globals(),
+                        locals(),
+                        [''])
+        
+    co.hg = __import__("opencv.highgui",
+                        globals(),
+                        locals(),
+                        [''])
+
+    def __init__( self ):
+        """
+        Initialize the module and set its main variables.
+        """
+
+        OcvfwBase.__init__(self)
+
+    def add_message(self, message, font=co.cv.CV_FONT_HERSHEY_COMPLEX, poss=None):
+        """
+        Write a message into the image.
 
         Arguments:
         - self: The main object pointer.
-        - bgr: If True. The image will be converted from RGB to BGR.
-
-        Returns The image even if it was stored in self.img
+        - message: A string with the message.
+        - font: An OpenCV font to use.
+        - poss: The position of the message in the image. NOTE: Not enabled yet.
         """
 
-        frame = highgui.cvQueryFrame( self.capture )
+        font = co.cv.cvInitFont ( font, 1, 1, 0.0, 1, co.cv.CV_AA)
+        textSize, ymin = co.cv.cvGetTextSize (message, font)
+        pt1 = co.cv.cvPoint ( ( self.img.width - textSize.width ) / 2 , 20 )
+        co.cv.cvPutText (self.img, message, pt1, font, co.cv.cvScalar (255, 0, 0))
 
-        if not  self.img:
-            self.storage        = cv.cvCreateMemStorage(0)
-            self.imgSize        = cv.cvGetSize (frame)
-            self.img            = cv.cvCreateImage ( self.imgSize, 16, 3 )
-            #self.img.origin     = frame.origin
-            self.grey           = cv.cvCreateImage ( self.imgSize, 8, 1 )
-            self.yCrCb          = cv.cvCreateImage ( self.imgSize, 8, 3 )
-            self.prevGrey       = cv.cvCreateImage ( self.imgSize, 8, 1 )
-            self.pyramid        = cv.cvCreateImage ( self.imgSize, 8, 1 )
-            self.prevPyramid    = cv.cvCreateImage ( self.imgSize, 8, 1 )
-            self.small_img       = cv.cvCreateImage( cv.cvSize( cv.cvRound ( self.imgSize.width/self.imageScale),
-                                    cv.cvRound ( self.imgSize.height/self.imageScale) ), 8, 3 )
-        self.img = frame
+    def get_haar_points(self, haarCascade, method=co.cv.CV_HAAR_DO_CANNY_PRUNING):
+        """
+        Search for points matching the haarcascade selected.
 
-        cv.cvCvtColor(self.img, self.grey, cv.CV_BGR2GRAY)
+        Arguments:
+        - self: The main object pointer.
+        - haarCascade: The selected cascade.
+        - methode: The search method to use. DEFAULT: co.cv.CV_HAAR_DO_CANNY_PRUNING.
 
-        self.wait_key(10)
-        return True
+        Returns a list with the matches.
+        """
 
+        cascade = co.cv.cvLoadHaarClassifierCascade( haarCascade, self.imgSize )
+
+        if not cascade:
+            debug.exception( "ocvfw", "The Haar Classifier Cascade load failed" )
+
+        co.cv.cvResize( self.img, self.small_img, co.cv.CV_INTER_LINEAR )
+
+        co.cv.cvClearMemStorage( self.storage )
+
+        points = co.cv.cvHaarDetectObjects( self.small_img, cascade, self.storage, 1.2, 2, method, co.cv.cvSize(20, 20) )
+
+        if points:
+            matches = [ [ co.cv.cvPoint( int(r.x*self.imageScale), int(r.y*self.imageScale)), \
+                          co.cv.cvPoint( int((r.x+r.width)*self.imageScale), int((r.y+r.height)*self.imageScale) )] \
+                          for r in points]
+            debug.debug( "ocvfw", "cmGetHaarPoints: detected some matches" )
+            return matches
+
+    def get_haar_roi_points(self, haarCascade, rect, origSize=(0, 0), method=co.cv.CV_HAAR_DO_CANNY_PRUNING):
+        """
+        Search for points matching the haarcascade selected.
+
+        Arguments:
+        - self: The main object pointer.
+        - haarCascade: The selected cascade.
+        - methode: The search method to use. DEFAULT: co.cv.CV_HAAR_DO_CANNY_PRUNING.
+
+        Returns a list with the matches.
+        """
+
+        cascade = co.cv.cvLoadHaarClassifierCascade( haarCascade, self.imgSize )
+
+        if not cascade:
+            debug.exception( "ocvfw", "The Haar Classifier Cascade load failed" )
+
+        co.cv.cvClearMemStorage(self.storage)
+
+        imageROI = co.cv.cvGetSubRect(self.img, rect)
+
+        if cascade:
+            points = co.cv.cvHaarDetectObjects( imageROI, cascade, self.storage,
+                                    1.2, 2, method, co.cv.cvSize(20,20) )
+        else:
+            debug.exception( "ocvfw", "The Haar Classifier Cascade load Failed (ROI)" )
+
+        if points:
+            matches = [ [ co.cv.cvPoint( int(r.x+origSize[0]), int(r.y+origSize[1])), \
+                          co.cv.cvPoint( int(r.x+r.width+origSize[0]), int(r.y+r.height+origSize[1] ))] \
+                          for r in points]
+
+            debug.debug( "ocvfw", "cmGetHaarROIPoints: detected some matches" )
+            return matches
 
     ##########################################
     #                                        #

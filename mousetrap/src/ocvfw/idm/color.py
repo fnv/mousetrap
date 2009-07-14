@@ -27,7 +27,7 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
-import ocvfw.commons as commons
+import ocvfw.commons as co
 from ocvfw.dev.camera import Camera, Capture, Point
 
 from ctypes import c_int 
@@ -61,9 +61,6 @@ class Module(object):
         - stgs: Possible settings loaded from the user's settings file. If there aren't settings the IDM will use the a_settings dict.
         """
         
-        # This will init the Camera class. 
-        # This class is used to handle the camera device.
-        Camera.init()
 
         # Controller instance
         self.ctr          = controller
@@ -177,10 +174,11 @@ class Module(object):
         # Starts the Capture using the async method.
         # This means that self.cap.sync() wont be called periodically
         # by the idm because the Capture syncs the image asynchronously (See dev/camera.py)
-        self.cap = Capture(async=False, idx=cam)
+        self.cap = Capture(async=False, idx=cam, backend="OcvfwCtypes")
         
         # This sets the final image default color to rgb. The default color is bgr.
         self.cap.change(color="rgb")
+        self.cap.set_camera("lk_swap", True)
 
     def _convertColorDepth(self, color):
         """
@@ -270,11 +268,11 @@ class Module(object):
 
         temphue = self.rgb2hue(float(self.cfg.get("color", "red")), float(self.cfg.get("color", "green")), float(self.cfg.get("color", "blue")))
 
-        hrange = self.cfg.hrange / 2
+        hrange = int(self.cfg.get("color", "hrange")) / 2
         self.hmin.value = int(max(temphue - hrange, 0))
         self.hmax.value = int(min(temphue + hrange, 180))
 
-    def get_image(self):
+    def get_capture(self):
         """
         Gets the last queried and formated image.
         Function used by the mousetrap/ui/main.py 
@@ -304,7 +302,7 @@ class Module(object):
 
             temphue = self.rgb2hue(float(self.cfg.get("color", "red")), float(self.cfg.get("color", "green")), float(self.cfg.get("color", "blue")))
 
-            hrange = self.cfg.hrange / 2
+            hrange = int(self.cfg.get("color", "hrange")) / 2
             self.hmin.value = int(max(temphue - hrange, 0))
             self.hmax.value = int(min(temphue + hrange, 180))
             print str(self.hmin.value) + ", " + str(self.hmax.value)
@@ -401,7 +399,7 @@ class Module(object):
         # Calls the resize method passing the new with, height
         # specifying that the new image has to be a copy of the original
         # so, self.cap.resize will copy the original instead of modifying it.
-        return self.cap.resize(200, 160, True)
+        return self.cap
 
     def get_pointer(self):
         """

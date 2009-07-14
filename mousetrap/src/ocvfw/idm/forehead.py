@@ -27,8 +27,9 @@ __date__      = "$Date$"
 __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
+import ocvfw.debug as debug
 import ocvfw.commons as commons
-from ocvfw.dev.camera import Camera, Capture, Point
+from ocvfw.dev.camera import Capture, Point
 
 a_name = "Forehead"
 a_description = "Forehead point tracker based on LK Algorithm"
@@ -48,8 +49,9 @@ class Module(object):
         - controller: mousetrap main class pointer. This is passed by MouseTrap's controller (mousetrap.py) when loaded.
         - stgs: Possible settings loaded from the user's settings file. If there aren't settings the IDM will use the a_settings dict.
         """
-        Camera.init()
 
+        debug.debug("ocvfw.idm", "Starting %s idm" % a_name)
+        
         self.ctr          = controller
         self.cap          = None
         self.stgs         = stgs
@@ -78,6 +80,7 @@ class Module(object):
         self.isMoving       = False
 
         self.prepare_config()
+        debug.info("ocvfw.idm", "Forhead Algorithm loaded")
 
     def prepare_config(self):
         """
@@ -99,14 +102,19 @@ class Module(object):
         - self: The main object pointer
         - cam: The camera device index. For Example: 0 = /dev/video0, 1 = /dev/video1
         """
-        self.cap = Capture(async=True, idx=cam)
+        
+        debug.debug("ocvfw.idm", "Setting Capture")
+        
+        self.cap = Capture(async=True, idx=cam, backend="OcvfwPython")
         self.cap.change(color="rgb")
+        self.cap.set_camera("lk_swap", True)
+
 
     def calc_motion(self):
         if not hasattr(self.cap, "forehead"):
             self.get_forehead()
 
-    def get_image(self):
+    def get_capture(self):
         """
         Sets the forehead point if needed and returns the formated image.
 
@@ -119,7 +127,8 @@ class Module(object):
         if not hasattr(self.cap, "forehead"):
             self.get_forehead()
 
-        return self.cap.resize(200, 160, True)
+        #return self.cap.resize(200, 160, True)
+        return self.cap
 
     def get_pointer(self):
         """
