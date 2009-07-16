@@ -82,9 +82,12 @@ class MainGui( gtk.Window ):
         - event: The GDK event containing relevant event data
         """
         
-        key = event.string
+        if not hasattr(self.ctr, "idm"):
+            return
         
-        alg_inf = pocv.get_idm_inf(self.ctr.idm)
+        key = event.string
+        print pocv.get_idms_list()
+        alg_inf = pocv.get_idm_inf("color")
         
         
         
@@ -94,9 +97,6 @@ class MainGui( gtk.Window ):
         
         if(alg_inf["name"]== "color"):
             if (key == 't'):
-                if not hasattr(self.ctr, "idm"):
-                    return
-                    
                 try:
                     self.ctr.idm.startTracking()
                 except ValueError:
