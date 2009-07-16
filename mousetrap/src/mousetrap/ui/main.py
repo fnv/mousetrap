@@ -71,6 +71,31 @@ class MainGui( gtk.Window ):
 
         gtk.window_set_default_icon(icon)
 
+    def handleKeyboardInput( self, window, event ):
+        """
+        Callback to handle custom keyboard shortcuts.
+        
+        Arguments:
+        - self: The main object pointer
+        - window: The GTK Window object where the event happened
+        - event: The GDK event containing relevant event data
+        """
+        
+        key = event.string
+        
+        if (key == 't'):
+            if not hasattr(self.ctr, "idm"):
+                return
+                
+            try:
+                self.ctr.idm.startTracking()
+            except ValueError:
+                print 'The selection height/width are invalid.'
+        elif (key == 'x'):
+            if not hasattr(self.ctr, "idm"):
+                return
+                
+            self.ctr.idm.stopTracking()
 
     def build_interface( self ):
         """
@@ -79,6 +104,8 @@ class MainGui( gtk.Window ):
         Arguments:
         - self: The main object pointer
         """
+        self.connect("key-press-event", self.handleKeyboardInput)
+
 
         self.setWindowsIcon()
 

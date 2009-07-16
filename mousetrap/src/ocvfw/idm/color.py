@@ -282,6 +282,9 @@ class Module(object):
 
         returns self.cap.resize(200, 160, True)
         """
+        
+        
+        
         # Needed to sync image in Mousetrap with camera frame?
         self.cap.sync()
 
@@ -358,7 +361,7 @@ class Module(object):
             if self.backproject_mode:
                 cvCvtColor( self.backproject, self.image, CV_GRAY2BGR ) #why??
             if not self.origin:
-                self.track_box.angle = -self.track_box.angle #why??"""
+                self.track_box.angle = -self.track_box.angle #why??
             # Make sure it's a number.
             if math.isnan(self.track_box.size.height): 
                 self.track_box.size.height = 0
@@ -386,20 +389,43 @@ class Module(object):
         
         self.cap.color("rgb", channel=3, copy=True)
 
-        #Press t to start tracking! Press x to stop tracking!
-        c = '%c' % (cvWaitKey(10) & 255)
-        if c == 't':
-            if self.selection.width > 0 and self.selection.height > 0:
-                self.track_object = -1
-        if c == 'x':
-            #self.cap.remove("obj_center")
-            self.track_object = 0
-
         # Calls the resize method passing the new with, height
         # specifying that the new image has to be a copy of the original
         # so, self.cap.resize will copy the original instead of modifying it.
         return self.cap
 
+    def startTracking(self):
+        """
+        Starts the tracking algorithm. This exists because
+        we set up keyboard input in the main view to start
+        and stop tracking. Maybe generalize this functionality
+        to all idms?
+        
+        Arguments:
+        - self: The main object pointer
+        
+        Raises:
+        - ValueError: If either the selection height or width are less
+        than or equal to zero.
+        """
+        if (self.selection.width and self.selection.height <= 0):
+            raise ValueError()
+        
+        self.track_object = -1
+    
+    def stopTracking(self):
+        """
+        Stops the tracking algorithm. This exists because
+        we set up keyboard input in the main view to start
+        and stop tracking. Maybe generalize this functionality
+        to all idms?
+        
+        Arguments:
+        - self: The main object pointer
+        """
+        
+        self.track_object = 0
+        
     def get_pointer(self):
         """
         Returns the new MousePosition.
