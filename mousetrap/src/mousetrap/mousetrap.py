@@ -84,8 +84,8 @@ class Controller():
             self.idm = idm.Module(self)
             self.idm.set_capture(self.cfg.getint("cam", "inputDevIndex"))
 
-            gobject.timeout_add(150, self.update_frame)
-            gobject.timeout_add(50, self.update_pointers)
+            gobject.timeout_add(10, self.update_frame)
+            gobject.timeout_add(10, self.update_pointers)
 
             debug.info("mousetrap", "Idm loaded and started")
 

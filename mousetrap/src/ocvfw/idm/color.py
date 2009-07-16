@@ -267,8 +267,7 @@ class Module(object):
         """
 
         temphue = self.rgb2hue(float(self.cfg.get("color", "red")), float(self.cfg.get("color", "green")), float(self.cfg.get("color", "blue")))
-
-        hrange = int(self.cfg.get("color", "hrange")) / 2
+        hrange = int(self.cfg.get("color","hrange")) / 2
         self.hmin.value = int(max(temphue - hrange, 0))
         self.hmax.value = int(min(temphue + hrange, 180))
 
@@ -302,7 +301,7 @@ class Module(object):
 
             temphue = self.rgb2hue(float(self.cfg.get("color", "red")), float(self.cfg.get("color", "green")), float(self.cfg.get("color", "blue")))
 
-            hrange = int(self.cfg.get("color", "hrange")) / 2
+            hrange = int(self.cfg.get("color","hrange")) / 2
             self.hmin.value = int(max(temphue - hrange, 0))
             self.hmax.value = int(min(temphue + hrange, 180))
             print str(self.hmin.value) + ", " + str(self.hmax.value)
