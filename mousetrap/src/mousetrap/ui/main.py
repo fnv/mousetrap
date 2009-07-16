@@ -33,6 +33,7 @@ import settings_gui
 import colorsys
 import mousetrap.debug as debug
 import mousetrap.environment as env
+from ocvfw import pocv
 from mousetrap.addons import cpu
 
 class MainGui( gtk.Window ):
@@ -83,11 +84,15 @@ class MainGui( gtk.Window ):
         
         key = event.string
         
+        alg_inf = pocv.get_idm_inf(self.ctr.idm)
+        
+        
         
         # Right now this only works for the color idm. Maybe
         # all idms should have a standard method to stop and start
         # tracking?
-        if(self.ctr.idm.a_name == "Color"):
+        
+        if(alg_inf["name"]== "color"):
             if (key == 't'):
                 if not hasattr(self.ctr, "idm"):
                     return
