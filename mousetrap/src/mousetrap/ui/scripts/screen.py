@@ -81,9 +81,9 @@ class ScriptClass(Mapper):
                         "y" : self.height / 2 }
 
         #we need to figure out how to get access to the cfg file from here
-        self.vscreen = { "x" : self.center["x"] - 80,
+        self.vscreen = { "x" : self.center["x"] - 100,
                          "y" : self.center["y"] - 60,
-                         "width"  : 160,
+                         "width"  : 200,
                          "height" : 120}
 
         self.draw_rectangle( self.vscreen["x"], self.vscreen["y"],
