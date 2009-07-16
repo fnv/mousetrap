@@ -73,6 +73,7 @@ class AddonsBase(object):
         """
 
         self.ctr = controller
+        self.cfg = controller.cfg
         self.itf = self.ctr.itf
 
     def statusbar_message(self, msg):
@@ -84,3 +85,13 @@ class AddonsBase(object):
         - msg: The message.
         """
         self.itf.statusbar.push(self.itf.statusbar_id, msg)
+    
+    def add_item(self, item):
+        """
+        Adds any gtk widget to the addons vbox.
+
+        Arguments:
+        - self: The main object pointer.
+        - item: The item to add.
+        """
+        self.itf.adds_vbox.pack_start(item, True, True)

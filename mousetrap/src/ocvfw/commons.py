@@ -27,6 +27,7 @@ __copyright__ = "Copyright (c) 2008 Flavio Percoco Premoli"
 __license__   = "GPLv2"
 
 import os
+import debug
 
 abs_path = os.path.abspath(os.path.dirname(__file__))
 
@@ -39,5 +40,21 @@ colors = { "gray" : { "ch" : 1 },
            "rgb"  : { "ch" : 3 },
            "bgr"  : { "ch" : 3 }}
 
+# CV common lib
+cv = None
+
+# Highgui common lib
+hg = None
+
 def get_ch(color):
     return colors[color]["ch"]
+
+def singleton(cls):
+    instances = {}
+    def getinstance():
+        if cls not in instances:
+            instances[cls] = cls()
+            debug.debug("Commons", "New Singleton Add (%s)" % cls)
+        return instances[cls]
+    return getinstance
+

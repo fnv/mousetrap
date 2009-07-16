@@ -99,15 +99,15 @@ class Module(object):
         self.vmax = c_int(256)
         self.smin = c_int(80)
         self.smax = c_int(256)
-        self.hmin = c_int(25)
-        self.hmax = c_int(40) #this may have to be 180 and not 256, for whatever reason
+        self.hmin = c_int(0)
+        self.hmax = c_int(180) #this may have to be 180 and not 256, for whatever reason
         self.h2min = c_int(170)
         self.h2max = c_int(175)
 
     def prepare_config(self):
         """
         Prepares the IDM using the settings
-        ctypesopencv.cxcore.IplImage
+        
         Arguments:
         - self: The main object pointer
         """

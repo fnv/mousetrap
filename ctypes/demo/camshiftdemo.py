@@ -3,7 +3,7 @@
 # -- adapted by Minh-Tri Pham to work with ctypes-opencv
 
 from ctypes import c_int
-from opencv import *
+from ctypesopencv import *
 from sys import argv, exit
 
 image = None
