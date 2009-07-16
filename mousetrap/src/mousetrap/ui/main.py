@@ -83,19 +83,24 @@ class MainGui( gtk.Window ):
         
         key = event.string
         
-        if (key == 't'):
-            if not hasattr(self.ctr, "idm"):
-                return
-                
-            try:
-                self.ctr.idm.startTracking()
-            except ValueError:
-                print 'The selection height/width are invalid.'
-        elif (key == 'x'):
-            if not hasattr(self.ctr, "idm"):
-                return
-                
-            self.ctr.idm.stopTracking()
+        
+        # Right now this only works for the color idm. Maybe
+        # all idms should have a standard method to stop and start
+        # tracking?
+        if(self.ctr.idm.a_name == "Color"):
+            if (key == 't'):
+                if not hasattr(self.ctr, "idm"):
+                    return
+                    
+                try:
+                    self.ctr.idm.startTracking()
+                except ValueError:
+                    print 'The selection height/width are invalid.'
+            elif (key == 'x'):
+                if not hasattr(self.ctr, "idm"):
+                    return
+                    
+                self.ctr.idm.stopTracking()
 
     def build_interface( self ):
         """
