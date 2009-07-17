@@ -115,7 +115,7 @@ class MainGui( gtk.Window ):
         - self: The main object pointer
         """
         self.connect("key-press-event", self.handleKeyboardInput)
-
+        self.set_resizable(False)
 
         self.setWindowsIcon()
 
