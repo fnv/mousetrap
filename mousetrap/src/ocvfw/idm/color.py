@@ -348,7 +348,7 @@ class Module(object):
                 co.cv.cvSetImageROI( self.hue, self.selection) 
                 co.cv.cvSetImageROI( self.mask, self.selection)
 
-                self.histogram_init(self)
+                self.histogram_init()
 
                 co.cv.cvResetImageROI( self.hue )
                 co.cv.cvResetImageROI( self.mask )
@@ -376,7 +376,7 @@ class Module(object):
 
             #Updates cursor location information
             if (not hasattr(self.cap, "obj_center")):
-                self.cap.add(Point("point", "obj_center", ( int(self.track_box.center.x), int(self.track_box.center.y )), parent=self.cap, follow=True))
+                self.cap.add(Point("point", "obj_center", ( int(self.track_box.center.x), int(self.track_box.center.y )), parent=self.cap, follow=False))
             else:
                 self.cap.obj_center.set_opencv(co.cv.cvPoint(int(self.track_box.center.x), int(self.track_box.center.y)))
 
