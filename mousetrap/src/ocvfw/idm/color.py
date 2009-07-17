@@ -426,6 +426,27 @@ class Module(object):
         """
         
         self.track_object = 0
+
+    def selSizeUp(self):
+        """
+        Increases the size of the selection window.
+
+        Arguments:
+        - self: The main object pointer
+        """
+        if self.selection.width < self.image.width - 10 and self.selection.height < self.image.height - 10:
+            self.selection = co.cv.cvRect(self.selection.x-5,self.selection.y-5,self.selection.width+10,self.selection.height+10)
+
+    def selSizeDown(self):
+        """
+        Decreases the size of the selection window.
+
+        Arguments:
+        - self: The main object pointer
+        """
+
+        if self.selection.width > 10 and self.selection.height > 10:
+            self.selection = co.cv.cvRect(self.selection.x+5,self.selection.y+5,self.selection.width-10,self.selection.height-10)
         
     def get_pointer(self):
         """
