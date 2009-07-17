@@ -31,7 +31,7 @@ Once the color IDM is fully loaded, you should see images from your webcam being
 
 Before you start tracking, make sure you have selected a color you wish to track! The algorithm identifies objects by their color patterns, so it is important to choose a color that is unique, or at least dissimilar from the color of your face and the color of the wall behind you. Select a color using the color picker, the window between the camera image and the script mapper. Once you have selected a color, press the save button. MouseTrap will automatically consider a range of values centered around the hue that you chose. For example, if you choose yellow (~30), MouseTrap will try and track colors that fall within the range of 25-30, by default. You can set this range in the configuration menu.
 
-When you are ready to track, position the object you want to track in the rectangle displayed in the camera window. This rectangle can be resized to fit the object by pressing the < and > keys. When the object is in position, press Enter to start tracking.
+When you are ready to track, position the object you want to track in the square displayed in the camera window. This square can be resized to fit the object by pressing the 'n' and 'm' keys. When the object is in position, press Enter to start tracking.
 
 Now, a green dot will appear in the center of the script mapper window. This window maps the position of the green dot in the small box to the position of the mouse cursor on your screen. You can set mouse sensitivity by changing the size of the small box (a larger box means less sensitive mouse movements) in the config menu.
 

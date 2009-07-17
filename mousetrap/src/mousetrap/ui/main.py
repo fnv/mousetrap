@@ -105,6 +105,17 @@ class MainGui( gtk.Window ):
                     return
                     
                 self.ctr.idm.stopTracking()
+            elif (key == 'm'):
+                if not hasattr(self.ctr, "idm"):
+                    return
+                
+                self.ctr.idm.selSizeUp()
+            elif (key == 'n'):
+                if not hasattr(self.ctr, "idm"):
+                    return
+
+                self.ctr.idm.selSizeDown()
+
 
     def build_interface( self ):
         """

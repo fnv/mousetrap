@@ -29,11 +29,8 @@ __license__   = "GPLv2"
 
 import ocvfw.commons as co
 from ocvfw.dev.camera import Camera, Capture, Point
-
 from ctypes import c_int 
 """ Using ctypes-opencv, instead of the python bindings provided by OpenCV. """
-from ctypesopencv import *
-
 from sys import argv, exit
 import math
 
@@ -89,16 +86,14 @@ class Module(object):
 
         self.first_time=True # To keep track of whether or not we have initalized image objects
 
-        self.backproject_mode = 0 #needed?
         self.select_object = 0
         self.track_object = 0
-        self.show_hist = 1 #needed?
         self.origin = None #needed?
         self.selection = None
         self.track_window = None
         self.track_box = None
         self.track_comp = None
-        self.hdims = 16
+        self.hdims = 16 #Number of columns in the histogram
 
         # Variables to control the ranges for the color mask.
         self.vmin = c_int(10)   # Value
@@ -107,19 +102,6 @@ class Module(object):
         self.smax = c_int(256)
         self.hmin = c_int(0)    # Hue
         self.hmax = c_int(180)  # out of 180, not 256
-        self.h2min = c_int(170)
-        self.h2max = c_int(175)
-
-        cvNamedWindow( "Histogram", 1 )
-        cvNamedWindow( "Mask", 1 )
-
-        cvCreateTrackbar( "Vmin", "Mask", self.vmin, 256 )
-        cvCreateTrackbar( "Vmax", "Mask", self.vmax, 256 )
-        cvCreateTrackbar( "Smin", "Mask", self.smin, 256 )
-        cvCreateTrackbar( "Smax", "Mask", self.smax, 256 )
-        cvCreateTrackbar( "Hmin", "Mask", self.hmin, 180 )
-        cvCreateTrackbar( "Hmax", "Mask", self.hmax, 180 )
-
 
 
     def prepare_config(self):
@@ -152,15 +134,15 @@ class Module(object):
         
         sector_data= ((0,2,1), (1,2,0), (1,0,2), (2,0,1), (2,1,0), (0,1,2))
         hue *= 0.033333333333333333333333333333333
-        sector = cvFloor(hue)
-        p = cvRound(255*(hue - sector))
+        sector = co.cv.cvFloor(hue)
+        p = co.cv.cvRound(255*(hue - sector))
         p ^= 255 if bool(sector & 1) else 0
 
         rgb[sector_data[sector][0]] = 255
         rgb[sector_data[sector][1]] = 0
         rgb[sector_data[sector][2]] = p
 
-        return cvScalar(rgb[2], rgb[1], rgb[0], 0)
+        return co.cv.cvScalar(rgb[2], rgb[1], rgb[0], 0)
 
     def set_capture(self, cam):
         """
@@ -176,6 +158,17 @@ class Module(object):
         # by the idm because the Capture syncs the image asynchronously (See dev/camera.py)
         self.cap = Capture(async=False, idx=cam, backend="OcvfwCtypes")
         
+
+        co.hg.cvNamedWindow( "Histogram", 1 )
+        co.hg.cvNamedWindow( "Mask", 1 )
+
+        co.hg.cvCreateTrackbar( "Vmin", "Mask", self.vmin, 256 )
+        co.hg.cvCreateTrackbar( "Vmax", "Mask", self.vmax, 256 )
+        co.hg.cvCreateTrackbar( "Smin", "Mask", self.smin, 256 )
+        co.hg.cvCreateTrackbar( "Smax", "Mask", self.smax, 256 )
+        co.hg.cvCreateTrackbar( "Hmin", "Mask", self.hmin, 180 )
+        co.hg.cvCreateTrackbar( "Hmax", "Mask", self.hmax, 180 )
+
         # This sets the final image default color to rgb. The default color is bgr.
         self.cap.change(color="rgb")
         self.cap.set_camera("lk_swap", True)
@@ -271,6 +264,27 @@ class Module(object):
         self.hmin.value = int(max(temphue - hrange, 0))
         self.hmax.value = int(min(temphue + hrange, 180))
 
+    def histogram_init(self):
+        """
+        Initializes and displays a color histogram of the selected area
+
+        Arguments:
+        - self: The main object pointer
+        """
+
+        co.cv.cvCalcHist( [self.hue], self.hist, 0, self.mask )
+        min_val, max_val = co.cv.cvGetMinMaxHistValue(self.hist)
+        hbins = self.hist.bins[0]
+        co.cv.cvConvertScale( hbins, hbins, 255. / max_val if max_val else 0., 0 )
+        co.cv.cvZero( self.histimg )
+        bin_w = self.histimg.width / self.hdims
+        for i in xrange(self.hdims):
+            val = co.cv.cvRound( co.cv.cvGetReal1D(hbins,i)*self.histimg.height/255 )
+            color = self.hsv2rgb(i*180./self.hdims)            co.cv.cvRectangle( self.histimg, co.cv.cvPoint(i*bin_w,self.histimg.height),
+                             co.cv.cvPoint((i+1)*bin_w,self.histimg.height - val),
+                             color, -1, 8, 0 )
+        co.hg.cvShowImage( "Histogram", self.histimg )
+
     def get_capture(self):
         """
         Gets the last queried and formated image.
@@ -285,107 +299,94 @@ class Module(object):
         
         
         
-        # Needed to sync image in Mousetrap with camera frame?
+        # Called to update image with latest frame from webcam
         self.cap.sync()
 
         #self.image = self.cap.image().origin needed??
         self.image = self.cap.image()
 
-        # Initialization of images.  Only needs to happen once.
+        
         if self.first_time:
+            # Initialization of images.  Only needs to happen once.
+
             # TODO: What is a better way to get the image size?
-            self.hue = cvCreateImage( cvGetSize(self.image), 8, 1 )
-            self.mask = cvCreateImage(  cvGetSize(self.image), 8, 1 )
-            self.backproject = cvCreateImage(  cvGetSize(self.image), 8, 1 )
-            self.hist = cvCreateHist( [self.hdims], CV_HIST_ARRAY, [[0, 180]] )
-            self.histimg = cvCreateImage( cvSize(320,200), 8, 3 )
-            self.temp = cvCreateImage(  cvGetSize(self.image), 8, 3) #needed?
-            cvZero( self.histimg )
+            self.hue = co.cv.cvCreateImage( co.cv.cvGetSize(self.image), 8, 1 )
+            self.mask = co.cv.cvCreateImage(  co.cv.cvGetSize(self.image), 8, 1 )
+            self.backproject = co.cv.cvCreateImage(  co.cv.cvGetSize(self.image), 8, 1 )
+            self.hist = co.cv.cvCreateHist( [self.hdims], co.cv.CV_HIST_ARRAY, [[0, 180]] )
+            self.histimg = co.cv.cvCreateImage( co.cv.cvSize(320,200), 8, 3 )
+            self.temp = co.cv.cvCreateImage(  co.cv.cvGetSize(self.image), 8, 3) #needed?
+            co.cv.cvZero( self.histimg )
 
+            #Initialization of hue range from config file.
             temphue = self.rgb2hue(float(self.cfg.get("color", "red")), float(self.cfg.get("color", "green")), float(self.cfg.get("color", "blue")))
-
             hrange = int(self.cfg.get("color","hrange")) / 2
             self.hmin.value = int(max(temphue - hrange, 0))
             self.hmax.value = int(min(temphue + hrange, 180))
-            print str(self.hmin.value) + ", " + str(self.hmax.value)
 
 
-            #creates a woobly selection box one should put one's object in before tracking
-            self.origin = cvPoint(self.image.width / 2, self.image.height / 2)
-            self.selection = cvRect(self.origin.x-50,self.origin.y-50,100,100)
+            #Creates object selection box
+            self.origin = co.cv.cvPoint(self.image.width / 2, self.image.height / 2)
+            self.selection = co.cv.cvRect(self.origin.x-50,self.origin.y-50,100,100)
 
             self.first_time=False
 
         self.hsv = self.cap.color("hsv", channel=3, copy=True) # Convert to HSV
 
-        # If a selection has been made or if an object is already being tracked:
+        # If tracking
         if self.track_object != 0:
-            # Set up some scalars using the min/max values for hue, saturation, and value
-            scalar1=cvScalar(self.hmin.value,self.smin.value,min(self.vmin.value,self.vmax.value),0)
-            scalar2=cvScalar(self.hmax.value,self.smax.value,max(self.vmin.value,self.vmax.value),0)
-            # Create a mask using the scalars            
-            cvInRangeS( self.hsv, scalar1, scalar2, self.mask )
 
-            cvSplit(self.hsv, self.hue)
-            # If a selection has just been made and objects are not yet being tracked:
+            #Masks pixels that fall outside desired range
+            scalar1=co.cv.cvScalar(self.hmin.value,self.smin.value,min(self.vmin.value,self.vmax.value),0)
+            scalar2=co.cv.cvScalar(self.hmax.value,self.smax.value,max(self.vmin.value,self.vmax.value),0)       
+            co.cv.cvInRangeS( self.hsv, scalar1, scalar2, self.mask )
+
+            co.cv.cvSplit(self.hsv, self.hue)
+
+            # If tracking, first time
             if self.track_object < 0:
-                # Set the range of interest for the hue and mask images
-                cvSetImageROI( self.hue, self.selection) 
-                cvSetImageROI( self.mask, self.selection)
-                cvCalcHist( [self.hue], self.hist, 0, self.mask )
-                min_val, max_val = cvGetMinMaxHistValue(self.hist)
-                hbins = self.hist.bins[0]
-                cvConvertScale( hbins, hbins, 255. / max_val if max_val else 0., 0 )
-                cvResetImageROI( self.hue ) # ^ hisogram stuff, v tracking stuff
-                cvResetImageROI( self.mask )
-                self.track_window = self.selection # the original window to track is your mouse selection
-                self.track_object = 1 # now objects are being tracked
+                co.cv.cvSetImageROI( self.hue, self.selection) 
+                co.cv.cvSetImageROI( self.mask, self.selection)
 
-                #more histogram stuff -- now we're displaying it
-                cvZero( self.histimg )
-                bin_w = self.histimg.width / self.hdims
-                for i in xrange(self.hdims):
-                    val = cvRound( cvGetReal1D(hbins,i)*self.histimg.height/255 )
-                    color = self.hsv2rgb(i*180./self.hdims)                    cvRectangle( self.histimg, cvPoint(i*bin_w,self.histimg.height),
-                                     cvPoint((i+1)*bin_w,self.histimg.height - val),
-                                     color, -1, 8, 0 )
-            #calculate the back projection (dunno what this is)
-            cvCalcBackProject( [self.hue], self.backproject, self.hist )
-            #mask the backprojection (why? who knows)
-            cvAnd(self.backproject, self.mask, self.backproject)
-            #CAMSHIFT HAPPENS
-            niter, self.track_comp, self.track_box = cvCamShift( self.backproject, self.track_window,
-                        cvTermCriteria( CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 10, 1 ))
-            self.track_window = self.track_comp.rect #no idea
+                self.histogram_init()
+
+                co.cv.cvResetImageROI( self.hue )
+                co.cv.cvResetImageROI( self.mask )
+                self.track_window = self.selection
+                self.track_object = 1
+            co.cv.cvCalcBackProject( [self.hue], self.backproject, self.hist )
+            co.cv.cvAnd(self.backproject, self.mask, self.backproject)
+
+            #CamShift algorithm is called
+            niter, self.track_comp, self.track_box = co.cv.cvCamShift( self.backproject, self.track_window,
+                        co.cv.cvTermCriteria( co.cv.CV_TERMCRIT_EPS | co.cv.CV_TERMCRIT_ITER, 10, 1 ))
+            self.track_window = self.track_comp.rect
             
-            if self.backproject_mode:
-                cvCvtColor( self.backproject, self.image, CV_GRAY2BGR ) #why??
             if not self.origin:
-                self.track_box.angle = -self.track_box.angle #why??
-            # Make sure it's a number.
+                self.track_box.angle = -self.track_box.angle
+
+            # Ensures that track_box size is always at least 0x0
             if math.isnan(self.track_box.size.height): 
                 self.track_box.size.height = 0
             if math.isnan(self.track_box.size.width): 
                 self.track_box.size.width = 0
-            #draws an ellipse around it. the ellipse is GREEN!!!! sometimes
-            cvEllipseBox( self.image, self.track_box, CV_RGB(0,255,0), 3, CV_AA, 0 )
 
+            #Creates the ellipse around the tracked object
+            co.cv.cvEllipseBox( self.image, self.track_box, co.cv.CV_RGB(0,255,0), 3, co.cv.CV_AA, 0 )
+
+            #Updates cursor location information
             if (not hasattr(self.cap, "obj_center")):
-                self.cap.add(Point("point", "obj_center", ( int(self.track_box.center.x), int(self.track_box.center.y )), parent=self.cap, follow=True))
+                self.cap.add(Point("point", "obj_center", ( int(self.track_box.center.x), int(self.track_box.center.y )), parent=self.cap, follow=False))
             else:
-                self.cap.obj_center.set_opencv(cvPoint(int(self.track_box.center.x), int(self.track_box.center.y)))
+                self.cap.obj_center.set_opencv(co.cv.cvPoint(int(self.track_box.center.x), int(self.track_box.center.y)))
 
-            #this displays the selection box before tracking starts
+        #Displays selection box before tracking starts
         if not self.track_object:
-            cvSetImageROI( self.image, self.selection )
-            cvXorS( self.image, cvScalarAll(255), self.image )
-            cvResetImageROI( self.image )
+            co.cv.cvSetImageROI( self.image, self.selection )
+            co.cv.cvXorS( self.image, co.cv.cvScalarAll(255), self.image )
+            co.cv.cvResetImageROI( self.image )
 
-
-
-        #hey let's show some stuff in those empty windows!!"""
-        cvShowImage( "Histogram", self.histimg )
-        cvShowImage( "Mask", self.mask)
+        co.hg.cvShowImage( "Mask", self.mask)
         
         self.cap.color("rgb", channel=3, copy=True)
 
@@ -425,6 +426,27 @@ class Module(object):
         """
         
         self.track_object = 0
+
+    def selSizeUp(self):
+        """
+        Increases the size of the selection window.
+
+        Arguments:
+        - self: The main object pointer
+        """
+        if self.selection.width < self.image.width - 10 and self.selection.height < self.image.height - 10:
+            self.selection = co.cv.cvRect(self.selection.x-5,self.selection.y-5,self.selection.width+10,self.selection.height+10)
+
+    def selSizeDown(self):
+        """
+        Decreases the size of the selection window.
+
+        Arguments:
+        - self: The main object pointer
+        """
+
+        if self.selection.width > 10 and self.selection.height > 10:
+            self.selection = co.cv.cvRect(self.selection.x+5,self.selection.y+5,self.selection.width-10,self.selection.height-10)
         
     def get_pointer(self):
         """
