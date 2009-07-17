@@ -86,7 +86,6 @@ class MainGui( gtk.Window ):
             return
         
         key = event.string
-        print pocv.get_idms_list()
         alg_inf = pocv.get_idm_inf("color")
         
         
