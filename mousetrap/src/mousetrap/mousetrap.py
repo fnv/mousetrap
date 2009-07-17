@@ -124,5 +124,6 @@ class Controller():
         Arguments:
         - self: The main object pointer.
         """
-        self.itf.script.update_items(self.idm.get_pointer())
+        if self.idm.track_object:
+            self.itf.script.update_items(self.idm.get_pointer())
         return True
