@@ -374,7 +374,7 @@ class Capture(object):
         if roi is None:
             return Camera.get_haar_points(haar_csd)
 
-        roi = cv.cvRect(roi["start"], roi["end"], roi["width"], roi["height"])
+        roi = co.cv.cvRect(roi["start"], roi["end"], roi["width"], roi["height"])
         return Camera.get_haar_roi_points(haar_csd, roi, orig)
 
     def message(self, message):
