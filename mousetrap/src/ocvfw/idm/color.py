@@ -455,7 +455,7 @@ class Module(object):
         Arguments:
         - self: The main object pointer
         """
-        print "width"+str(self.image.width)
+
         if 6 <= self.selection.x <= self.image.width: 
             self.selection=co.cv.cvRect(self.selection.x-5,self.selection.y,self.selection.width,self.selection.height)
 
@@ -467,11 +467,10 @@ class Module(object):
         Arguments:
         - self: The main object pointer
         """
-        print "width"+str(self.image.width)
-        print "selection x before"+str(self.selection.x)
+
         if 0 <= self.selection.x <= self.image.width-self.selection.width-6:
             self.selection=co.cv.cvRect(self.selection.x+5,self.selection.y,self.selection.width,self.selection.height)
-        print "selection x after"+str(self.selection.x)
+        
 
     def selPositionUp(self):
         """
