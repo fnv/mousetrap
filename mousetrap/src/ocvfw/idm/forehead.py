@@ -35,6 +35,7 @@ a_name = "Forehead"
 a_description = "Forehead point tracker based on LK Algorithm"
 a_settings = { 'speed' : {"value":2}}
 
+
 class Module(object):
     """
     This is the IDM's Main class, called by mousetrap.py in the load process.
@@ -67,6 +68,7 @@ class Module(object):
         self.foreheadDiff = None
         self.stopMove     = None
         self.startMove    = None
+        self.track_object = 1
 
         ##############################
         #       ACTION POINTS        #
