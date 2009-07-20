@@ -113,7 +113,7 @@ class Module(object):
         """
         global a_settings
         
-        self.debugLevel = int(self.ctr.cfg.get("main", "debugLevel"))
+        self.debugLevel = self.ctr.cfg.getint("main", "debugLevel"))
         print self.debugLevel        
 
         # If the dict is empty then 
@@ -161,7 +161,7 @@ class Module(object):
         # by the idm because the Capture syncs the image asynchronously (See dev/camera.py)
         self.cap = Capture(async=False, idx=cam, backend="OcvfwCtypes")
         
-        if(self.debugLevel >= 10):
+        if(self.debugLevel >= 30):
             co.hg.cvNamedWindow( "Histogram", 1 )
             co.hg.cvNamedWindow( "Mask", 1 )
 
@@ -286,7 +286,7 @@ class Module(object):
             color = self.hsv2rgb(i*180./self.hdims)            co.cv.cvRectangle( self.histimg, co.cv.cvPoint(i*bin_w,self.histimg.height),
                              co.cv.cvPoint((i+1)*bin_w,self.histimg.height - val),
                              color, -1, 8, 0 )
-        if(self.debugLevel >= 10):
+        if(self.debugLevel >= 30):
             co.hg.cvShowImage( "Histogram", self.histimg )
 
     def get_capture(self):
@@ -390,7 +390,7 @@ class Module(object):
             co.cv.cvXorS( self.image, co.cv.cvScalarAll(255), self.image )
             co.cv.cvResetImageROI( self.image )
         
-        if(self.debugLevel >= 10):
+        if(self.debugLevel >= 30):
             co.hg.cvShowImage( "Mask", self.mask)
         
         self.cap.color("rgb", channel=3, copy=True)
