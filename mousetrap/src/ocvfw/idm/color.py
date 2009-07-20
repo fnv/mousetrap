@@ -113,7 +113,7 @@ class Module(object):
         """
         global a_settings
         
-        self.debugLevel = self.ctr.cfg.getint("main", "debugLevel"))
+        self.debugLevel = self.ctr.cfg.getint("main", "debugLevel")
         print self.debugLevel        
 
         # If the dict is empty then 
@@ -161,9 +161,13 @@ class Module(object):
         # by the idm because the Capture syncs the image asynchronously (See dev/camera.py)
         self.cap = Capture(async=False, idx=cam, backend="OcvfwCtypes")
         
+        #for some reason this is necessary! why?!?
+
+        co.hg.cvNamedWindow( "Histogram", 1 )
+
         if(self.debugLevel >= 30):
-            co.hg.cvNamedWindow( "Histogram", 1 )
             co.hg.cvNamedWindow( "Mask", 1 )
+
 
             co.hg.cvCreateTrackbar( "Vmin", "Mask", self.vmin, 256 )
             co.hg.cvCreateTrackbar( "Vmax", "Mask", self.vmax, 256 )
