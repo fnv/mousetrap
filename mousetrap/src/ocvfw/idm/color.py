@@ -113,8 +113,9 @@ class Module(object):
         """
         global a_settings
         
-        self.debugLevel = self.ctr.cfg.get("main", "debugLevel")
-        
+        self.debugLevel = int(self.ctr.cfg.get("main", "debugLevel"))
+        print self.debugLevel        
+
         # If the dict is empty then 
         # use the default settings defined in a_settings
         if not self.stgs:
