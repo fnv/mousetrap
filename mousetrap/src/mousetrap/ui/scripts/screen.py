@@ -29,11 +29,14 @@ __license__   = "GPLv2"
 
 import mousetrap.environment as env
 import mousetrap.lib.mouse as mouse
+import mousetrap.lib.settings as settings
 
 # pylint: disable-msg=F0401
 # Unable to import 'widgets' (No module named widgets)
 # Widgets is in the parent folder
 from ..widgets import Mapper
+
+from ocvfw import pocv
 
 # The name given for the config file
 setName = "screen"
@@ -41,6 +44,8 @@ setName = "screen"
 ## Internal Modes
 modes = { "screen|abs"  :  "Mouse Absolute Movements",
           "screen|rel"  :  "Mouse Relative Movements"}
+
+
 
 # We get too many E1101 messages, but We know what we're doing.
 # Mapper does have those methods.
@@ -60,6 +65,16 @@ class ScriptClass(Mapper):
                                      # that the cursor has been in the same location under the threshold.
         """
         self.connect("expose_event", self.expose_event)
+        
+        self.cfg = settings.load()
+    
+        algorithm_info = pocv.get_idm_inf("color")
+        
+        if(algorithm_info["name"] == "color"):
+            self.scale = self.cfg.get("color", "vscale")
+        elif ( algorithm_info["name"] == "forehead"):
+            self.scale = self.cfg.get("forehead", "vscale")
+            
 
     def update_items(self, point):
         self.point = point
