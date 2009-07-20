@@ -113,6 +113,8 @@ class Module(object):
         """
         global a_settings
         
+        self.debugLevel = self.ctr.cfg.get("main", "debugLevel")
+        
         # If the dict is empty then 
         # use the default settings defined in a_settings
         if not self.stgs:
@@ -158,16 +160,16 @@ class Module(object):
         # by the idm because the Capture syncs the image asynchronously (See dev/camera.py)
         self.cap = Capture(async=False, idx=cam, backend="OcvfwCtypes")
         
+        if(self.debugLevel == 10):
+            co.hg.cvNamedWindow( "Histogram", 1 )
+            co.hg.cvNamedWindow( "Mask", 1 )
 
-        co.hg.cvNamedWindow( "Histogram", 1 )
-        co.hg.cvNamedWindow( "Mask", 1 )
-
-        co.hg.cvCreateTrackbar( "Vmin", "Mask", self.vmin, 256 )
-        co.hg.cvCreateTrackbar( "Vmax", "Mask", self.vmax, 256 )
-        co.hg.cvCreateTrackbar( "Smin", "Mask", self.smin, 256 )
-        co.hg.cvCreateTrackbar( "Smax", "Mask", self.smax, 256 )
-        co.hg.cvCreateTrackbar( "Hmin", "Mask", self.hmin, 180 )
-        co.hg.cvCreateTrackbar( "Hmax", "Mask", self.hmax, 180 )
+            co.hg.cvCreateTrackbar( "Vmin", "Mask", self.vmin, 256 )
+            co.hg.cvCreateTrackbar( "Vmax", "Mask", self.vmax, 256 )
+            co.hg.cvCreateTrackbar( "Smin", "Mask", self.smin, 256 )
+            co.hg.cvCreateTrackbar( "Smax", "Mask", self.smax, 256 )
+            co.hg.cvCreateTrackbar( "Hmin", "Mask", self.hmin, 180 )
+            co.hg.cvCreateTrackbar( "Hmax", "Mask", self.hmax, 180 )
 
         # This sets the final image default color to rgb. The default color is bgr.
         self.cap.change(color="rgb")
@@ -283,7 +285,8 @@ class Module(object):
             color = self.hsv2rgb(i*180./self.hdims)            co.cv.cvRectangle( self.histimg, co.cv.cvPoint(i*bin_w,self.histimg.height),
                              co.cv.cvPoint((i+1)*bin_w,self.histimg.height - val),
                              color, -1, 8, 0 )
-        co.hg.cvShowImage( "Histogram", self.histimg )
+        if(self.debugLevel == 10):
+            co.hg.cvShowImage( "Histogram", self.histimg )
 
     def get_capture(self):
         """
@@ -385,8 +388,9 @@ class Module(object):
             co.cv.cvSetImageROI( self.image, self.selection )
             co.cv.cvXorS( self.image, co.cv.cvScalarAll(255), self.image )
             co.cv.cvResetImageROI( self.image )
-
-        co.hg.cvShowImage( "Mask", self.mask)
+        
+        if(self.debugLevel == 10):
+            co.hg.cvShowImage( "Mask", self.mask)
         
         self.cap.color("rgb", channel=3, copy=True)
 
