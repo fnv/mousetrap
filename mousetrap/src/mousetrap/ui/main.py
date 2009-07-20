@@ -115,6 +115,22 @@ class MainGui( gtk.Window ):
                     return
 
                 self.ctr.idm.selSizeDown()
+            elif (key == 'w'):
+                if not hasattr(self.ctr, "idm"):
+                    return
+                self.ctr.idm.selPositionUp()
+            elif (key == 'a'):
+                if not hasattr(self.ctr, "idm"):
+                    return
+                self.ctr.idm.selPositionLeft()
+            elif (key == 's'):
+                if not hasattr(self.ctr, "idm"):
+                    return
+                self.ctr.idm.selPositionDown()
+            elif (key == 'd'):
+                if not hasattr(self.ctr, "idm"):
+                    return
+                self.ctr.idm.selPositionRight()
 
 
     def build_interface( self ):

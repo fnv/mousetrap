@@ -438,7 +438,7 @@ class Module(object):
         Arguments:
         - self: The main object pointer
         """
-        if self.selection.width < self.image.width - 10 and self.selection.height < self.image.height - 10:
+        if 6 <= self.selection.x <=self.image.width-self.selection.width-6 and 6 <= self.selection.y <= self.image.height-self.selection.height-6:
             self.selection = co.cv.cvRect(self.selection.x-5,self.selection.y-5,self.selection.width+10,self.selection.height+10)
 
     def selSizeDown(self):
@@ -451,6 +451,51 @@ class Module(object):
 
         if self.selection.width > 10 and self.selection.height > 10:
             self.selection = co.cv.cvRect(self.selection.x+5,self.selection.y+5,self.selection.width-10,self.selection.height-10)
+    
+    def selPositionLeft(self):
+        """
+        Changes the location of the selection window.
+
+        Arguments:
+        - self: The main object pointer
+        """
+
+        if 6 <= self.selection.x <= self.image.width: 
+            self.selection=co.cv.cvRect(self.selection.x-5,self.selection.y,self.selection.width,self.selection.height)
+
+
+    def selPositionRight(self):
+        """
+        Changes the location of the selection window.
+
+        Arguments:
+        - self: The main object pointer
+        """
+
+        if 0 <= self.selection.x <= self.image.width-self.selection.width-6:
+            self.selection=co.cv.cvRect(self.selection.x+5,self.selection.y,self.selection.width,self.selection.height)
+        
+
+    def selPositionUp(self):
+        """
+        Changes the location of the selection window.
+
+        Arguments:
+        - self: The main object pointer
+        """
+        if 6 <= self.selection.y <= self.image.height:
+            self.selection=co.cv.cvRect(self.selection.x,self.selection.y-5,self.selection.width,self.selection.height)
+
+    def selPositionDown(self):
+        """
+        Changes the location of the selection window.
+
+        Arguments:
+        - self: The main object pointer
+        """
+        if 0 <= self.selection.y <= self.image.height-self.selection.height-6:
+            self.selection=co.cv.cvRect(self.selection.x,self.selection.y+5,self.selection.width,self.selection.height)
+    
         
     def get_pointer(self):
         """
