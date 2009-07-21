@@ -1,0 +1,7 @@
+Changes:
+    - New color IDM in src/ocvfw/idms/color.py
+    - Color picker now appears in the main window when the idm is set to color
+        > The color picker is defined in main.py and sits in it's own expander
+    - The writeFirst method in settings.py writes relevant config variables for the color idm
+    - Pretty much no new features should be visible to the user when the forehead idm is selected
+    - 
