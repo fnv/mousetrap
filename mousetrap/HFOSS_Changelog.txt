@@ -5,3 +5,12 @@ Changes:
     - The writeFirst method in settings.py writes relevant config variables for the color idm
     - Pretty much no new features should be visible to the user when the forehead idm is selected
     - 
+
+Feature requests:
+    - Mouse movement still not smooth
+    - CPU usage still far too high
+        > Maybe consider bridging writing some of the heavy computation
+          in C or C++ instead of python.
+    - Some architectural issues with settings should be streamlined to ensure
+      as few reads/writes from config files as possible during the application
+      lifecycle.
